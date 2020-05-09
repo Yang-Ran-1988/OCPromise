@@ -1,0 +1,16 @@
+PODS:
+  - OCPromise (0.1.0)
+
+DEPENDENCIES:
+  - OCPromise (from `../`)
+
+EXTERNAL SOURCES:
+  OCPromise:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  OCPromise: 8405a0781aead9ec1dbd61d6398ebd83b90db429
+
+PODFILE CHECKSUM: ce1486e4212e16dbf40ae9abf42d9d4f8df0cee7
+
+COCOAPODS: 1.9.1

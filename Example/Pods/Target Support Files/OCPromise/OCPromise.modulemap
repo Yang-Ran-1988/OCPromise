@@ -1,0 +1,6 @@
+framework module OCPromise {
+  umbrella header "OCPromise-umbrella.h"
+
+  export *
+  module * { export * }
+}

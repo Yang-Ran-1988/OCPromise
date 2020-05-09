@@ -1,0 +1,650 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		012620284C6144D62FAE519BA64DC140 /* Pods-OCPromise_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 21F60C32C9CACD1C43B58BF218747CCF /* Pods-OCPromise_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0CC4A8EF7853C5A92E16857F0C317822 /* OCPromise-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 69C2DB6D31B82F791557E54BD6B8C80A /* OCPromise-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		19000FB8A698505D03FE2C208113B98D /* Pods-OCPromise_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92364D920AFF6DFF76A1FEA0E3146344 /* Pods-OCPromise_Example-dummy.m */; };
+		25C4113659DA356E6B4C38917162C7E0 /* OCRacePromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBE9334D1B5A63B01200A3ADA1E6500 /* OCRacePromise.m */; };
+		2D54F6579C1DB6CF3182C1E481D3B9A4 /* OCPromiseReturnValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE14C378C92CFE74DCB8454EA5705624 /* OCPromiseReturnValue.m */; };
+		403D46A6475BA19D2BE30C37633DC238 /* OCPromiseReturnValue.h in Headers */ = {isa = PBXBuildFile; fileRef = FF5BA2ED69F3FA5DA330507471B61FFF /* OCPromiseReturnValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		867BCB6ABC890AA638D65CB99F51E88B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		86CB3FCF868F638304D9A7FA13860397 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		89796C8D473F4D897384D2C2448B7A65 /* OCPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = E012B2149C2BD1D225EA431FC0284176 /* OCPromise.m */; };
+		9833DFF15FB023F664AE39854691F232 /* OCPromise-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 01BA801C20F708E9CCCA683402BA36D8 /* OCPromise-dummy.m */; };
+		9C8547D775DCD4F9A62FF6F4120F115A /* OCPromise+PrivateInit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2CDDFB69A9C31036EC21EBE6A84CDC /* OCPromise+PrivateInit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9EE2B8E8E039B84010E1894425D3D982 /* OCThenPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E109637556CCF099C38DA8514C03337 /* OCThenPromise.m */; };
+		A322BA2BE7C843ADA620076F144A8F54 /* OCThenPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE70FA9600D1E6D7F7026B1125E861C /* OCThenPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C79A5C4D4EE0875B2B13A1871F77571F /* OCPromiseNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B7A549B1738BA9664053D057E4E4B5 /* OCPromiseNil.m */; };
+		E76BD87BDB295943AEC0E94D93601F7D /* OCAllPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8E80A90E12BDA5AA2D4E8EF7C59E53 /* OCAllPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9E640418999E7EE50A8BCD56B538A77 /* OCPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = FC64B675EE76712C5DB17214FF1E85E4 /* OCPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F2F70601F64738662A5FDFAB87E2906F /* OCAllPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 209D925798A6B3CC19914D49967085D8 /* OCAllPromise.m */; };
+		F7D06F499391CF5DC8276646C94A69A6 /* OCPromiseNil.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2747963941401583F6B4D9FCF2156A /* OCPromiseNil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FF95E783B1C145A160FE25C182C7674B /* OCRacePromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 324792A78D6DF3A3EEE79FB7B45249B0 /* OCRacePromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8408A948CF7DD5ECD7A941B1E6A952B1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3C2BCD985EE2186F9B12C76820A38627;
+			remoteInfo = OCPromise;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01BA801C20F708E9CCCA683402BA36D8 /* OCPromise-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "OCPromise-dummy.m"; sourceTree = "<group>"; };
+		0453203CD19A1E4DAAA150FFAAF206E7 /* OCPromise-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OCPromise-prefix.pch"; sourceTree = "<group>"; };
+		0D63369A7936AD9C4B7D10EE28FD4881 /* Pods-OCPromise_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-OCPromise_Example.release.xcconfig"; sourceTree = "<group>"; };
+		110723F1D6E1C002FAD15BAA55D271E4 /* Pods-OCPromise_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-OCPromise_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		16EBEF20FC56A2B12D48F61A099967D3 /* Pods-OCPromise_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-OCPromise_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		209D925798A6B3CC19914D49967085D8 /* OCAllPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCAllPromise.m; path = OCPromise/Classes/OCAllPromise.m; sourceTree = "<group>"; };
+		21F60C32C9CACD1C43B58BF218747CCF /* Pods-OCPromise_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-OCPromise_Example-umbrella.h"; sourceTree = "<group>"; };
+		2CBE9334D1B5A63B01200A3ADA1E6500 /* OCRacePromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCRacePromise.m; path = OCPromise/Classes/OCRacePromise.m; sourceTree = "<group>"; };
+		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		324792A78D6DF3A3EEE79FB7B45249B0 /* OCRacePromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCRacePromise.h; path = OCPromise/Classes/OCRacePromise.h; sourceTree = "<group>"; };
+		54AD59D357CBD913165F11BD8537EA1D /* Pods_OCPromise_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_OCPromise_Example.framework; path = "Pods-OCPromise_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5732D075E2ED91F5F98B004837C4D7F8 /* Pods-OCPromise_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-OCPromise_Example-frameworks.sh"; sourceTree = "<group>"; };
+		58AD26E5A0C1123D3CB6EABECB80E378 /* OCPromise.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = OCPromise.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		5D7316BC7DA0B1B197620274578F0F34 /* OCPromise.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = OCPromise.modulemap; sourceTree = "<group>"; };
+		6756882C5FAC0AA40ECCDE0087B8E364 /* Pods-OCPromise_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-OCPromise_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		69C2DB6D31B82F791557E54BD6B8C80A /* OCPromise-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OCPromise-umbrella.h"; sourceTree = "<group>"; };
+		6D2CDDFB69A9C31036EC21EBE6A84CDC /* OCPromise+PrivateInit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "OCPromise+PrivateInit.h"; path = "OCPromise/Classes/OCPromise+PrivateInit.h"; sourceTree = "<group>"; };
+		6E8E80A90E12BDA5AA2D4E8EF7C59E53 /* OCAllPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCAllPromise.h; path = OCPromise/Classes/OCAllPromise.h; sourceTree = "<group>"; };
+		78B7A549B1738BA9664053D057E4E4B5 /* OCPromiseNil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromiseNil.m; path = OCPromise/Classes/OCPromiseNil.m; sourceTree = "<group>"; };
+		8B2747963941401583F6B4D9FCF2156A /* OCPromiseNil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromiseNil.h; path = OCPromise/Classes/OCPromiseNil.h; sourceTree = "<group>"; };
+		90E780C000048C5C528CE022547CF037 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		911FBC5DD61BD43A8893DB3AD78090A6 /* OCPromise.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OCPromise.debug.xcconfig; sourceTree = "<group>"; };
+		92364D920AFF6DFF76A1FEA0E3146344 /* Pods-OCPromise_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-OCPromise_Example-dummy.m"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9E109637556CCF099C38DA8514C03337 /* OCThenPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCThenPromise.m; path = OCPromise/Classes/OCThenPromise.m; sourceTree = "<group>"; };
+		B1ACAEBD1C847E8FA09D4A88BAEE154F /* OCPromise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OCPromise.release.xcconfig; sourceTree = "<group>"; };
+		B88BCEEA6D1E4A764A63958957C11790 /* Pods-OCPromise_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-OCPromise_Example.modulemap"; sourceTree = "<group>"; };
+		C219A9CAB20F6A8A095020FAA5C0004E /* OCPromise-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "OCPromise-Info.plist"; sourceTree = "<group>"; };
+		C64B6F37009A8DDB1A39A36FC1EBB18C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		D72062C65C95315E1096740A0A0FAF66 /* OCPromise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = OCPromise.framework; path = OCPromise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAE70FA9600D1E6D7F7026B1125E861C /* OCThenPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCThenPromise.h; path = OCPromise/Classes/OCThenPromise.h; sourceTree = "<group>"; };
+		DE14C378C92CFE74DCB8454EA5705624 /* OCPromiseReturnValue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromiseReturnValue.m; path = OCPromise/Classes/OCPromiseReturnValue.m; sourceTree = "<group>"; };
+		E012B2149C2BD1D225EA431FC0284176 /* OCPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromise.m; path = OCPromise/Classes/OCPromise.m; sourceTree = "<group>"; };
+		FC64B675EE76712C5DB17214FF1E85E4 /* OCPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromise.h; path = OCPromise/Classes/OCPromise.h; sourceTree = "<group>"; };
+		FEF2E300681910964C0CA3B5AAFB5F43 /* Pods-OCPromise_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-OCPromise_Example-Info.plist"; sourceTree = "<group>"; };
+		FF5BA2ED69F3FA5DA330507471B61FFF /* OCPromiseReturnValue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromiseReturnValue.h; path = OCPromise/Classes/OCPromiseReturnValue.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4E5850918D82BB0E76E6B7D541ADE6B0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				867BCB6ABC890AA638D65CB99F51E88B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		896EC4241636D74C3AB8494E08F8D4EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86CB3FCF868F638304D9A7FA13860397 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		585B8DF4E31DD0EC5821074B6F519700 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D72062C65C95315E1096740A0A0FAF66 /* OCPromise.framework */,
+				54AD59D357CBD913165F11BD8537EA1D /* Pods_OCPromise_Example.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7D0FF2F124F04F9D4766943E93E13984 /* OCPromise */ = {
+			isa = PBXGroup;
+			children = (
+				6E8E80A90E12BDA5AA2D4E8EF7C59E53 /* OCAllPromise.h */,
+				209D925798A6B3CC19914D49967085D8 /* OCAllPromise.m */,
+				FC64B675EE76712C5DB17214FF1E85E4 /* OCPromise.h */,
+				E012B2149C2BD1D225EA431FC0284176 /* OCPromise.m */,
+				6D2CDDFB69A9C31036EC21EBE6A84CDC /* OCPromise+PrivateInit.h */,
+				8B2747963941401583F6B4D9FCF2156A /* OCPromiseNil.h */,
+				78B7A549B1738BA9664053D057E4E4B5 /* OCPromiseNil.m */,
+				FF5BA2ED69F3FA5DA330507471B61FFF /* OCPromiseReturnValue.h */,
+				DE14C378C92CFE74DCB8454EA5705624 /* OCPromiseReturnValue.m */,
+				324792A78D6DF3A3EEE79FB7B45249B0 /* OCRacePromise.h */,
+				2CBE9334D1B5A63B01200A3ADA1E6500 /* OCRacePromise.m */,
+				DAE70FA9600D1E6D7F7026B1125E861C /* OCThenPromise.h */,
+				9E109637556CCF099C38DA8514C03337 /* OCThenPromise.m */,
+				9B8790ABEDDC18D8BDE988B89C1F87FF /* Pod */,
+				AA861A1FC5F2D7CE540D4F12C3DEBF6E /* Support Files */,
+			);
+			name = OCPromise;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		9B8790ABEDDC18D8BDE988B89C1F87FF /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				C64B6F37009A8DDB1A39A36FC1EBB18C /* LICENSE */,
+				58AD26E5A0C1123D3CB6EABECB80E378 /* OCPromise.podspec */,
+				90E780C000048C5C528CE022547CF037 /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		AA861A1FC5F2D7CE540D4F12C3DEBF6E /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5D7316BC7DA0B1B197620274578F0F34 /* OCPromise.modulemap */,
+				01BA801C20F708E9CCCA683402BA36D8 /* OCPromise-dummy.m */,
+				C219A9CAB20F6A8A095020FAA5C0004E /* OCPromise-Info.plist */,
+				0453203CD19A1E4DAAA150FFAAF206E7 /* OCPromise-prefix.pch */,
+				69C2DB6D31B82F791557E54BD6B8C80A /* OCPromise-umbrella.h */,
+				911FBC5DD61BD43A8893DB3AD78090A6 /* OCPromise.debug.xcconfig */,
+				B1ACAEBD1C847E8FA09D4A88BAEE154F /* OCPromise.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/OCPromise";
+			sourceTree = "<group>";
+		};
+		B1EAC9766F3FC4532C33F4DDA17DCCF0 /* Pods-OCPromise_Example */ = {
+			isa = PBXGroup;
+			children = (
+				B88BCEEA6D1E4A764A63958957C11790 /* Pods-OCPromise_Example.modulemap */,
+				16EBEF20FC56A2B12D48F61A099967D3 /* Pods-OCPromise_Example-acknowledgements.markdown */,
+				110723F1D6E1C002FAD15BAA55D271E4 /* Pods-OCPromise_Example-acknowledgements.plist */,
+				92364D920AFF6DFF76A1FEA0E3146344 /* Pods-OCPromise_Example-dummy.m */,
+				5732D075E2ED91F5F98B004837C4D7F8 /* Pods-OCPromise_Example-frameworks.sh */,
+				FEF2E300681910964C0CA3B5AAFB5F43 /* Pods-OCPromise_Example-Info.plist */,
+				21F60C32C9CACD1C43B58BF218747CCF /* Pods-OCPromise_Example-umbrella.h */,
+				6756882C5FAC0AA40ECCDE0087B8E364 /* Pods-OCPromise_Example.debug.xcconfig */,
+				0D63369A7936AD9C4B7D10EE28FD4881 /* Pods-OCPromise_Example.release.xcconfig */,
+			);
+			name = "Pods-OCPromise_Example";
+			path = "Target Support Files/Pods-OCPromise_Example";
+			sourceTree = "<group>";
+		};
+		C0834CEBB1379A84116EF29F93051C60 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				FC2512501B4019C5CB1169F5935D9F2B /* Development Pods */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				585B8DF4E31DD0EC5821074B6F519700 /* Products */,
+				DF8DBC843F920F5709E3B63E9A146717 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C0834CEBB1379A84116EF29F93051C60 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DF8DBC843F920F5709E3B63E9A146717 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				B1EAC9766F3FC4532C33F4DDA17DCCF0 /* Pods-OCPromise_Example */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		FC2512501B4019C5CB1169F5935D9F2B /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7D0FF2F124F04F9D4766943E93E13984 /* OCPromise */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B9EFD85969A3FC6127AF97C9EC8A8A65 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				012620284C6144D62FAE519BA64DC140 /* Pods-OCPromise_Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4A9B6D2E8679F6E28123507112D3B9C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E76BD87BDB295943AEC0E94D93601F7D /* OCAllPromise.h in Headers */,
+				9C8547D775DCD4F9A62FF6F4120F115A /* OCPromise+PrivateInit.h in Headers */,
+				0CC4A8EF7853C5A92E16857F0C317822 /* OCPromise-umbrella.h in Headers */,
+				E9E640418999E7EE50A8BCD56B538A77 /* OCPromise.h in Headers */,
+				F7D06F499391CF5DC8276646C94A69A6 /* OCPromiseNil.h in Headers */,
+				403D46A6475BA19D2BE30C37633DC238 /* OCPromiseReturnValue.h in Headers */,
+				FF95E783B1C145A160FE25C182C7674B /* OCRacePromise.h in Headers */,
+				A322BA2BE7C843ADA620076F144A8F54 /* OCThenPromise.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0C8D00E8F73D33766928F02069D35676 /* Pods-OCPromise_Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0629A9A8C848842C6D1D37F0E6E8FFE0 /* Build configuration list for PBXNativeTarget "Pods-OCPromise_Example" */;
+			buildPhases = (
+				B9EFD85969A3FC6127AF97C9EC8A8A65 /* Headers */,
+				5E8CD04398F64597033D62D09D7B0D26 /* Sources */,
+				4E5850918D82BB0E76E6B7D541ADE6B0 /* Frameworks */,
+				E11232F74035DBB35BA3B0FD552C1D6E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4B0689CB198C7E05F1A803FE4FBD64AE /* PBXTargetDependency */,
+			);
+			name = "Pods-OCPromise_Example";
+			productName = "Pods-OCPromise_Example";
+			productReference = 54AD59D357CBD913165F11BD8537EA1D /* Pods_OCPromise_Example.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		3C2BCD985EE2186F9B12C76820A38627 /* OCPromise */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AA4E4D3B3884311E27F88D0B9CEF267 /* Build configuration list for PBXNativeTarget "OCPromise" */;
+			buildPhases = (
+				D4A9B6D2E8679F6E28123507112D3B9C /* Headers */,
+				04B2D96E9799C2647EB1992CFD968E7A /* Sources */,
+				896EC4241636D74C3AB8494E08F8D4EB /* Frameworks */,
+				DB0415ED7A8EC886F6FCCFA1F8FCE00E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OCPromise;
+			productName = OCPromise;
+			productReference = D72062C65C95315E1096740A0A0FAF66 /* OCPromise.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 585B8DF4E31DD0EC5821074B6F519700 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3C2BCD985EE2186F9B12C76820A38627 /* OCPromise */,
+				0C8D00E8F73D33766928F02069D35676 /* Pods-OCPromise_Example */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DB0415ED7A8EC886F6FCCFA1F8FCE00E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E11232F74035DBB35BA3B0FD552C1D6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04B2D96E9799C2647EB1992CFD968E7A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2F70601F64738662A5FDFAB87E2906F /* OCAllPromise.m in Sources */,
+				9833DFF15FB023F664AE39854691F232 /* OCPromise-dummy.m in Sources */,
+				89796C8D473F4D897384D2C2448B7A65 /* OCPromise.m in Sources */,
+				C79A5C4D4EE0875B2B13A1871F77571F /* OCPromiseNil.m in Sources */,
+				2D54F6579C1DB6CF3182C1E481D3B9A4 /* OCPromiseReturnValue.m in Sources */,
+				25C4113659DA356E6B4C38917162C7E0 /* OCRacePromise.m in Sources */,
+				9EE2B8E8E039B84010E1894425D3D982 /* OCThenPromise.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E8CD04398F64597033D62D09D7B0D26 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19000FB8A698505D03FE2C208113B98D /* Pods-OCPromise_Example-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4B0689CB198C7E05F1A803FE4FBD64AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OCPromise;
+			target = 3C2BCD985EE2186F9B12C76820A38627 /* OCPromise */;
+			targetProxy = 8408A948CF7DD5ECD7A941B1E6A952B1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		187D969A85F32F5357A239BA782A5C0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6756882C5FAC0AA40ECCDE0087B8E364 /* Pods-OCPromise_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-OCPromise_Example/Pods-OCPromise_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-OCPromise_Example/Pods-OCPromise_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4BE66A09A74FD25164AAB3C2645B9B93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		6F9ABC3C343A51B2EAEA682543BF506C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 911FBC5DD61BD43A8893DB3AD78090A6 /* OCPromise.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/OCPromise/OCPromise-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/OCPromise/OCPromise-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/OCPromise/OCPromise.modulemap";
+				PRODUCT_MODULE_NAME = OCPromise;
+				PRODUCT_NAME = OCPromise;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		7EF7227D9B20A1D549000096ACCB23D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		BEFD7607D2C093F6366A60B18D233BDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D63369A7936AD9C4B7D10EE28FD4881 /* Pods-OCPromise_Example.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-OCPromise_Example/Pods-OCPromise_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-OCPromise_Example/Pods-OCPromise_Example.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		DC0B18A2765B836E212DFE83FEE8A2F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B1ACAEBD1C847E8FA09D4A88BAEE154F /* OCPromise.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/OCPromise/OCPromise-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/OCPromise/OCPromise-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/OCPromise/OCPromise.modulemap";
+				PRODUCT_MODULE_NAME = OCPromise;
+				PRODUCT_NAME = OCPromise;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0629A9A8C848842C6D1D37F0E6E8FFE0 /* Build configuration list for PBXNativeTarget "Pods-OCPromise_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				187D969A85F32F5357A239BA782A5C0E /* Debug */,
+				BEFD7607D2C093F6366A60B18D233BDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AA4E4D3B3884311E27F88D0B9CEF267 /* Build configuration list for PBXNativeTarget "OCPromise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F9ABC3C343A51B2EAEA682543BF506C /* Debug */,
+				DC0B18A2765B836E212DFE83FEE8A2F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7EF7227D9B20A1D549000096ACCB23D7 /* Debug */,
+				4BE66A09A74FD25164AAB3C2645B9B93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}
