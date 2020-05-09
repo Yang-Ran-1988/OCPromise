@@ -45,7 +45,7 @@ OCPromise * function(inputPromise inputPromise) {
     return self;
 }
 
-- (OCPromise * _Nonnull (^)(__kindof OCPromise * _Nonnull))then {
+- (then)then {
     if (!_then) {
         __weak typeof(self) weakSelf = self;
         _then = ^(__kindof OCPromise *_Nonnull then) {
@@ -138,7 +138,7 @@ OCPromise * function(inputPromise inputPromise) {
         } else {
             newPromise = OCPromise.resolve(obj);
         }
-        NSString *ptr = [NSString stringWithFormat:@"promise_serial_queue%lu",(uintptr_t)newPromise];
+        NSString *ptr = [NSString stringWithFormat:@"promise_serial_queue_%lu",(uintptr_t)newPromise];
         newPromise.promiseSerialQueue = dispatch_queue_create([ptr UTF8String], DISPATCH_QUEUE_SERIAL);
         newPromise.isInSet = YES;
         [newPromises addObject:newPromise];
