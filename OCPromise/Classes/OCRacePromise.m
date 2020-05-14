@@ -32,6 +32,7 @@
     if (self) {
         _promises = [super buildPromisesCopy:promises];
         if (!_promises.count) {
+            [self cancel];
             return nil;
         }
         

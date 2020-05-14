@@ -46,24 +46,46 @@
     OCPromise *race = OCPromise.race(@[multiply, add]);
     OCPromise *all = OCPromise.all(@[multiply, add, race]);
     
-    p
+    OCPromise *middle =p
     .then(add)
     .then(all)
     .then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             resolve([NSNumber numberWithLong:[value[0] longValue]+[value[2] longValue]]);
         });
-    }))
-    .then(add)
-    .then(race)
-    .then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"!!! %@ ", value);
+    }));
+    
+    sleep(4);
+
+    NSLog(@"");
+
+    middle.then(add)
+          .then(race)
+          .then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+              NSLog(@"!!! %@ ", value);
+              return nil;
+          })).finally(function(^OCPromise * _Nullable(id  _Nonnull value) {
+              NSLog(@"finally %@",value);
+              return nil;
+          }));
+
+    sleep(5);
+
+    NSLog(@"");
+
+    middle.then(multiply).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"another %@",value);
         return nil;
     })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"catch %@",value);
+        NSLog(@"cccatch %@",value);
+        return nil;
+    }));
+
+    middle.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"wawawa then %@", value);
         return nil;
     })).finally(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"finally %@",value);
+        NSLog(@"hehehe finally %@", value);
         return nil;
     }));
 }

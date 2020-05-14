@@ -109,7 +109,7 @@ OCPromise * function(inputPromise inputPromise) {
 
 - (OCPromise *)buildNewPromiseWithPromise:(OCPromise *)promise andType:(OCPromiseType)type {
     OCPromise *newPromise;
-    if (promise.isInSet) {
+    if (promise.status & OCPRomiseStatusInSet) {
         return promise;
     }
     switch (promise.type) {
@@ -125,6 +125,11 @@ OCPromise * function(inputPromise inputPromise) {
     }
     newPromise.type = type;
     newPromise.code = promise.code*100;
+    newPromise.head = promise.head;
+    newPromise.last = promise.last;
+    newPromise.promiseSerialQueue = promise.promiseSerialQueue;
+    newPromise.status = promise.status;
+    newPromise.triggerValue = promise.triggerValue;
     [promise.realPromises addObject:newPromise];
     return newPromise;
 }
@@ -134,13 +139,19 @@ OCPromise * function(inputPromise inputPromise) {
     [promises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         OCPromise *newPromise;
         if ([obj isKindOfClass:[OCPromise class]]) {
+            BOOL objIsInSet = obj.status & OCPRomiseStatusInSet;
+            obj.status &= (~OCPRomiseStatusInSet);
             newPromise = [self buildNewPromiseWithPromise:obj andType:obj.type];
+            if (objIsInSet) {
+                obj.status |= OCPRomiseStatusInSet;
+            }
         } else {
             newPromise = OCPromise.resolve(obj);
         }
         NSString *ptr = [NSString stringWithFormat:@"promise_serial_queue_%lu",(uintptr_t)newPromise];
         newPromise.promiseSerialQueue = dispatch_queue_create([ptr UTF8String], DISPATCH_QUEUE_SERIAL);
-        newPromise.isInSet = YES;
+        newPromise.status |= OCPRomiseStatusInSet;
+        newPromise.last = self.last;
         [newPromises addObject:newPromise];
         
     }];
@@ -182,6 +193,16 @@ OCPromise * function(inputPromise inputPromise) {
 - (void)cancel {
     NSString *reason = [NSString stringWithFormat:@"%@ must be overridden by subclasses", NSStringFromSelector(_cmd)];
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+}
+
+- (void)setStatus:(OCPRomiseStatus)status {
+    _status = status;
+    if (_status & OCPRomiseStatusCatchError && _type != OCPromiseTypeCatch && _type != OCPromiseTypeFinally) {
+        _status |= OCPRomiseStatusTriggered;
+    }
+    if (_status & OCPRomiseStatusTriggered) {
+        _head = nil;
+    }
 }
 
 - (NSMutableArray <__kindof OCPromise *> *)realPromises {
