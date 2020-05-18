@@ -32,9 +32,9 @@
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             sleep(1);
             NSLog(@"calculating %ld + %ld ...", [value longValue], [value longValue]);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                resolve([NSNumber numberWithLong:[value longValue]+[value longValue]]);
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+                reject([NSNumber numberWithLong:[value longValue]+[value longValue]]);
+//            });
         });
     });
     
@@ -55,19 +55,19 @@
         });
     }));
     
-    sleep(4);
-
-    NSLog(@"");
-
-    middle.then(add)
-          .then(race)
-          .then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-              NSLog(@"!!! %@ ", value);
-              return nil;
-          })).finally(function(^OCPromise * _Nullable(id  _Nonnull value) {
-              NSLog(@"finally %@",value);
-              return nil;
-          }));
+//    sleep(4);
+//
+//    NSLog(@"");
+//
+//    middle.then(add)
+//          .then(race)
+//          .then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+//              NSLog(@"!!! %@ ", value);
+//              return nil;
+//          })).finally(function(^OCPromise * _Nullable(id  _Nonnull value) {
+//              NSLog(@"finally %@",value);
+//              return nil;
+//          }));
 
     sleep(5);
 
@@ -80,14 +80,17 @@
         NSLog(@"cccatch %@",value);
         return nil;
     }));
+    
+    OCPromise *final = function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"hehehe finally %@", value);
+        return nil;
+    });
+    final.code = 2976;
 
     middle.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"wawawa then %@", value);
         return nil;
-    })).finally(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"hehehe finally %@", value);
-        return nil;
-    }));
+    })).finally(final);
 }
 
 - (void)didReceiveMemoryWarning

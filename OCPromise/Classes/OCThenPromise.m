@@ -203,42 +203,43 @@
     newPromise.promiseSerialQueue = promiseSerialQueue;
     
     dispatch_block_t block = ^{
-        if (!currentPromise.last) {
-            if (!(currentPromise.status & OCPRomiseStatusTriggered) && currentPromise.inputPromise && !currentPromise.promise && currentPromise.status != OCPRomiseStatusInSet) {
-#if DEBUG
-                NSString *reason = @"Head promise neez a input";
-                @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
-#else
-                currentPromise.inputPromise(nil);
-#endif
-            }
-            if (currentPromise.promise && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
-                currentPromise.status |= OCPRomiseStatusTriggering;
-                currentPromise.promise(currentPromise.resolve, currentPromise.reject);
+        if (currentPromise.status & OCPRomiseStatusCatchError) {
+            if ((currentPromise.type == OCPromiseTypeCatch || currentPromise.type == OCPromiseTypeFinally)
+                && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
+                currentPromise.status |= OCPRomiseStatusTriggered;
+                currentPromise.inputPromise(currentPromise.triggerValue);
             }
             else {
-                [currentPromise cancel];
+                [currentPromise searchNextCatchWithRejectValue:currentPromise.triggerValue];
+                [currentPromise searchFinallyWithValue:currentPromise.triggerValue];
             }
+            [currentPromise cancel];
         }
         else {
-            if (currentPromise.status & OCPRomiseStatusCatchError) {
-                if (currentPromise.type == OCPromiseTypeCatch || currentPromise.type == OCPromiseTypeFinally) {
-                    currentPromise.status |= OCPRomiseStatusTriggered;
-                    currentPromise.inputPromise(currentPromise.triggerValue);
+            if (!currentPromise.last) {
+                if (!(currentPromise.status & OCPRomiseStatusTriggered) && currentPromise.inputPromise && !currentPromise.promise && currentPromise.status != OCPRomiseStatusInSet) {
+#if DEBUG
+                    NSString *reason = @"Head promise neez a input";
+                    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+#else
+                    currentPromise.inputPromise(nil);
+#endif
+                }
+                if (currentPromise.promise && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
+                    currentPromise.status |= OCPRomiseStatusTriggering;
+                    currentPromise.promise(currentPromise.resolve, currentPromise.reject);
                 }
                 else {
-                    [currentPromise searchNextCatchWithRejectValue:currentPromise.triggerValue];
-                    [currentPromise searchFinallyWithValue:currentPromise.triggerValue];
-                }
-                [currentPromise cancel];
-            }
-            else {
-                if (currentPromise.type == OCPromiseTypeCatch) {
-                    [currentPromise searchFinallyWithValue:currentPromise.last.triggerValue];
                     [currentPromise cancel];
                 }
-                else {
-                    if (currentPromise.last.status & OCPRomiseStatusTriggered && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
+            }
+            else {
+                if (currentPromise.last.status & OCPRomiseStatusTriggered && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
+                    if (currentPromise.type == OCPromiseTypeCatch) {
+                        [currentPromise searchFinallyWithValue:currentPromise.last.triggerValue];
+                        [currentPromise cancel];
+                    }
+                    else {
                         if (currentPromise.inputPromise) {
                             currentPromise.promise = currentPromise.inputPromise(currentPromise.last.triggerValue).promise;
                         }
