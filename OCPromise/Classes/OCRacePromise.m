@@ -41,7 +41,7 @@
         _promise = ^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!strongSelf.promises.count) {
-                resolve(OCPromiseNil.nilValue);
+                resolve(nil);
                 return;
             }
             dispatch_semaphore_t returnLock = dispatch_semaphore_create(0);
@@ -75,7 +75,7 @@
                         return nil;
                     }
                     
-                    returnValue = value ?: OCPromiseNil.nilValue;
+                    returnValue = value;
                     isReject = YES;
                     dispatch_semaphore_signal(returnLock);
                     dispatch_semaphore_signal(innerLock);

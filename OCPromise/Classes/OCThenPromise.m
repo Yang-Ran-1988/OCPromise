@@ -31,18 +31,6 @@
             dispatch_block_t block = ^{
                 strongSelf.status |= OCPromiseStatusTriggered;
                 id resolveValue = resolve;
-                if ([resolve isMemberOfClass:[OCPromiseReturnValue class]]) {
-                    OCPromiseReturnValue *returnValue = resolve;
-                    if (returnValue.count == 0) {
-                        resolveValue = OCPromiseNil.nilValue;
-                    }
-                    else if (returnValue.count == 1) {
-                        resolveValue = returnValue[0];
-                    }
-                    else {
-                        resolveValue = returnValue.array;
-                    }
-                }
                 strongSelf.triggerValue = resolveValue;
                 if (strongSelf.next) {
                     [strongSelf.next receiveResolveValueAndTriggerPromise:resolveValue];
@@ -71,7 +59,7 @@
 - (void)receiveResolveValueAndTriggerPromise:(id)resolveValue {
     if (self.type != OCPromiseTypeCatch || self.type != OCPromiseTypeFinally) {
         if (self.inputPromise) {
-            self.promise = self.inputPromise(resolveValue ?: OCPromiseNil.nilValue).promise;
+            self.promise = self.inputPromise(resolveValue).promise;
         }
         [self injectResolveValueIntoPromises:resolveValue];
         if (!self.promise) {
@@ -93,7 +81,7 @@
     else if (self.type == OCPromiseTypeFinally) {
         if (self.inputPromise && !(self.status & OCPromiseStatusTriggered || self.status & OCPromiseStatusTriggering)) {
             self.status |= OCPromiseStatusTriggered;
-            self.inputPromise(resolveValue ?: OCPromiseNil.nilValue);
+            self.inputPromise(resolveValue);
         }
         [self cancel];
     }
@@ -117,7 +105,7 @@
     [self.promises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         dispatch_block_t block = ^{
             if (obj.inputPromise) {
-                obj.promise = obj.inputPromise(resolveValue ?: OCPromiseNil.nilValue).promise;
+                obj.promise = obj.inputPromise(resolveValue).promise;
             }
             [obj injectResolveValueIntoPromises:resolveValue];
         };

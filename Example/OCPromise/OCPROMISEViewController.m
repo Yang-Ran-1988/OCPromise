@@ -54,10 +54,15 @@
         });
     }));
     
-    sleep(3);
+//    sleep(3);
     
     middle.then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"all %@",value);
+        return nil;
+    }));
+    
+    OCPromise.all(@[OCPromise.resolve(@321),OCPromise.resolve(nil),OCPromise.resolve(@"asvcx")]).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"%@",value);
         return nil;
     }));
 }

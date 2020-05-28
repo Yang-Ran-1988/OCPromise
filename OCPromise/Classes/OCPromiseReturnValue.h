@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OCPromiseReturnValue : NSObject
 
 @property (readonly) NSUInteger count;
-@property (readonly) NSArray *array;
 
 - (nullable id)objectAtIndex:(NSUInteger)index;
 - (nullable id)objectAtIndexedSubscript:(NSUInteger)idx;

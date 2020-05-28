@@ -21,7 +21,7 @@
 
 - (nullable id)objectAtIndex:(NSUInteger)index {
     id obj = [self.returnValueDictionary objectForKey:[NSNumber numberWithUnsignedInteger:index]];
-    return obj ?: OCPromiseNil.nilValue;
+    return obj == OCPromiseNil.nilValue? nil : obj;
 }
 
 - (nullable id)objectAtIndexedSubscript:(NSUInteger)idx {
@@ -60,6 +60,17 @@
         [array addObject:[self.returnValueDictionary objectForKey:key] ?: OCPromiseNil.nilValue];
     }
     return [array copy];
+}
+
+- (NSString *)description {
+    NSString *des = @"(";
+    for (NSInteger i = 0; i < self.array.count; i ++) {
+        id obj = self.array[i];
+        NSString *printValue = [NSString stringWithFormat:@"%@%@",obj == OCPromiseNil.nilValue? nil : obj, i == self.array.count-1?@"":@","];
+        des = [des stringByAppendingFormat:@"\n    %@",printValue];
+    }
+    des = [des stringByAppendingString:@"\n)"];
+    return des;
 }
 
 @end

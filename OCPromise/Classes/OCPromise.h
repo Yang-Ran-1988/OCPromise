@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class OCPromise;
 
-typedef OCPromise * _Nullable (^resolve)(id _Nonnull resolve);
-typedef OCPromise * _Nullable (^reject)(id _Nonnull reject);
+typedef OCPromise * _Nullable (^resolve)(id _Nullable resolve);
+typedef OCPromise * _Nullable (^reject)(id _Nullable reject);
 typedef void(^promise)(resolve resolve, reject reject);
 typedef OCPromise * _Nullable (^inputPromise)(id value);
 typedef OCPromise * _Nonnull (^then)(__kindof OCPromise *_Nonnull);
