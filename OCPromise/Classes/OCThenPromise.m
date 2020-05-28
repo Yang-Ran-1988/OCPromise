@@ -29,7 +29,7 @@
             __strong typeof(weakSelf) strongSelf = weakSelf;
             
             dispatch_block_t block = ^{
-                strongSelf.status |= OCPRomiseStatusTriggered;
+                strongSelf.status |= OCPromiseStatusTriggered;
                 id resolveValue = resolve;
                 if ([resolve isMemberOfClass:[OCPromiseReturnValue class]]) {
                     OCPromiseReturnValue *returnValue = resolve;
@@ -56,7 +56,7 @@
             __strong typeof(weakSelf) strongSelf = weakSelf;
             
             dispatch_block_t block = ^{
-                strongSelf.status |= OCPRomiseStatusTriggered;
+                strongSelf.status |= OCPromiseStatusTriggered;
                 [strongSelf searchNextCatchWithRejectValue:reject];
                 [strongSelf searchFinallyWithValue:reject];
                 [strongSelf cancel];
@@ -80,8 +80,8 @@
         }
         else {
             if (!self.realPromises.count) {
-                if (self.promise && !(self.status & OCPRomiseStatusTriggered || self.status & OCPRomiseStatusTriggering)) {
-                    self.status |= OCPRomiseStatusTriggering;
+                if (self.promise && !(self.status & OCPromiseStatusTriggered || self.status & OCPromiseStatusTriggering)) {
+                    self.status |= OCPromiseStatusTriggering;
                     self.promise(self.resolve, self.reject);
                 }
             }
@@ -91,8 +91,8 @@
         }
     }
     else if (self.type == OCPromiseTypeFinally) {
-        if (self.inputPromise && !(self.status & OCPRomiseStatusTriggered || self.status & OCPRomiseStatusTriggering)) {
-            self.status |= OCPRomiseStatusTriggered;
+        if (self.inputPromise && !(self.status & OCPromiseStatusTriggered || self.status & OCPromiseStatusTriggering)) {
+            self.status |= OCPromiseStatusTriggered;
             self.inputPromise(resolveValue ?: OCPromiseNil.nilValue);
         }
         [self cancel];
@@ -105,8 +105,8 @@
             if (!obj.promise) {
                 obj.promise = self.promise;
             }
-            if (obj.promise && !(obj.status & OCPRomiseStatusTriggered || obj.status & OCPRomiseStatusTriggering)) {
-                obj.status |= OCPRomiseStatusTriggering;
+            if (obj.promise && !(obj.status & OCPromiseStatusTriggered || obj.status & OCPromiseStatusTriggering)) {
+                obj.status |= OCPromiseStatusTriggering;
                 obj.promise(obj.resolve, obj.reject);
             }
         }];
@@ -130,10 +130,10 @@
 
 - (void)searchNextCatchWithRejectValue:(id)value {
     self.triggerValue = value;
-    self.status |= OCPRomiseStatusCatchError;
+    self.status |= OCPromiseStatusCatchError;
     if (self.next) {
-        if (self.next.type == OCPromiseTypeCatch && self.next.inputPromise && !(self.next.status & OCPRomiseStatusTriggered || self.next.status & OCPRomiseStatusTriggering)) {
-            self.next.status |= OCPRomiseStatusTriggered;
+        if (self.next.type == OCPromiseTypeCatch && self.next.inputPromise && !(self.next.status & OCPromiseStatusTriggered || self.next.status & OCPromiseStatusTriggering)) {
+            self.next.status |= OCPromiseStatusTriggered;
             self.next.inputPromise(value);
         }
         [self.next searchNextCatchWithRejectValue:value];
@@ -146,10 +146,10 @@
 }
 
 - (void)searchFinallyWithValue:(id)value {
-    self.status |= OCPRomiseStatusTriggered;
+    self.status |= OCPromiseStatusTriggered;
     if (self.next) {
-        if (self.next.type == OCPromiseTypeFinally && self.next.inputPromise && !(self.next.status & OCPRomiseStatusTriggered)) {
-            self.next.status |= OCPRomiseStatusTriggered;
+        if (self.next.type == OCPromiseTypeFinally && self.next.inputPromise && !(self.next.status & OCPromiseStatusTriggered)) {
+            self.next.status |= OCPromiseStatusTriggered;
             self.next.inputPromise(value);
         }
         [self.next searchFinallyWithValue:value];
@@ -167,7 +167,7 @@
     OCThenPromise *currentPromise;
     dispatch_queue_t promiseSerialQueue;
     
-    if (self.status & OCPRomiseStatusInSet) {
+    if (self.status & OCPromiseStatusInSet) {
         currentPromise = self;
     }
     else {
@@ -187,9 +187,9 @@
 
     newPromise.last = currentPromise;
     newPromise.status = currentPromise.status;
-    newPromise.status &= (~OCPRomiseStatusTriggered);
-    newPromise.status &= (~OCPRomiseStatusTriggering);
-    if (currentPromise.status & OCPRomiseStatusCatchError) {
+    newPromise.status &= (~OCPromiseStatusTriggered);
+    newPromise.status &= (~OCPromiseStatusTriggering);
+    if (currentPromise.status & OCPromiseStatusCatchError) {
         newPromise.triggerValue = currentPromise.triggerValue;
     }
     if (!currentPromise.head) {
@@ -203,10 +203,10 @@
     newPromise.promiseSerialQueue = promiseSerialQueue;
     
     dispatch_block_t block = ^{
-        if (currentPromise.status & OCPRomiseStatusCatchError) {
+        if (currentPromise.status & OCPromiseStatusCatchError) {
             if ((currentPromise.type == OCPromiseTypeCatch || currentPromise.type == OCPromiseTypeFinally)
-                && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
-                currentPromise.status |= OCPRomiseStatusTriggered;
+                && !(currentPromise.status & OCPromiseStatusTriggered || currentPromise.status & OCPromiseStatusTriggering)) {
+                currentPromise.status |= OCPromiseStatusTriggered;
                 currentPromise.inputPromise(currentPromise.triggerValue);
             }
             else {
@@ -217,7 +217,7 @@
         }
         else {
             if (!currentPromise.last) {
-                if (!(currentPromise.status & OCPRomiseStatusTriggered) && currentPromise.inputPromise && !currentPromise.promise && currentPromise.status != OCPRomiseStatusInSet) {
+                if (!(currentPromise.status & OCPromiseStatusTriggered) && currentPromise.inputPromise && !currentPromise.promise) {
 #if DEBUG
                     NSString *reason = @"Head promise neez a input";
                     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
@@ -225,8 +225,8 @@
                     currentPromise.inputPromise(nil);
 #endif
                 }
-                if (currentPromise.promise && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
-                    currentPromise.status |= OCPRomiseStatusTriggering;
+                if (currentPromise.promise && !(currentPromise.status & OCPromiseStatusTriggered || currentPromise.status & OCPromiseStatusTriggering)) {
+                    currentPromise.status |= OCPromiseStatusTriggering;
                     currentPromise.promise(currentPromise.resolve, currentPromise.reject);
                 }
                 else {
@@ -234,7 +234,7 @@
                 }
             }
             else {
-                if (currentPromise.last.status & OCPRomiseStatusTriggered && !(currentPromise.status & OCPRomiseStatusTriggered || currentPromise.status & OCPRomiseStatusTriggering)) {
+                if (currentPromise.last.status & OCPromiseStatusTriggered && !(currentPromise.status & OCPromiseStatusTriggered || currentPromise.status & OCPromiseStatusTriggering)) {
                     if (currentPromise.type == OCPromiseTypeCatch) {
                         [currentPromise searchFinallyWithValue:currentPromise.last.triggerValue];
                         [currentPromise cancel];
@@ -244,7 +244,7 @@
                             currentPromise.promise = currentPromise.inputPromise(currentPromise.last.triggerValue).promise;
                         }
                         if (currentPromise.promise) {
-                            currentPromise.status |= OCPRomiseStatusTriggering;
+                            currentPromise.status |= OCPromiseStatusTriggering;
                             currentPromise.promise(currentPromise.resolve, currentPromise.reject);
                         }
                         else {
@@ -277,10 +277,6 @@
     self.head = nil;
     [self.next searchForwardAndSetCancel];
     self.next = nil;
-}
-
-- (void)releaseLockForOnce {
-    
 }
 
 @end

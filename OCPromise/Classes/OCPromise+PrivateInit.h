@@ -16,11 +16,11 @@ typedef NS_ENUM(NSInteger) {
     OCPromiseTypeFinally
 } OCPromiseType;
 
-typedef NS_OPTIONS(NSInteger, OCPRomiseStatus) {
-    OCPRomiseStatusInSet            = 1 << 0,
-    OCPRomiseStatusTriggering       = 1 << 1,
-    OCPRomiseStatusTriggered        = 1 << 2,
-    OCPRomiseStatusCatchError       = 1 << 3,
+typedef NS_OPTIONS(NSInteger, OCPromiseStatus) {
+    OCPromiseStatusInSet            = 1 << 0,
+    OCPromiseStatusTriggering       = 1 << 1,
+    OCPromiseStatusTriggered        = 1 << 2,
+    OCPromiseStatusCatchError       = 1 << 3,
 };
 
 #ifndef dispatch_promise_queue_async_safe
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) __kindof OCPromise * __nullable head;
 @property (nonatomic, strong) NSMutableArray <__kindof OCPromise *> *realPromises;
 @property (nonatomic, strong) id triggerValue;
-@property (nonatomic, assign) OCPRomiseStatus status;
+@property (nonatomic, assign) OCPromiseStatus status;
 
 - (instancetype)initWithPromis:(__nullable promise)ownPromise withInput:(__nullable inputPromise)input;
 - (OCPromise *)buildNewPromiseWithOrigin:(OCPromise *)promise intoNextWithType:(OCPromiseType)type;

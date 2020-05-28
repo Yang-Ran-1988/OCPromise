@@ -52,6 +52,7 @@
             
             for (NSUInteger idx = 0; idx < strongSelf.promises.count && !isResolve && !isReject; idx++) {
                 __kindof OCPromise *obj = strongSelf.promises[idx];
+                obj.last = strongSelf.last;
                 obj.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
                     
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);

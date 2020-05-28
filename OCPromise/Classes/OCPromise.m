@@ -109,7 +109,7 @@ OCPromise * function(inputPromise inputPromise) {
 
 - (OCPromise *)buildNewPromiseWithPromise:(OCPromise *)promise andType:(OCPromiseType)type {
     OCPromise *newPromise;
-    if (promise.status & OCPRomiseStatusInSet) {
+    if (promise.status & OCPromiseStatusInSet) {
         return promise;
     }
     switch (promise.type) {
@@ -139,19 +139,18 @@ OCPromise * function(inputPromise inputPromise) {
     [promises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         OCPromise *newPromise;
         if ([obj isKindOfClass:[OCPromise class]]) {
-            BOOL objIsInSet = obj.status & OCPRomiseStatusInSet;
-            obj.status &= (~OCPRomiseStatusInSet);
+            BOOL objIsInSet = obj.status & OCPromiseStatusInSet;
+            obj.status &= (~OCPromiseStatusInSet);
             newPromise = [self buildNewPromiseWithPromise:obj andType:obj.type];
             if (objIsInSet) {
-                obj.status |= OCPRomiseStatusInSet;
+                obj.status |= OCPromiseStatusInSet;
             }
         } else {
             newPromise = OCPromise.resolve(obj);
         }
         NSString *ptr = [NSString stringWithFormat:@"promise_serial_queue_%lu",(uintptr_t)newPromise];
         newPromise.promiseSerialQueue = dispatch_queue_create([ptr UTF8String], DISPATCH_QUEUE_SERIAL);
-        newPromise.status |= OCPRomiseStatusInSet;
-        newPromise.last = self.last;
+        newPromise.status |= OCPromiseStatusInSet;
         [newPromises addObject:newPromise];
         
     }];
@@ -195,12 +194,12 @@ OCPromise * function(inputPromise inputPromise) {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
 }
 
-- (void)setStatus:(OCPRomiseStatus)status {
+- (void)setStatus:(OCPromiseStatus)status {
     _status = status;
-    if (_status & OCPRomiseStatusCatchError && _type != OCPromiseTypeCatch && _type != OCPromiseTypeFinally) {
-        _status |= OCPRomiseStatusTriggered;
+    if (_status & OCPromiseStatusCatchError && _type != OCPromiseTypeCatch && _type != OCPromiseTypeFinally) {
+        _status |= OCPromiseStatusTriggered;
     }
-    if (_status & OCPRomiseStatusTriggered) {
+    if (_status & OCPromiseStatusTriggered) {
         _head = nil;
     }
 }
