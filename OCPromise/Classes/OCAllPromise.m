@@ -36,7 +36,7 @@
         _promise = ^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!strongSelf.promises.count) {
-                resolve(nil);
+                resolve([[OCPromiseReturnValue alloc] init]);
                 return;
             }
             dispatch_semaphore_t returnLock = dispatch_semaphore_create(0);
