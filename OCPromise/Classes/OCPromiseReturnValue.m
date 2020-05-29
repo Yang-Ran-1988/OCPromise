@@ -64,13 +64,52 @@
 
 - (NSString *)description {
     NSString *des = @"(";
-    for (NSInteger i = 0; i < self.array.count; i ++) {
-        id obj = self.array[i];
-        NSString *printValue = [NSString stringWithFormat:@"%@%@",obj == OCPromiseNil.nilValue? nil : obj, i == self.array.count-1?@"":@","];
+    for (NSInteger i = 0; i < self.count; i ++) {
+        id obj = self[i];
+        NSString *printValue = [NSString stringWithFormat:@"%@%@", obj, i == self.array.count-1?@"":@","];
         des = [des stringByAppendingFormat:@"\n    %@",printValue];
     }
     des = [des stringByAppendingString:@"\n)"];
     return des;
+}
+
+- (NSUInteger)countByEnumeratingWithState:(nonnull NSFastEnumerationState *)state objects:(__unsafe_unretained id  _Nullable * _Nonnull)buffer count:(NSUInteger)len {
+    if (state->state == 0) {
+        state->mutationsPtr = (__bridge void *)self;
+        state->state = 1;
+        state->extra[0] = 0;
+    }
+
+    NSUInteger totalCount = self.count;
+    NSUInteger index = state->extra[0];
+    if (index >= totalCount) {
+        return 0;
+    }
+    NSUInteger count = 0;
+    
+    state->itemsPtr = buffer; // 2
+
+    while (index < totalCount && count < len) { // 3
+        *buffer++ = self[index];
+        count++;
+        index++;
+    }
+    
+    state->extra[0] = index;
+
+    return count;
+}
+
+- (void)enumerateObjectsUsingBlock:(void (NS_NOESCAPE ^)(id obj, NSUInteger idx, BOOL *stop))block {
+    if (block) {
+        BOOL stop = NO;
+        for (NSUInteger i = 0; i < self.count; i ++) {
+            block(self[i], i, &stop);
+            if (stop) {
+                break;
+            }
+        }
+    }
 }
 
 @end

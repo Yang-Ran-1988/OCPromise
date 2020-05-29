@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OCPromiseReturnValue : NSObject
+@interface OCPromiseReturnValue : NSObject <NSFastEnumeration>
 
 @property (readonly) NSUInteger count;
 

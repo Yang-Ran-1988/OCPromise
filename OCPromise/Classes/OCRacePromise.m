@@ -7,8 +7,6 @@
 //
 
 #import "OCRacePromise.h"
-#import "OCPromiseNil.h"
-#import "OCPromise+PrivateInit.h"
 
 @interface OCRacePromise ()
 
@@ -23,7 +21,7 @@
 
 + (instancetype)initWithPromises:(NSArray<__kindof OCPromise *> *)promises {
     OCRacePromise *racePromise = [[OCRacePromise alloc] initWithPromises:promises];
-    
+    racePromise.type = OCPromiseTypeRace;
     return racePromise;
 }
 
@@ -61,7 +59,7 @@
                         return nil;
                     }
                     
-                    returnValue = value ?: OCPromiseNil.nilValue;
+                    returnValue = value;
                     isResolve = YES;
                     dispatch_semaphore_signal(returnLock);
                     dispatch_semaphore_signal(innerLock);

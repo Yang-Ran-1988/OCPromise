@@ -6,11 +6,11 @@
 //  Copyright © 2020 新东方_杨然. All rights reserved.
 //
 
-#import "OCThenPromise.h"
+#import "OCSetPromise.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OCAllPromise : OCThenPromise
+@interface OCAllPromise : OCSetPromise
 
 + (instancetype)initWithPromises:(NSArray <__kindof OCPromise *>*)promises;
 

@@ -7,9 +7,6 @@
 //
 
 #import "OCThenPromise.h"
-#import "OCPromiseReturnValue.h"
-#import "OCPromiseNil.h"
-#import "OCPromise+PrivateInit.h"
 
 @interface OCThenPromise ()
 

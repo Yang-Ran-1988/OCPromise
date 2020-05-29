@@ -16,6 +16,7 @@
 #import "OCPromiseNil.h"
 #import "OCPromiseReturnValue.h"
 #import "OCRacePromise.h"
+#import "OCSetPromise.h"
 #import "OCThenPromise.h"
 
 FOUNDATION_EXPORT double OCPromiseVersionNumber;

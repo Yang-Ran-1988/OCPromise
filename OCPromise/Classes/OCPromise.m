@@ -8,8 +8,7 @@
 
 #import "OCPromise.h"
 #import "OCThenPromise.h"
-#import "OCAllPromise.h"
-#import "OCRacePromise.h"
+#import "OCSetPromise.h"
 #import "OCPromise+PrivateInit.h"
 
 @interface OCPromise ()
@@ -62,11 +61,11 @@ OCPromise * function(inputPromise inputPromise) {
         _catch = ^(__kindof OCPromise *_Nonnull then) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!then.inputPromise && then.promise) {
-                #if DEBUG
-                        NSCAssert(NO, @"catch cannot trigger any resolve/reject event, use function()");
-                #else
-                        return;
-                #endif
+#if DEBUG
+                NSCAssert(NO, @"catch cannot trigger any resolve/reject event, use function()");
+#else
+                return;
+#endif
             }
             return [strongSelf buildNewPromiseWithOrigin:then intoNextWithType:OCPromiseTypeCatch];
         };
@@ -114,10 +113,10 @@ OCPromise * function(inputPromise inputPromise) {
     }
     switch (promise.type) {
         case OCPromiseTypeAll:
-            newPromise = [OCAllPromise initWithPromises:promise.promises];
+            newPromise = [OCSetPromise initAllWithPromises:promise.promises];
             break;
         case OCPromiseTypeRace:
-            newPromise = [OCRacePromise initWithPromises:promise.promises];
+            newPromise = [OCSetPromise initRaceWithPromises:promise.promises];
             break;
         default:
             newPromise = [OCPromise promise:promise.promise withInput:promise.inputPromise];
@@ -134,42 +133,15 @@ OCPromise * function(inputPromise inputPromise) {
     return newPromise;
 }
 
-- (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray <__kindof OCPromise *> *)promises {
-    NSMutableArray *newPromises = [NSMutableArray array];
-    [promises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        OCPromise *newPromise;
-        if ([obj isKindOfClass:[OCPromise class]]) {
-            BOOL objIsInSet = obj.status & OCPromiseStatusInSet;
-            obj.status &= (~OCPromiseStatusInSet);
-            newPromise = [self buildNewPromiseWithPromise:obj andType:obj.type];
-            if (objIsInSet) {
-                obj.status |= OCPromiseStatusInSet;
-            }
-        } else {
-            newPromise = OCPromise.resolve(obj);
-        }
-        NSString *ptr = [NSString stringWithFormat:@"promise_serial_queue_%lu",(uintptr_t)newPromise];
-        newPromise.promiseSerialQueue = dispatch_queue_create([ptr UTF8String], DISPATCH_QUEUE_SERIAL);
-        newPromise.status |= OCPromiseStatusInSet;
-        [newPromises addObject:newPromise];
-        
-    }];
-    return [newPromises copy];
-}
-
 + (__kindof OCPromise * _Nonnull (^)(NSArray <__kindof OCPromise *> *))all {
     return ^(NSArray <__kindof OCPromise *> * all) {
-        OCAllPromise *allPromise = [OCAllPromise initWithPromises:all];
-        allPromise.type = OCPromiseTypeAll;
-        return allPromise;
+        return [OCSetPromise initAllWithPromises:all];
     };
 }
 
 + (__kindof OCPromise * _Nonnull (^)(NSArray <__kindof OCPromise *> *))race {
     return ^(NSArray <__kindof OCPromise *> * race) {
-        OCRacePromise *racePromise = [OCRacePromise initWithPromises:race];
-        racePromise.type = OCPromiseTypeRace;
-        return racePromise;
+        return [OCSetPromise initRaceWithPromises:race];
     };
 }
 
@@ -217,9 +189,5 @@ OCPromise * function(inputPromise inputPromise) {
     }
     return _promises;
 }
-
-//- (void)dealloc {
-//    NSLog(@"promise %zd dealloc",self.type);
-//}
 
 @end

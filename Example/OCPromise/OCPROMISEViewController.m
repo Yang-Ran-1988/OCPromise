@@ -27,7 +27,6 @@
             resolve([NSNumber numberWithLong:[value longValue]*[value longValue]]);
         });
     });
-    multiply.code = 123;
     
     OCPromise *add = function(^OCPromise * _Nullable(id  _Nonnull value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
@@ -36,7 +35,6 @@
             resolve([NSNumber numberWithLong:[value longValue]+[value longValue]]);
         });
     });
-    add.code = 421;
     
     OCPromise *p = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
         NSLog(@"start new Promise...");
@@ -63,6 +61,12 @@
     
     OCPromise.all(@[OCPromise.resolve(@321),OCPromise.resolve(nil),OCPromise.resolve(@"asvcx")]).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@",value);
+        for (id obj in value) {
+            NSLog(@"enum %@", obj);
+        }
+        [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"enum block %@", obj);
+        }];
         return nil;
     }));
 }

@@ -9,7 +9,6 @@
 #import "OCAllPromise.h"
 #import "OCPromiseNil.h"
 #import "OCPromiseReturnValue.h"
-#import "OCPromise+PrivateInit.h"
 
 @interface OCAllPromise ()
 
@@ -24,7 +23,7 @@
 
 + (instancetype)initWithPromises:(NSArray<__kindof OCPromise *> *)promises {
     OCAllPromise *allPromise = [[OCAllPromise alloc] initWithPromises:promises];
-    
+    allPromise.type = OCPromiseTypeAll;
     return allPromise;
 }
 

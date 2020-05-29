@@ -7,25 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00B36271704E4BDD60CD933543846726 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		012620284C6144D62FAE519BA64DC140 /* Pods-OCPromise_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 21F60C32C9CACD1C43B58BF218747CCF /* Pods-OCPromise_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0CC4A8EF7853C5A92E16857F0C317822 /* OCPromise-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 69C2DB6D31B82F791557E54BD6B8C80A /* OCPromise-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		07F450A1C31476F560FB117A72709D1D /* OCPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = F02B6B4495F3113016A8CFB05EE5A40B /* OCPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0EFB795029409627DEBEC9A46E6697C6 /* OCPromise-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 53BA70B931CDC23FA10CE3841AA98102 /* OCPromise-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0F0E942FE1403A52B0AD10A7C994BBF1 /* OCPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED43839550665A5D58CA721C1E0EEE5 /* OCPromise.m */; };
 		19000FB8A698505D03FE2C208113B98D /* Pods-OCPromise_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 92364D920AFF6DFF76A1FEA0E3146344 /* Pods-OCPromise_Example-dummy.m */; };
-		25C4113659DA356E6B4C38917162C7E0 /* OCRacePromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CBE9334D1B5A63B01200A3ADA1E6500 /* OCRacePromise.m */; };
-		2D54F6579C1DB6CF3182C1E481D3B9A4 /* OCPromiseReturnValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE14C378C92CFE74DCB8454EA5705624 /* OCPromiseReturnValue.m */; };
-		403D46A6475BA19D2BE30C37633DC238 /* OCPromiseReturnValue.h in Headers */ = {isa = PBXBuildFile; fileRef = FF5BA2ED69F3FA5DA330507471B61FFF /* OCPromiseReturnValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22F3D541787455A316562275E7505ECB /* OCAllPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = D14C649BD75FF9CFC2FECA3371ED705D /* OCAllPromise.m */; };
+		5A1FF4A9194B373C619A2B97BCE453B1 /* OCRacePromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 07414D8C5F69BA9C8BE187B347329589 /* OCRacePromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		635FF824DF6C9AA485854AD413056191 /* OCSetPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = FC48D86B2519D781BB4E041ADBAB6978 /* OCSetPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C051B7E028272BF85A8B81D9B45C22F /* OCPromiseReturnValue.m in Sources */ = {isa = PBXBuildFile; fileRef = A420A93678C12BEF0150C2BC6222A461 /* OCPromiseReturnValue.m */; };
+		7F5C92A79D159EAA66A3EA741883EE90 /* OCPromise-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B6F56BBD747FB00516BB89D2D33C5D3 /* OCPromise-dummy.m */; };
 		867BCB6ABC890AA638D65CB99F51E88B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
-		86CB3FCF868F638304D9A7FA13860397 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
-		89796C8D473F4D897384D2C2448B7A65 /* OCPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = E012B2149C2BD1D225EA431FC0284176 /* OCPromise.m */; };
-		9833DFF15FB023F664AE39854691F232 /* OCPromise-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 01BA801C20F708E9CCCA683402BA36D8 /* OCPromise-dummy.m */; };
-		9C8547D775DCD4F9A62FF6F4120F115A /* OCPromise+PrivateInit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2CDDFB69A9C31036EC21EBE6A84CDC /* OCPromise+PrivateInit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9EE2B8E8E039B84010E1894425D3D982 /* OCThenPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E109637556CCF099C38DA8514C03337 /* OCThenPromise.m */; };
-		A322BA2BE7C843ADA620076F144A8F54 /* OCThenPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = DAE70FA9600D1E6D7F7026B1125E861C /* OCThenPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C79A5C4D4EE0875B2B13A1871F77571F /* OCPromiseNil.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B7A549B1738BA9664053D057E4E4B5 /* OCPromiseNil.m */; };
-		E76BD87BDB295943AEC0E94D93601F7D /* OCAllPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E8E80A90E12BDA5AA2D4E8EF7C59E53 /* OCAllPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E9E640418999E7EE50A8BCD56B538A77 /* OCPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = FC64B675EE76712C5DB17214FF1E85E4 /* OCPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F2F70601F64738662A5FDFAB87E2906F /* OCAllPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 209D925798A6B3CC19914D49967085D8 /* OCAllPromise.m */; };
-		F7D06F499391CF5DC8276646C94A69A6 /* OCPromiseNil.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B2747963941401583F6B4D9FCF2156A /* OCPromiseNil.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FF95E783B1C145A160FE25C182C7674B /* OCRacePromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 324792A78D6DF3A3EEE79FB7B45249B0 /* OCRacePromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8715AE94FA809E1F9D9C3FBB60181584 /* OCAllPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = 990884009209F6638BB05DB93C30392D /* OCAllPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		87EB9112272647E95686A69B736F91F5 /* OCPromise+PrivateInit.h in Headers */ = {isa = PBXBuildFile; fileRef = 262CB6EB137330AB5BCF4699475607BC /* OCPromise+PrivateInit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96F518D727E503A72608765DEBEC695E /* OCThenPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = C1831CCAAD31656335F78846560AB1B3 /* OCThenPromise.m */; };
+		A513A4A209B641CFDBC093C6D4A51B58 /* OCRacePromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FAD66EA541FA3386BEAFBDBB520AC0E /* OCRacePromise.m */; };
+		AAD1FCDE44409C6023CC27079427BF07 /* OCPromiseNil.m in Sources */ = {isa = PBXBuildFile; fileRef = F8E2450E5C21491826D15805666F2F60 /* OCPromiseNil.m */; };
+		B0F9F82E6A7D4FF7D86E99B120D288D2 /* OCPromiseReturnValue.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E022529A9BF751925A1609FA2B921D2 /* OCPromiseReturnValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BAA97A96DB10600EE5F36EE94623CE28 /* OCPromiseNil.h in Headers */ = {isa = PBXBuildFile; fileRef = 85164791B81CF4D738062BA25A1FBF2E /* OCPromiseNil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C10F6A4AB56C964DA096AE8F62AEBCC4 /* OCThenPromise.h in Headers */ = {isa = PBXBuildFile; fileRef = BD9D9C4389ED15F44F5A570E29F4F8CA /* OCThenPromise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0BA328D360FD212512664E0A6183932 /* OCSetPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = C797B05D87CD652031DCFB1BAD07B8F6 /* OCSetPromise.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,45 +41,55 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		01BA801C20F708E9CCCA683402BA36D8 /* OCPromise-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "OCPromise-dummy.m"; sourceTree = "<group>"; };
-		0453203CD19A1E4DAAA150FFAAF206E7 /* OCPromise-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OCPromise-prefix.pch"; sourceTree = "<group>"; };
+		07414D8C5F69BA9C8BE187B347329589 /* OCRacePromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCRacePromise.h; path = OCPromise/Classes/OCRacePromise.h; sourceTree = "<group>"; };
 		0D63369A7936AD9C4B7D10EE28FD4881 /* Pods-OCPromise_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-OCPromise_Example.release.xcconfig"; sourceTree = "<group>"; };
 		110723F1D6E1C002FAD15BAA55D271E4 /* Pods-OCPromise_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-OCPromise_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		110FFE994E51748229F95D91D7EA92E0 /* OCPromise.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = OCPromise.modulemap; sourceTree = "<group>"; };
 		16EBEF20FC56A2B12D48F61A099967D3 /* Pods-OCPromise_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-OCPromise_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		209D925798A6B3CC19914D49967085D8 /* OCAllPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCAllPromise.m; path = OCPromise/Classes/OCAllPromise.m; sourceTree = "<group>"; };
+		1E022529A9BF751925A1609FA2B921D2 /* OCPromiseReturnValue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromiseReturnValue.h; path = OCPromise/Classes/OCPromiseReturnValue.h; sourceTree = "<group>"; };
 		21F60C32C9CACD1C43B58BF218747CCF /* Pods-OCPromise_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-OCPromise_Example-umbrella.h"; sourceTree = "<group>"; };
-		2CBE9334D1B5A63B01200A3ADA1E6500 /* OCRacePromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCRacePromise.m; path = OCPromise/Classes/OCRacePromise.m; sourceTree = "<group>"; };
+		262CB6EB137330AB5BCF4699475607BC /* OCPromise+PrivateInit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "OCPromise+PrivateInit.h"; path = "OCPromise/Classes/OCPromise+PrivateInit.h"; sourceTree = "<group>"; };
+		2E46A96F1E25146E760BA9E239DD3C18 /* OCPromise.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = OCPromise.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		324792A78D6DF3A3EEE79FB7B45249B0 /* OCRacePromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCRacePromise.h; path = OCPromise/Classes/OCRacePromise.h; sourceTree = "<group>"; };
+		38568ED3767FF525ACF493DD63C4C078 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		3FE802B8076BB1EEE3F28BC3E4D79392 /* OCPromise-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OCPromise-prefix.pch"; sourceTree = "<group>"; };
+		53BA70B931CDC23FA10CE3841AA98102 /* OCPromise-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OCPromise-umbrella.h"; sourceTree = "<group>"; };
 		54AD59D357CBD913165F11BD8537EA1D /* Pods_OCPromise_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_OCPromise_Example.framework; path = "Pods-OCPromise_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5732D075E2ED91F5F98B004837C4D7F8 /* Pods-OCPromise_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-OCPromise_Example-frameworks.sh"; sourceTree = "<group>"; };
-		58AD26E5A0C1123D3CB6EABECB80E378 /* OCPromise.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = OCPromise.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		5D7316BC7DA0B1B197620274578F0F34 /* OCPromise.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = OCPromise.modulemap; sourceTree = "<group>"; };
+		5CFE65C037421BCC732F666F233141D9 /* OCPromise.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OCPromise.debug.xcconfig; sourceTree = "<group>"; };
 		6756882C5FAC0AA40ECCDE0087B8E364 /* Pods-OCPromise_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-OCPromise_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		69C2DB6D31B82F791557E54BD6B8C80A /* OCPromise-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OCPromise-umbrella.h"; sourceTree = "<group>"; };
-		6D2CDDFB69A9C31036EC21EBE6A84CDC /* OCPromise+PrivateInit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "OCPromise+PrivateInit.h"; path = "OCPromise/Classes/OCPromise+PrivateInit.h"; sourceTree = "<group>"; };
-		6E8E80A90E12BDA5AA2D4E8EF7C59E53 /* OCAllPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCAllPromise.h; path = OCPromise/Classes/OCAllPromise.h; sourceTree = "<group>"; };
-		78B7A549B1738BA9664053D057E4E4B5 /* OCPromiseNil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromiseNil.m; path = OCPromise/Classes/OCPromiseNil.m; sourceTree = "<group>"; };
-		8B2747963941401583F6B4D9FCF2156A /* OCPromiseNil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromiseNil.h; path = OCPromise/Classes/OCPromiseNil.h; sourceTree = "<group>"; };
-		90E780C000048C5C528CE022547CF037 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		911FBC5DD61BD43A8893DB3AD78090A6 /* OCPromise.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OCPromise.debug.xcconfig; sourceTree = "<group>"; };
+		6ED43839550665A5D58CA721C1E0EEE5 /* OCPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromise.m; path = OCPromise/Classes/OCPromise.m; sourceTree = "<group>"; };
+		7B6F56BBD747FB00516BB89D2D33C5D3 /* OCPromise-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "OCPromise-dummy.m"; sourceTree = "<group>"; };
+		7FAD66EA541FA3386BEAFBDBB520AC0E /* OCRacePromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCRacePromise.m; path = OCPromise/Classes/OCRacePromise.m; sourceTree = "<group>"; };
+		848B859BCE7DB315189A664DCECD139F /* OCPromise-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "OCPromise-Info.plist"; sourceTree = "<group>"; };
+		85164791B81CF4D738062BA25A1FBF2E /* OCPromiseNil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromiseNil.h; path = OCPromise/Classes/OCPromiseNil.h; sourceTree = "<group>"; };
 		92364D920AFF6DFF76A1FEA0E3146344 /* Pods-OCPromise_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-OCPromise_Example-dummy.m"; sourceTree = "<group>"; };
+		990884009209F6638BB05DB93C30392D /* OCAllPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCAllPromise.h; path = OCPromise/Classes/OCAllPromise.h; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9E109637556CCF099C38DA8514C03337 /* OCThenPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCThenPromise.m; path = OCPromise/Classes/OCThenPromise.m; sourceTree = "<group>"; };
-		B1ACAEBD1C847E8FA09D4A88BAEE154F /* OCPromise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OCPromise.release.xcconfig; sourceTree = "<group>"; };
+		A420A93678C12BEF0150C2BC6222A461 /* OCPromiseReturnValue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromiseReturnValue.m; path = OCPromise/Classes/OCPromiseReturnValue.m; sourceTree = "<group>"; };
+		B0C8D4D0F02068243667931C257C5A3E /* OCPromise.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OCPromise.release.xcconfig; sourceTree = "<group>"; };
 		B88BCEEA6D1E4A764A63958957C11790 /* Pods-OCPromise_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-OCPromise_Example.modulemap"; sourceTree = "<group>"; };
-		C219A9CAB20F6A8A095020FAA5C0004E /* OCPromise-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "OCPromise-Info.plist"; sourceTree = "<group>"; };
-		C64B6F37009A8DDB1A39A36FC1EBB18C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		BD9D9C4389ED15F44F5A570E29F4F8CA /* OCThenPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCThenPromise.h; path = OCPromise/Classes/OCThenPromise.h; sourceTree = "<group>"; };
+		C1831CCAAD31656335F78846560AB1B3 /* OCThenPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCThenPromise.m; path = OCPromise/Classes/OCThenPromise.m; sourceTree = "<group>"; };
+		C6FD8A49E51A3B5430FABD5C110239F6 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		C797B05D87CD652031DCFB1BAD07B8F6 /* OCSetPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCSetPromise.m; path = OCPromise/Classes/OCSetPromise.m; sourceTree = "<group>"; };
+		D14C649BD75FF9CFC2FECA3371ED705D /* OCAllPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCAllPromise.m; path = OCPromise/Classes/OCAllPromise.m; sourceTree = "<group>"; };
 		D72062C65C95315E1096740A0A0FAF66 /* OCPromise.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = OCPromise.framework; path = OCPromise.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DAE70FA9600D1E6D7F7026B1125E861C /* OCThenPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCThenPromise.h; path = OCPromise/Classes/OCThenPromise.h; sourceTree = "<group>"; };
-		DE14C378C92CFE74DCB8454EA5705624 /* OCPromiseReturnValue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromiseReturnValue.m; path = OCPromise/Classes/OCPromiseReturnValue.m; sourceTree = "<group>"; };
-		E012B2149C2BD1D225EA431FC0284176 /* OCPromise.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromise.m; path = OCPromise/Classes/OCPromise.m; sourceTree = "<group>"; };
-		FC64B675EE76712C5DB17214FF1E85E4 /* OCPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromise.h; path = OCPromise/Classes/OCPromise.h; sourceTree = "<group>"; };
+		F02B6B4495F3113016A8CFB05EE5A40B /* OCPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromise.h; path = OCPromise/Classes/OCPromise.h; sourceTree = "<group>"; };
+		F8E2450E5C21491826D15805666F2F60 /* OCPromiseNil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OCPromiseNil.m; path = OCPromise/Classes/OCPromiseNil.m; sourceTree = "<group>"; };
+		FC48D86B2519D781BB4E041ADBAB6978 /* OCSetPromise.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCSetPromise.h; path = OCPromise/Classes/OCSetPromise.h; sourceTree = "<group>"; };
 		FEF2E300681910964C0CA3B5AAFB5F43 /* Pods-OCPromise_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-OCPromise_Example-Info.plist"; sourceTree = "<group>"; };
-		FF5BA2ED69F3FA5DA330507471B61FFF /* OCPromiseReturnValue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCPromiseReturnValue.h; path = OCPromise/Classes/OCPromiseReturnValue.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		22C75127CB09869341ED5094D0DB386C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00B36271704E4BDD60CD933543846726 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4E5850918D82BB0E76E6B7D541ADE6B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -86,17 +98,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		896EC4241636D74C3AB8494E08F8D4EB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				86CB3FCF868F638304D9A7FA13860397 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		57518FD9B502F915504C0CBC8B3C703C /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				38568ED3767FF525ACF493DD63C4C078 /* LICENSE */,
+				2E46A96F1E25146E760BA9E239DD3C18 /* OCPromise.podspec */,
+				C6FD8A49E51A3B5430FABD5C110239F6 /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
 		585B8DF4E31DD0EC5821074B6F519700 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -106,49 +120,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7D0FF2F124F04F9D4766943E93E13984 /* OCPromise */ = {
+		5D032809AAAC41582D929129BD23431C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				6E8E80A90E12BDA5AA2D4E8EF7C59E53 /* OCAllPromise.h */,
-				209D925798A6B3CC19914D49967085D8 /* OCAllPromise.m */,
-				FC64B675EE76712C5DB17214FF1E85E4 /* OCPromise.h */,
-				E012B2149C2BD1D225EA431FC0284176 /* OCPromise.m */,
-				6D2CDDFB69A9C31036EC21EBE6A84CDC /* OCPromise+PrivateInit.h */,
-				8B2747963941401583F6B4D9FCF2156A /* OCPromiseNil.h */,
-				78B7A549B1738BA9664053D057E4E4B5 /* OCPromiseNil.m */,
-				FF5BA2ED69F3FA5DA330507471B61FFF /* OCPromiseReturnValue.h */,
-				DE14C378C92CFE74DCB8454EA5705624 /* OCPromiseReturnValue.m */,
-				324792A78D6DF3A3EEE79FB7B45249B0 /* OCRacePromise.h */,
-				2CBE9334D1B5A63B01200A3ADA1E6500 /* OCRacePromise.m */,
-				DAE70FA9600D1E6D7F7026B1125E861C /* OCThenPromise.h */,
-				9E109637556CCF099C38DA8514C03337 /* OCThenPromise.m */,
-				9B8790ABEDDC18D8BDE988B89C1F87FF /* Pod */,
-				AA861A1FC5F2D7CE540D4F12C3DEBF6E /* Support Files */,
-			);
-			name = OCPromise;
-			path = ../..;
-			sourceTree = "<group>";
-		};
-		9B8790ABEDDC18D8BDE988B89C1F87FF /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				C64B6F37009A8DDB1A39A36FC1EBB18C /* LICENSE */,
-				58AD26E5A0C1123D3CB6EABECB80E378 /* OCPromise.podspec */,
-				90E780C000048C5C528CE022547CF037 /* README.md */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		AA861A1FC5F2D7CE540D4F12C3DEBF6E /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				5D7316BC7DA0B1B197620274578F0F34 /* OCPromise.modulemap */,
-				01BA801C20F708E9CCCA683402BA36D8 /* OCPromise-dummy.m */,
-				C219A9CAB20F6A8A095020FAA5C0004E /* OCPromise-Info.plist */,
-				0453203CD19A1E4DAAA150FFAAF206E7 /* OCPromise-prefix.pch */,
-				69C2DB6D31B82F791557E54BD6B8C80A /* OCPromise-umbrella.h */,
-				911FBC5DD61BD43A8893DB3AD78090A6 /* OCPromise.debug.xcconfig */,
-				B1ACAEBD1C847E8FA09D4A88BAEE154F /* OCPromise.release.xcconfig */,
+				110FFE994E51748229F95D91D7EA92E0 /* OCPromise.modulemap */,
+				7B6F56BBD747FB00516BB89D2D33C5D3 /* OCPromise-dummy.m */,
+				848B859BCE7DB315189A664DCECD139F /* OCPromise-Info.plist */,
+				3FE802B8076BB1EEE3F28BC3E4D79392 /* OCPromise-prefix.pch */,
+				53BA70B931CDC23FA10CE3841AA98102 /* OCPromise-umbrella.h */,
+				5CFE65C037421BCC732F666F233141D9 /* OCPromise.debug.xcconfig */,
+				B0C8D4D0F02068243667931C257C5A3E /* OCPromise.release.xcconfig */,
 			);
 			name = "Support Files";
 			path = "Example/Pods/Target Support Files/OCPromise";
@@ -183,7 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				FC2512501B4019C5CB1169F5935D9F2B /* Development Pods */,
+				E4BCA986DE42B63B6A12AA639C0AD740 /* Development Pods */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
 				585B8DF4E31DD0EC5821074B6F519700 /* Products */,
 				DF8DBC843F920F5709E3B63E9A146717 /* Targets Support Files */,
@@ -198,6 +179,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DDD847A2E188B09522A8FA0393174ADA /* OCPromise */ = {
+			isa = PBXGroup;
+			children = (
+				990884009209F6638BB05DB93C30392D /* OCAllPromise.h */,
+				D14C649BD75FF9CFC2FECA3371ED705D /* OCAllPromise.m */,
+				F02B6B4495F3113016A8CFB05EE5A40B /* OCPromise.h */,
+				6ED43839550665A5D58CA721C1E0EEE5 /* OCPromise.m */,
+				262CB6EB137330AB5BCF4699475607BC /* OCPromise+PrivateInit.h */,
+				85164791B81CF4D738062BA25A1FBF2E /* OCPromiseNil.h */,
+				F8E2450E5C21491826D15805666F2F60 /* OCPromiseNil.m */,
+				1E022529A9BF751925A1609FA2B921D2 /* OCPromiseReturnValue.h */,
+				A420A93678C12BEF0150C2BC6222A461 /* OCPromiseReturnValue.m */,
+				07414D8C5F69BA9C8BE187B347329589 /* OCRacePromise.h */,
+				7FAD66EA541FA3386BEAFBDBB520AC0E /* OCRacePromise.m */,
+				FC48D86B2519D781BB4E041ADBAB6978 /* OCSetPromise.h */,
+				C797B05D87CD652031DCFB1BAD07B8F6 /* OCSetPromise.m */,
+				BD9D9C4389ED15F44F5A570E29F4F8CA /* OCThenPromise.h */,
+				C1831CCAAD31656335F78846560AB1B3 /* OCThenPromise.m */,
+				57518FD9B502F915504C0CBC8B3C703C /* Pod */,
+				5D032809AAAC41582D929129BD23431C /* Support Files */,
+			);
+			name = OCPromise;
+			path = ../..;
+			sourceTree = "<group>";
+		};
 		DF8DBC843F920F5709E3B63E9A146717 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,10 +212,10 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		FC2512501B4019C5CB1169F5935D9F2B /* Development Pods */ = {
+		E4BCA986DE42B63B6A12AA639C0AD740 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7D0FF2F124F04F9D4766943E93E13984 /* OCPromise */,
+				DDD847A2E188B09522A8FA0393174ADA /* OCPromise */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
@@ -225,18 +231,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D4A9B6D2E8679F6E28123507112D3B9C /* Headers */ = {
+		D432A730C3F2002C890F74D421C2BE54 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E76BD87BDB295943AEC0E94D93601F7D /* OCAllPromise.h in Headers */,
-				9C8547D775DCD4F9A62FF6F4120F115A /* OCPromise+PrivateInit.h in Headers */,
-				0CC4A8EF7853C5A92E16857F0C317822 /* OCPromise-umbrella.h in Headers */,
-				E9E640418999E7EE50A8BCD56B538A77 /* OCPromise.h in Headers */,
-				F7D06F499391CF5DC8276646C94A69A6 /* OCPromiseNil.h in Headers */,
-				403D46A6475BA19D2BE30C37633DC238 /* OCPromiseReturnValue.h in Headers */,
-				FF95E783B1C145A160FE25C182C7674B /* OCRacePromise.h in Headers */,
-				A322BA2BE7C843ADA620076F144A8F54 /* OCThenPromise.h in Headers */,
+				8715AE94FA809E1F9D9C3FBB60181584 /* OCAllPromise.h in Headers */,
+				87EB9112272647E95686A69B736F91F5 /* OCPromise+PrivateInit.h in Headers */,
+				0EFB795029409627DEBEC9A46E6697C6 /* OCPromise-umbrella.h in Headers */,
+				07F450A1C31476F560FB117A72709D1D /* OCPromise.h in Headers */,
+				BAA97A96DB10600EE5F36EE94623CE28 /* OCPromiseNil.h in Headers */,
+				B0F9F82E6A7D4FF7D86E99B120D288D2 /* OCPromiseReturnValue.h in Headers */,
+				5A1FF4A9194B373C619A2B97BCE453B1 /* OCRacePromise.h in Headers */,
+				635FF824DF6C9AA485854AD413056191 /* OCSetPromise.h in Headers */,
+				C10F6A4AB56C964DA096AE8F62AEBCC4 /* OCThenPromise.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,12 +271,12 @@
 		};
 		3C2BCD985EE2186F9B12C76820A38627 /* OCPromise */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0AA4E4D3B3884311E27F88D0B9CEF267 /* Build configuration list for PBXNativeTarget "OCPromise" */;
+			buildConfigurationList = 9697C695F7D05093F2B982025E635CE4 /* Build configuration list for PBXNativeTarget "OCPromise" */;
 			buildPhases = (
-				D4A9B6D2E8679F6E28123507112D3B9C /* Headers */,
-				04B2D96E9799C2647EB1992CFD968E7A /* Sources */,
-				896EC4241636D74C3AB8494E08F8D4EB /* Frameworks */,
-				DB0415ED7A8EC886F6FCCFA1F8FCE00E /* Resources */,
+				D432A730C3F2002C890F74D421C2BE54 /* Headers */,
+				228103DD16373B734E6838E03301B74D /* Sources */,
+				22C75127CB09869341ED5094D0DB386C /* Frameworks */,
+				B05E2C41DD9FEA4A68562C677B147869 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -309,7 +316,7 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		DB0415ED7A8EC886F6FCCFA1F8FCE00E /* Resources */ = {
+		B05E2C41DD9FEA4A68562C677B147869 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -326,17 +333,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		04B2D96E9799C2647EB1992CFD968E7A /* Sources */ = {
+		228103DD16373B734E6838E03301B74D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2F70601F64738662A5FDFAB87E2906F /* OCAllPromise.m in Sources */,
-				9833DFF15FB023F664AE39854691F232 /* OCPromise-dummy.m in Sources */,
-				89796C8D473F4D897384D2C2448B7A65 /* OCPromise.m in Sources */,
-				C79A5C4D4EE0875B2B13A1871F77571F /* OCPromiseNil.m in Sources */,
-				2D54F6579C1DB6CF3182C1E481D3B9A4 /* OCPromiseReturnValue.m in Sources */,
-				25C4113659DA356E6B4C38917162C7E0 /* OCRacePromise.m in Sources */,
-				9EE2B8E8E039B84010E1894425D3D982 /* OCThenPromise.m in Sources */,
+				22F3D541787455A316562275E7505ECB /* OCAllPromise.m in Sources */,
+				7F5C92A79D159EAA66A3EA741883EE90 /* OCPromise-dummy.m in Sources */,
+				0F0E942FE1403A52B0AD10A7C994BBF1 /* OCPromise.m in Sources */,
+				AAD1FCDE44409C6023CC27079427BF07 /* OCPromiseNil.m in Sources */,
+				7C051B7E028272BF85A8B81D9B45C22F /* OCPromiseReturnValue.m in Sources */,
+				A513A4A209B641CFDBC093C6D4A51B58 /* OCRacePromise.m in Sources */,
+				E0BA328D360FD212512664E0A6183932 /* OCSetPromise.m in Sources */,
+				96F518D727E503A72608765DEBEC695E /* OCThenPromise.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,37 +461,6 @@
 			};
 			name = Release;
 		};
-		6F9ABC3C343A51B2EAEA682543BF506C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 911FBC5DD61BD43A8893DB3AD78090A6 /* OCPromise.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/OCPromise/OCPromise-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/OCPromise/OCPromise-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/OCPromise/OCPromise.modulemap";
-				PRODUCT_MODULE_NAME = OCPromise;
-				PRODUCT_NAME = OCPromise;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		7EF7227D9B20A1D549000096ACCB23D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -548,6 +525,69 @@
 			};
 			name = Debug;
 		};
+		9A37C8AA2CF254A11D1F48399F0BF2E5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CFE65C037421BCC732F666F233141D9 /* OCPromise.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/OCPromise/OCPromise-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/OCPromise/OCPromise-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/OCPromise/OCPromise.modulemap";
+				PRODUCT_MODULE_NAME = OCPromise;
+				PRODUCT_NAME = OCPromise;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		ABF73D5B37123F39D3B10A76B3EDF3FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0C8D4D0F02068243667931C257C5A3E /* OCPromise.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/OCPromise/OCPromise-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/OCPromise/OCPromise-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/OCPromise/OCPromise.modulemap";
+				PRODUCT_MODULE_NAME = OCPromise;
+				PRODUCT_NAME = OCPromise;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		BEFD7607D2C093F6366A60B18D233BDB /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0D63369A7936AD9C4B7D10EE28FD4881 /* Pods-OCPromise_Example.release.xcconfig */;
@@ -582,38 +622,6 @@
 			};
 			name = Release;
 		};
-		DC0B18A2765B836E212DFE83FEE8A2F4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B1ACAEBD1C847E8FA09D4A88BAEE154F /* OCPromise.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/OCPromise/OCPromise-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/OCPromise/OCPromise-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/OCPromise/OCPromise.modulemap";
-				PRODUCT_MODULE_NAME = OCPromise;
-				PRODUCT_NAME = OCPromise;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -626,20 +634,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0AA4E4D3B3884311E27F88D0B9CEF267 /* Build configuration list for PBXNativeTarget "OCPromise" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6F9ABC3C343A51B2EAEA682543BF506C /* Debug */,
-				DC0B18A2765B836E212DFE83FEE8A2F4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7EF7227D9B20A1D549000096ACCB23D7 /* Debug */,
 				4BE66A09A74FD25164AAB3C2645B9B93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9697C695F7D05093F2B982025E635CE4 /* Build configuration list for PBXNativeTarget "OCPromise" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A37C8AA2CF254A11D1F48399F0BF2E5 /* Debug */,
+				ABF73D5B37123F39D3B10A76B3EDF3FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
