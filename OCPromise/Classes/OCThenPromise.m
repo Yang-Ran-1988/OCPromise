@@ -258,14 +258,21 @@
             [self cancel];
         }
         else {
-            if (self.inputPromise && !self.promise) {
-                self.promise = self.inputPromise(value).promise;
+            if (self.realPromises.count) {
+                [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    [obj triggerThePromiseWithResolveValue:value];
+                }];
             }
-            if (self.promise) {
-                self.promise(self.resolve, self.reject);
-            } else {
-                [self searchFinallyWithValue:value];
-                [self cancel];
+            else {
+                if (self.inputPromise && !self.promise) {
+                    self.promise = self.inputPromise(value).promise;
+                }
+                if (self.promise) {
+                    self.promise(self.resolve, self.reject);
+                } else {
+                    [self searchFinallyWithValue:value];
+                    [self cancel];
+                }
             }
         }
     }
