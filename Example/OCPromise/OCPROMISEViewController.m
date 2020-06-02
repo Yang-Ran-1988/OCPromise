@@ -59,14 +59,47 @@
             reject(@"time out");
         });
     });
+//
+//    NSLog(@"task start");
+//
+//    OCPromise.race(@[dealTask, timeout]).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+//        NSLog(@"result is %@", value);
+//        return nil;
+//    })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
+//        NSLog(@"%@", value);
+//        return nil;
+//    }));
     
-    NSLog(@"task start");
     
-    OCPromise.race(@[dealTask, timeout]).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"result is %@", value);
-        return nil;
-    })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"%@", value);
+    OCPromise *task1 = function(^OCPromise * _Nullable(id  _Nonnull value) {
+        return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+            NSLog(@"task1 needs sleep 4sec");
+            sleep(4);
+            NSLog(@"task1 woke up");
+            resolve([NSString stringWithFormat:@"task1 checked %@",value]);
+        });
+    });
+    
+    OCPromise *task2 = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+        NSLog(@"task2 needs sleep 1sec");
+        sleep(1);
+        NSLog(@"task2 woke up");
+        resolve(@"task2 is fine");
+    });
+    
+    OCPromise *task3 = function(^OCPromise * _Nullable(id  _Nonnull value) {
+        return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+            NSLog(@"task3 needs sleep 3sec");
+            sleep(3);
+            NSLog(@"task3 wokeup");
+            resolve([NSString stringWithFormat:@"task3 ignored %@",value]);
+        });
+    });
+    
+    OCPromise *all = OCPromise.all(@[task1, task2, task3]);
+    
+    OCPromise.resolve(@"the wallet").then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"got value %@", value);
         return nil;
     }));
     

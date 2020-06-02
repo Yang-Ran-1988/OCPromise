@@ -29,6 +29,13 @@
                 strongSelf.status |= OCPromiseStatusTriggered;
                 id resolveValue = resolve;
                 strongSelf.triggerValue = resolveValue;
+                if (strongSelf.realPromises.count) {
+                    [strongSelf.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                        obj.status |= OCPromiseStatusTriggered;
+                        obj.triggerValue = resolveValue;
+                        [obj.next receiveResolveValueAndTriggerPromise:resolveValue];
+                    }];
+                }
                 if (strongSelf.next) {
                     [strongSelf.next receiveResolveValueAndTriggerPromise:resolveValue];
                 }
@@ -189,7 +196,7 @@
     
     dispatch_block_t block = ^{
         if (currentPromise.status & OCPromiseStatusCatchError) {
-            if ((currentPromise.type == OCPromiseTypeCatch || currentPromise.type == OCPromiseTypeFinally)
+            if ((currentPromise.type == OCPromiseTypeCatch)
                 && !(currentPromise.status & OCPromiseStatusTriggered || currentPromise.status & OCPromiseStatusTriggering)) {
                 currentPromise.status |= OCPromiseStatusTriggered;
                 currentPromise.inputPromise(currentPromise.triggerValue);
@@ -201,44 +208,34 @@
             [currentPromise cancel];
         }
         else {
-            if (!currentPromise.last) {
-                if (!(currentPromise.status & OCPromiseStatusTriggered) && currentPromise.inputPromise && !currentPromise.promise) {
-#if DEBUG
-                    NSString *reason = @"Head promise neez a input";
-                    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
-#else
-                    currentPromise.inputPromise(nil);
-#endif
-                }
-                if (currentPromise.promise && !(currentPromise.status & OCPromiseStatusTriggered || currentPromise.status & OCPromiseStatusTriggering)) {
-                    currentPromise.status |= OCPromiseStatusTriggering;
-                    currentPromise.promise(currentPromise.resolve, currentPromise.reject);
+            if (currentPromise.status & OCPromiseStatusTriggered) {
+                if (currentPromise.next) {
+                    [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.triggerValue];
                 }
                 else {
                     [currentPromise cancel];
                 }
             }
             else {
-                if (currentPromise.last.status & OCPromiseStatusTriggered && !(currentPromise.status & OCPromiseStatusTriggered || currentPromise.status & OCPromiseStatusTriggering)) {
-                    if (currentPromise.type == OCPromiseTypeCatch) {
-                        [currentPromise searchFinallyWithValue:currentPromise.last.triggerValue];
-                        [currentPromise cancel];
+                if (!currentPromise.last) {
+                    if (!(currentPromise.status & OCPromiseStatusTriggered) && currentPromise.inputPromise && !currentPromise.promise) {
+#if DEBUG
+                        NSString *reason = @"Head promise neez a input";
+                        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+#else
+                        currentPromise.inputPromise(nil);
+#endif
+                    }
+                    if (currentPromise.promise && !(currentPromise.status & OCPromiseStatusTriggered || currentPromise.status & OCPromiseStatusTriggering)) {
+                        currentPromise.status |= OCPromiseStatusTriggering;
+                        currentPromise.promise(currentPromise.resolve, currentPromise.reject);
                     }
                     else {
-                        if (currentPromise.inputPromise) {
-                            currentPromise.promise = currentPromise.inputPromise(currentPromise.last.triggerValue).promise;
-                        }
-                        if (currentPromise.promise) {
-                            currentPromise.status |= OCPromiseStatusTriggering;
-                            currentPromise.promise(currentPromise.resolve, currentPromise.reject);
-                        }
-                        else {
-                            if (currentPromise.next.type == OCPromiseTypeFinally) {
-                                [currentPromise searchFinallyWithValue:currentPromise.last.triggerValue];
-                            }
-                            [currentPromise cancel];
-                        }
+                        [currentPromise cancel];
                     }
+                }
+                else if (currentPromise.last.status & OCPromiseStatusTriggered) {
+                    [currentPromise triggerThePromiseWithResolveValue:currentPromise.last.triggerValue];
                 }
             }
         }
@@ -247,6 +244,31 @@
     dispatch_promise_queue_async_safe(promiseSerialQueue, block);
     
     return newPromise;
+}
+
+- (void)triggerThePromiseWithResolveValue:(id)value {
+    if (!(self.status & OCPromiseStatusTriggered || self.status & OCPromiseStatusTriggering)) {
+        if (self.type == OCPromiseTypeCatch) {
+            [self searchFinallyWithValue:value];
+            [self cancel];
+        }
+        else if (self.type == OCPromiseTypeFinally) {
+            self.status |= OCPromiseStatusTriggered;
+            self.inputPromise(value);
+            [self cancel];
+        }
+        else {
+            if (self.inputPromise && !self.promise) {
+                self.promise = self.inputPromise(value).promise;
+            }
+            if (self.promise) {
+                self.promise(self.resolve, self.reject);
+            } else {
+                [self searchFinallyWithValue:value];
+                [self cancel];
+            }
+        }
+    }
 }
 
 - (void)cancel {

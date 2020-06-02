@@ -111,17 +111,22 @@ OCPromise * function(inputPromise inputPromise) {
     if (promise.status & OCPromiseStatusInSet) {
         return promise;
     }
-    switch (promise.type) {
-        case OCPromiseTypeAll:
-            newPromise = [OCSetPromise initAllWithPromises:promise.promises];
-            break;
-        case OCPromiseTypeRace:
-            newPromise = [OCSetPromise initRaceWithPromises:promise.promises];
-            break;
-        default:
-            newPromise = [OCPromise promise:promise.promise withInput:promise.inputPromise];
-            break;
+    if (promise.status & OCPromiseStatusTriggered) {
+        newPromise = [OCPromise promise:nil withInput:nil];
+    } else {
+        switch (promise.type) {
+            case OCPromiseTypeAll:
+                newPromise = [OCSetPromise initAllWithPromises:promise.promises];
+                break;
+            case OCPromiseTypeRace:
+                newPromise = [OCSetPromise initRaceWithPromises:promise.promises];
+                break;
+            default:
+                newPromise = [OCPromise promise:promise.promise withInput:promise.inputPromise];
+                break;
+        }
     }
+    
     newPromise.type = type;
     newPromise.code = promise.code*100;
     newPromise.head = promise.head;

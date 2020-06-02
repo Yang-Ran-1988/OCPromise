@@ -42,6 +42,7 @@
                 resolve(nil);
                 return;
             }
+            
             dispatch_semaphore_t returnLock = dispatch_semaphore_create(0);
             dispatch_semaphore_t innerLock = dispatch_semaphore_create(1);
             __block id returnValue = nil;
