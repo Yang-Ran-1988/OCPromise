@@ -33,11 +33,11 @@
                     [strongSelf.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                         obj.status |= OCPromiseStatusTriggered;
                         obj.triggerValue = resolveValue;
-                        [obj.next receiveResolveValueAndTriggerPromise:resolveValue];
+                        [obj.next triggerThePromiseWithResolveValue:resolveValue];
                     }];
                 }
                 if (strongSelf.next) {
-                    [strongSelf.next receiveResolveValueAndTriggerPromise:resolveValue];
+                    [strongSelf.next triggerThePromiseWithResolveValue:resolveValue];
                 }
             };
             dispatch_promise_queue_async_safe(strongSelf.promiseSerialQueue, block);
@@ -58,100 +58,6 @@
         };
     }
     return self;
-}
-
-- (void)receiveResolveValueAndTriggerPromise:(id)resolveValue {
-    if (self.type != OCPromiseTypeCatch || self.type != OCPromiseTypeFinally) {
-        if (self.inputPromise) {
-            self.promise = self.inputPromise(resolveValue).promise;
-        }
-        [self injectResolveValueIntoPromises:resolveValue];
-        if (!self.promise) {
-            [self searchFinallyWithValue:resolveValue];
-            [self cancel];
-        }
-        else {
-            if (!self.realPromises.count) {
-                if (self.promise && !(self.status & OCPromiseStatusTriggered || self.status & OCPromiseStatusTriggering)) {
-                    self.status |= OCPromiseStatusTriggering;
-                    self.promise(self.resolve, self.reject);
-                }
-            }
-            else {
-                [self triggerRealPromisesWithResolveValue];
-            }
-        }
-    }
-    else if (self.type == OCPromiseTypeFinally) {
-        if (self.inputPromise && !(self.status & OCPromiseStatusTriggered || self.status & OCPromiseStatusTriggering)) {
-            self.status |= OCPromiseStatusTriggered;
-            self.inputPromise(resolveValue);
-        }
-        [self cancel];
-    }
-}
-
-- (void)triggerRealPromisesWithResolveValue {
-    if (self.promise) {
-        [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if (!obj.promise) {
-                obj.promise = self.promise;
-            }
-            if (obj.promise && !(obj.status & OCPromiseStatusTriggered || obj.status & OCPromiseStatusTriggering)) {
-                obj.status |= OCPromiseStatusTriggering;
-                obj.promise(obj.resolve, obj.reject);
-            }
-        }];
-    }
-}
-
-- (void)injectResolveValueIntoPromises:(id)resolveValue {
-    [self.promises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        dispatch_block_t block = ^{
-            if (obj.inputPromise) {
-                obj.promise = obj.inputPromise(resolveValue).promise;
-            }
-            [obj injectResolveValueIntoPromises:resolveValue];
-        };
-        dispatch_promise_queue_async_safe(obj.promiseSerialQueue, block);
-    }];
-    [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [obj injectResolveValueIntoPromises:resolveValue];
-    }];
-}
-
-- (void)searchNextCatchWithRejectValue:(id)value {
-    self.triggerValue = value;
-    self.status |= OCPromiseStatusCatchError;
-    if (self.next) {
-        if (self.next.type == OCPromiseTypeCatch && self.next.inputPromise && !(self.next.status & OCPromiseStatusTriggered || self.next.status & OCPromiseStatusTriggering)) {
-            self.next.status |= OCPromiseStatusTriggered;
-            self.next.inputPromise(value);
-        }
-        [self.next searchNextCatchWithRejectValue:value];
-    }
-    if (self.realPromises) {
-        [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj searchNextCatchWithRejectValue:value];
-        }];
-    }
-}
-
-- (void)searchFinallyWithValue:(id)value {
-    self.status |= OCPromiseStatusTriggered;
-    if (self.next) {
-        if (self.next.type == OCPromiseTypeFinally && self.next.inputPromise && !(self.next.status & OCPromiseStatusTriggered)) {
-            self.next.status |= OCPromiseStatusTriggered;
-            self.next.inputPromise(value);
-        }
-        [self.next searchFinallyWithValue:value];
-    }
-    
-    if (self.realPromises) {
-        [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj searchFinallyWithValue:value];
-        }];
-    }
 }
 
 - (OCPromise *)buildNewPromiseWithOrigin:(OCPromise *)promise intoNextWithType:(OCPromiseType)type {
@@ -178,9 +84,7 @@
     OCPromise *newPromise = [super buildNewPromiseWithOrigin:promise intoNextWithType:type];
 
     newPromise.last = currentPromise;
-    newPromise.status = currentPromise.status;
-    newPromise.status &= (~OCPromiseStatusTriggered);
-    newPromise.status &= (~OCPromiseStatusTriggering);
+    newPromise.status = currentPromise.status & ~OCPromiseStatusTriggered & ~OCPromiseStatusTriggering;
     if (currentPromise.status & OCPromiseStatusCatchError) {
         newPromise.triggerValue = currentPromise.triggerValue;
     }
@@ -210,7 +114,17 @@
         else {
             if (currentPromise.status & OCPromiseStatusTriggered) {
                 if (currentPromise.next) {
-                    [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.triggerValue];
+                    if (currentPromise.status & OCPromiseStatusNoPromise) {
+#if DEBUG
+                        NSString *reason = @"There is no promise for next promise";
+                        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+#else
+                        [currentPromise cancel];
+#endif
+                    }
+                    else {
+                        [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.triggerValue];
+                    }
                 }
                 else {
                     [currentPromise cancel];
@@ -235,7 +149,17 @@
                     }
                 }
                 else if (currentPromise.last.status & OCPromiseStatusTriggered) {
-                    [currentPromise triggerThePromiseWithResolveValue:currentPromise.last.triggerValue];
+                    if (currentPromise.last.status & OCPromiseStatusNoPromise) {
+#if DEBUG
+                        NSString *reason = @"There is no promise for next promise";
+                        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+#else
+                        [currentPromise cancel];
+#endif
+                    }
+                    else {
+                        [currentPromise triggerThePromiseWithResolveValue:currentPromise.last.triggerValue];
+                    }
                 }
             }
         }
@@ -258,23 +182,71 @@
             [self cancel];
         }
         else {
-            if (self.realPromises.count) {
-                [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    [obj triggerThePromiseWithResolveValue:value];
-                }];
+            if (self.inputPromise && !self.promise) {
+                self.promise = self.inputPromise(value).promise;
             }
-            else {
-                if (self.inputPromise && !self.promise) {
-                    self.promise = self.inputPromise(value).promise;
-                }
-                if (self.promise) {
-                    self.promise(self.resolve, self.reject);
-                } else {
-                    [self searchFinallyWithValue:value];
-                    [self cancel];
-                }
+            if (self.promise) {
+                self.status |= OCPromiseStatusTriggering;
+                self.promise(self.resolve, self.reject);
+            } else {
+                self.status |= OCPromiseStatusNoPromise;
+                [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    obj.status |= OCPromiseStatusNoPromise;
+                }];
+                [self checkPromiseFollowedNoPromise:value];
+                [self cancel];
             }
         }
+    }
+}
+
+- (void)checkPromiseFollowedNoPromise:(id)value {
+    if (self.next) {
+        if (self.next.type == OCPromiseTypeCatch || self.next.type == OCPromiseTypeFinally) {
+            [self searchFinallyWithValue:value];
+        }
+        else {
+#if DEBUG
+            NSString *reason = @"There is no promise for next promise";
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+#endif
+        }
+    }
+    [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj checkPromiseFollowedNoPromise:value];
+    }];
+}
+
+- (void)searchNextCatchWithRejectValue:(id)value {
+    self.triggerValue = value;
+    self.status |= OCPromiseStatusCatchError;
+    if (self.next) {
+        if (self.next.type == OCPromiseTypeCatch && self.next.inputPromise && !(self.next.status & OCPromiseStatusTriggered || self.next.status & OCPromiseStatusTriggering)) {
+            self.next.status |= OCPromiseStatusTriggered;
+            self.next.inputPromise(value);
+        }
+        [self.next searchNextCatchWithRejectValue:value];
+    }
+    if (self.realPromises) {
+        [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj searchNextCatchWithRejectValue:value];
+        }];
+    }
+}
+
+- (void)searchFinallyWithValue:(id)value {
+    self.status |= OCPromiseStatusTriggered;
+    if (self.next) {
+        if (self.next.type == OCPromiseTypeFinally && self.next.inputPromise && !(self.next.status & OCPromiseStatusTriggered)) {
+            self.next.inputPromise(value);
+        }
+        [self.next searchFinallyWithValue:value];
+    }
+    
+    if (self.realPromises) {
+        [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj searchFinallyWithValue:value];
+        }];
     }
 }
 
@@ -288,7 +260,7 @@
 }
 
 - (void)searchForwardAndSetCancel {
-    self.head = nil;
+    self.status |= OCPromiseStatusTriggered;
     [self.next searchForwardAndSetCancel];
     self.next = nil;
 }

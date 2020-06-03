@@ -21,6 +21,7 @@ typedef NS_OPTIONS(NSInteger, OCPromiseStatus) {
     OCPromiseStatusTriggering       = 1 << 1,
     OCPromiseStatusTriggered        = 1 << 2,
     OCPromiseStatusCatchError       = 1 << 3,
+    OCPromiseStatusNoPromise        = 1 << 4
 };
 
 #ifndef dispatch_promise_queue_async_safe
