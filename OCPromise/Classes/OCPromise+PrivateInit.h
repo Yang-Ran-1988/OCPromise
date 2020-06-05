@@ -48,11 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) __kindof OCPromise *last;
 @property (nonatomic, strong) __kindof OCPromise * __nullable head;
 @property (nonatomic, strong) NSMutableArray <__kindof OCPromise *> *realPromises;
-@property (nonatomic, strong) id triggerValue;
+@property (nonatomic, strong) id resolvedValue;
 @property (nonatomic, assign) OCPromiseStatus status;
 
 - (instancetype)initWithPromis:(__nullable promise)ownPromise withInput:(__nullable inputPromise)input;
-- (OCPromise *)buildNewPromiseWithOrigin:(OCPromise *)promise intoNextWithType:(OCPromiseType)type;
+- (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type;
 - (OCPromise *)buildNewPromiseWithPromise:(OCPromise *)promise andType:(OCPromiseType)type;
 
 @end

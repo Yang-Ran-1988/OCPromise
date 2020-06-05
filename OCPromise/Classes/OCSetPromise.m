@@ -36,7 +36,7 @@
         }
         NSString *ptr = [NSString stringWithFormat:@"promise_serial_queue_%lu",(uintptr_t)newPromise];
         newPromise.promiseSerialQueue = dispatch_queue_create([ptr UTF8String], DISPATCH_QUEUE_SERIAL);
-        newPromise.status |= OCPromiseStatusInSet;
+        newPromise.status = OCPromiseStatusInSet;
         [newPromises addObject:newPromise];
     }];
     return [newPromises copy];

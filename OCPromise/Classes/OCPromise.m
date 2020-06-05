@@ -49,7 +49,7 @@ OCPromise * function(inputPromise inputPromise) {
         __weak typeof(self) weakSelf = self;
         _then = ^(__kindof OCPromise *_Nonnull then) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            return [strongSelf buildNewPromiseWithOrigin:then intoNextWithType:then.type];
+            return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:then.type];
         };
     }
     return _then;
@@ -62,12 +62,13 @@ OCPromise * function(inputPromise inputPromise) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!then.inputPromise && then.promise) {
 #if DEBUG
-                NSCAssert(NO, @"catch cannot trigger any resolve/reject event, use function()");
+                NSString *reason = @"catch cannot trigger any resolve/reject event, use function()";
+                @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
 #else
                 return;
 #endif
             }
-            return [strongSelf buildNewPromiseWithOrigin:then intoNextWithType:OCPromiseTypeCatch];
+            return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeCatch];
         };
     }
     return _catch;
@@ -86,13 +87,13 @@ OCPromise * function(inputPromise inputPromise) {
                 return;
 #endif
             }
-            [strongSelf buildNewPromiseWithOrigin:then intoNextWithType:OCPromiseTypeFinally];
+            [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeFinally];
         };
     }
     return _finally;
 }
 
-- (OCPromise *)buildNewPromiseWithOrigin:(OCPromise *)promise intoNextWithType:(OCPromiseType)type {
+- (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type {
     
     if (self.type == OCPromiseTypeCatch && type != OCPromiseTypeFinally) {
 #if DEBUG
@@ -133,7 +134,7 @@ OCPromise * function(inputPromise inputPromise) {
     newPromise.last = promise.last;
     newPromise.promiseSerialQueue = promise.promiseSerialQueue;
     newPromise.status = promise.status;
-    newPromise.triggerValue = promise.triggerValue;
+    newPromise.resolvedValue = promise.resolvedValue;
     [promise.realPromises addObject:newPromise];
     return newPromise;
 }

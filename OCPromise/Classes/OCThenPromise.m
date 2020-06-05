@@ -28,11 +28,11 @@
             dispatch_block_t block = ^{
                 strongSelf.status |= OCPromiseStatusResolved;
                 id resolveValue = resolve;
-                strongSelf.triggerValue = resolveValue;
+                strongSelf.resolvedValue = resolveValue;
                 if (strongSelf.realPromises.count) {
                     [strongSelf.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                         obj.status |= OCPromiseStatusResolved;
-                        obj.triggerValue = resolveValue;
+                        obj.resolvedValue = resolveValue;
                         [obj.next triggerThePromiseWithResolveValue:resolveValue];
                     }];
                 }
@@ -60,7 +60,7 @@
     return self;
 }
 
-- (OCPromise *)buildNewPromiseWithOrigin:(OCPromise *)promise intoNextWithType:(OCPromiseType)type {
+- (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type {
     
     OCThenPromise *currentPromise;
     dispatch_queue_t promiseSerialQueue;
@@ -81,12 +81,12 @@
         promiseSerialQueue = currentPromise.promiseSerialQueue;
     }
     
-    OCPromise *newPromise = [super buildNewPromiseWithOrigin:promise intoNextWithType:type];
+    OCPromise *newPromise = [super buildNewPromiseIntoNextWithOrigin:promise type:type];
 
     newPromise.last = currentPromise;
     newPromise.status = currentPromise.status & ~OCPromiseStatusResolved & ~OCPromiseStatusPending;
     if (currentPromise.status & OCPromiseStatusCatchRejected) {
-        newPromise.triggerValue = currentPromise.triggerValue;
+        newPromise.resolvedValue = currentPromise.resolvedValue;
     }
     if (!currentPromise.head) {
         newPromise.head = currentPromise;
@@ -103,11 +103,11 @@
             if ((currentPromise.type == OCPromiseTypeCatch)
                 && !(currentPromise.status & OCPromiseStatusResolved || currentPromise.status & OCPromiseStatusPending)) {
                 currentPromise.status |= OCPromiseStatusResolved;
-                currentPromise.inputPromise(currentPromise.triggerValue);
+                currentPromise.inputPromise(currentPromise.resolvedValue);
             }
             else {
-                [currentPromise searchNextCatchWithRejectValue:currentPromise.triggerValue];
-                [currentPromise searchFinallyWithValue:currentPromise.triggerValue];
+                [currentPromise searchNextCatchWithRejectValue:currentPromise.resolvedValue];
+                [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
             }
             [currentPromise cancel];
         }
@@ -124,7 +124,7 @@
 #endif
                     }
                     else {
-                        [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.triggerValue];
+                        [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.resolvedValue];
                     }
                 }
                 else {
@@ -159,7 +159,7 @@
 #endif
                     }
                     else {
-                        [currentPromise triggerThePromiseWithResolveValue:currentPromise.last.triggerValue];
+                        [currentPromise triggerThePromiseWithResolveValue:currentPromise.last.resolvedValue];
                     }
                 }
             }
@@ -219,7 +219,7 @@
 }
 
 - (void)searchNextCatchWithRejectValue:(id)value {
-    self.triggerValue = value;
+    self.resolvedValue = value;
     self.status |= OCPromiseStatusCatchRejected;
     if (self.next) {
         if (self.next.type == OCPromiseTypeCatch && self.next.inputPromise && !(self.next.status & OCPromiseStatusResolved || self.next.status & OCPromiseStatusPending)) {
