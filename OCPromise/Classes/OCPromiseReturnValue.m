@@ -47,6 +47,14 @@
     return self.returnValueDictionary.allKeys.count;
 }
 
+- (id)firstObject {
+    return [self objectAtIndex:0];
+}
+
+- (id)lastObject {
+    return [self objectAtIndex:self.count-1];
+}
+
 - (NSArray *)array {
     NSArray *keyArray = self.returnValueDictionary.allKeys;
     keyArray = [keyArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -63,33 +71,23 @@
 }
 
 - (NSString *)description {
-    NSString *des = @"(";
-    for (NSInteger i = 0; i < self.count; i ++) {
-        id obj = self[i];
-        NSString *printValue = [NSString stringWithFormat:@"%@%@", obj, i == self.array.count-1?@"":@","];
-        des = [des stringByAppendingFormat:@"\n    %@",printValue];
-    }
-    des = [des stringByAppendingString:@"\n)"];
-    return des;
+    return [NSString stringWithFormat:@"%@",self.array];
 }
 
 - (NSUInteger)countByEnumeratingWithState:(nonnull NSFastEnumerationState *)state objects:(__unsafe_unretained id  _Nullable * _Nonnull)buffer count:(NSUInteger)len {
     if (state->state == 0) {
-        state->mutationsPtr = (__bridge void *)self;
+        state->mutationsPtr = (__bridge void *)[self lastObject];
         state->state = 1;
         state->extra[0] = 0;
     }
 
     NSUInteger totalCount = self.count;
     NSUInteger index = state->extra[0];
-    if (index >= totalCount) {
-        return 0;
-    }
     NSUInteger count = 0;
     
-    state->itemsPtr = buffer; // 2
+    state->itemsPtr = buffer;
 
-    while (index < totalCount && count < len) { // 3
+    while (index < totalCount && count < len) {
         *buffer++ = self[index];
         count++;
         index++;

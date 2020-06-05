@@ -111,7 +111,7 @@ OCPromise * function(inputPromise inputPromise) {
     if (promise.status & OCPromiseStatusInSet) {
         return promise;
     }
-    if (promise.status & OCPromiseStatusTriggered) {
+    if (promise.status & OCPromiseStatusResolved) {
         newPromise = [OCPromise promise:nil withInput:nil];
     } else {
         switch (promise.type) {
@@ -173,10 +173,10 @@ OCPromise * function(inputPromise inputPromise) {
 
 - (void)setStatus:(OCPromiseStatus)status {
     _status = status;
-    if (_status & OCPromiseStatusCatchError && _type != OCPromiseTypeCatch && _type != OCPromiseTypeFinally) {
-        _status |= OCPromiseStatusTriggered;
+    if (_status & OCPromiseStatusCatchRejected && _type != OCPromiseTypeCatch && _type != OCPromiseTypeFinally) {
+        _status |= OCPromiseStatusResolved;
     }
-    if (_status & OCPromiseStatusTriggered) {
+    if (_status & OCPromiseStatusResolved) {
         _head = nil;
     }
 }

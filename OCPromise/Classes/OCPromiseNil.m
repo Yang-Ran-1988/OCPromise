@@ -11,7 +11,7 @@
 
 @implementation OCPromiseNil
 
-id NENilMethod(id self,SEL cmd) {
+id OCPromiseNilMethod(id self,SEL cmd) {
     return nil;
 }
 
@@ -27,7 +27,7 @@ id NENilMethod(id self,SEL cmd) {
 }
 
 + (BOOL)resolveInstanceMethod:(SEL)sel {
-    class_addMethod(self, sel, (IMP)NENilMethod, "@@:");
+    class_addMethod(self, sel, (IMP)OCPromiseNilMethod, "@@:");
     return [super resolveInstanceMethod:sel];
 }
 

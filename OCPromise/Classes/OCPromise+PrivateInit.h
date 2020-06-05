@@ -18,9 +18,9 @@ typedef NS_ENUM(NSInteger) {
 
 typedef NS_OPTIONS(NSInteger, OCPromiseStatus) {
     OCPromiseStatusInSet            = 1 << 0,
-    OCPromiseStatusTriggering       = 1 << 1,
-    OCPromiseStatusTriggered        = 1 << 2,
-    OCPromiseStatusCatchError       = 1 << 3,
+    OCPromiseStatusPending          = 1 << 1,
+    OCPromiseStatusResolved         = 1 << 2,
+    OCPromiseStatusCatchRejected    = 1 << 3,
     OCPromiseStatusNoPromise        = 1 << 4
 };
 
