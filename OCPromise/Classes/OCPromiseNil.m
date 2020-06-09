@@ -18,11 +18,11 @@ id OCPromiseNilMethod(id self,SEL cmd) {
 + (instancetype)nilValue {
     static id singleton;
     static dispatch_once_t pred;
-
+    
     dispatch_once(&pred, ^{
         singleton = [[self alloc] init];
     });
-
+    
     return singleton;
 }
 

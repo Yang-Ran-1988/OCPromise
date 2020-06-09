@@ -35,6 +35,8 @@ typedef NS_OPTIONS(NSInteger, OCPromiseStatus) {
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef OCPromise * _Nonnull (^innerCatch)(__kindof OCPromise *_Nonnull);
+
 @interface OCPromise ()
 
 @property (nonatomic, assign) OCPromiseType type;
@@ -50,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray <__kindof OCPromise *> *realPromises;
 @property (nonatomic, strong) id resolvedValue;
 @property (nonatomic, assign) OCPromiseStatus status;
+@property (nonatomic, copy, readonly) innerCatch innerCatch;
 
 - (instancetype)initWithPromis:(__nullable promise)ownPromise withInput:(__nullable inputPromise)input;
 - (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type;

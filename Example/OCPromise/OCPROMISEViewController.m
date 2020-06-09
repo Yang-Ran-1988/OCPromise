@@ -11,14 +11,25 @@
 
 @interface OCPROMISEViewController ()
 
+@property (nonatomic, assign) NSInteger page;
+
 @end
 
 @implementation OCPROMISEViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.page = 0;
+    
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(50, 120, 130, 60)];
+    [button setTitle:@"button" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(buttonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+}
+
+- (void)buttonAction {
     OCPromise *p = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
         NSLog(@"start new Promise...");
         resolve(@123);
@@ -27,138 +38,76 @@
     OCPromise *multiply = function(^OCPromise * _Nullable(id  _Nonnull value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             NSLog(@"calculating %ld x %ld ...", [value longValue], [value longValue]);
-            resolve([NSNumber numberWithLong:[value longValue]*[value longValue]]);
+            resolve([NSNumber numberWithLong:[value longValue] * [value longValue]]);
         });
     });
     
     OCPromise *add = function(^OCPromise * _Nullable(id  _Nonnull value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             NSLog(@"calculating %ld + %ld ...", [value longValue], [value longValue]);
-            resolve([NSNumber numberWithLong:[value longValue]+[value longValue]]);
+            sleep(1);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                resolve([NSNumber numberWithLong:[value longValue] + [value longValue]]);
+            });
         });
     });
     
-    OCPromise *doReject = function(^OCPromise * _Nullable(id  _Nonnull value) {
+    OCPromise *race = OCPromise.race(@[add, multiply]);
+    OCPromise *all = OCPromise.all(@[add, multiply, race]);
+    
+    OCPromise *middle = p.then(add).then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"all value %@", value);
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-            NSLog(@"receive %ld",[value longValue]);
-            if ([value longValue] > 1000) {
-                reject(@"opps, number is too big");
-            } else {
-                resolve(value);
-            }
+            resolve(@([value[0] longValue] + [value[2] longValue]));
         });
+    }));
+    
+    middle.deliverOnMainThread(^(id  _Nonnull value) {
+        NSLog(@"on main %@", value);
+    }).map(^id _Nullable(id  _Nonnull value) {
+        return @([value longValue] * 10);
+    }).deliverOnMainThread(^(id value) {
+        NSLog(@"on main after map %@", value);
+    }).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"111 %@", value);
+        return nil;
+    })).catch(^(id value) {
+        NSLog(@"catch %@", value);
     });
-    
-    OCPromise *dealTask = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-        sleep(5);  //模拟耗时操作
-        resolve(@"done");
-    });
-    
-    OCPromise *timeout = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            reject(@"time out");
-        });
-    });
-//
-//    NSLog(@"task start");
-//
-//    OCPromise.race(@[dealTask, timeout]).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//        NSLog(@"result is %@", value);
-//        return nil;
-//    })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//        NSLog(@"%@", value);
-//        return nil;
-//    }));
-    
-    
-    OCPromise *task1 = function(^OCPromise * _Nullable(id  _Nonnull value) {
-        return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-            NSLog(@"task1 needs sleep 4sec");
-            sleep(4);
-            NSLog(@"task1 woke up");
-            resolve([NSString stringWithFormat:@"task1 checked %@",value]);
-        });
-    });
-    
-    OCPromise *task2 = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-        NSLog(@"task2 needs sleep 1sec");
-        sleep(1);
-        NSLog(@"task2 woke up");
-        resolve(@"task2 is fine");
-    });
-    
-    OCPromise *task3 = function(^OCPromise * _Nullable(id  _Nonnull value) {
-        return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-            NSLog(@"task3 needs sleep 3sec");
-            sleep(3);
-            NSLog(@"task3 wokeup");
-            resolve([NSString stringWithFormat:@"task3 ignored %@",value]);
-        });
-    });
-    
-    OCPromise *all = OCPromise.all(@[task1, task2, task3]);
-    
-    OCPromise.resolve(@"the wallet").then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"got value %@", value);
+
+    p.then(all).then(middle).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"333 %@", value);
         return nil;
     }));
     
-//    OCPromise *all = OCPromise.all(@[add, @666, OCPromise.resolve(nil)]);
-//    p.then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//        NSLog(@"got value %@", value);
-//        NSLog(@"first obj %@", value[0]);
-//        NSLog(@"second obj %@", [value objectAtIndex:1]);
-//        for (id obj in value) {
-//            NSLog(@"forin obj %@",obj);
-//        }
-//        [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            NSLog(@"enumerate block at %ld obj %@",idx, obj);
-//        }];
-//        return nil;
-//    }));
-    
-//    p.then(multiply)
-//     .then(add)
-//     .then(multiply)
-//     .then(add)
-//     .then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//        NSLog(@"Got value: %@",value);
-//        return nil;
-//     }));
-
-//    p.then(multiply)
-//     .then(doReject)
-//     .then(add)
-//     .catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//         NSLog(@"catch error, reason is \"%@\"",value);
-//         return nil;
-//     }))
-//     .finally(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//         NSLog(@"final value is \"%@\"",value);
-//         return nil;
-//     }));
-    
-//    OCPromise.resolve(@123).then(multiply).then(add);
-//
-//    p.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//        if ([value longValue]>1000) {
-//            return OCPromise.resolve(value);
-//        } else {
-//            return OCPromise.reject(@"Oops,got error");
-//        }
-//    })).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//        NSLog(@"got value %@", value);
-//        return nil;
-//    })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-//        NSLog(@"catch error %@",value);
-//        return nil;
-//    }));
+    NSDictionary *params = @{@"page":@(self.page)};
+    OCPromise.resolve(params).then(self.requestPageData).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"%@", value);
+        self.page ++;
+        return nil;
+    })).catch(^(id  _Nonnull value) {
+        NSLog(@"");
+    });
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (OCPromise *)requestPageData {
+    return function(^OCPromise * _Nullable(id  _Nonnull value) {
+        return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+            [self requestDataWithParams:value completion:^(id data, NSError *error) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(data);
+                }
+            }];
+        });
+    });
+}
+
+- (void)requestDataWithParams:(NSDictionary *)params completion:(void (^) (id data, NSError *error))completion {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        completion([NSString stringWithFormat:@"response data with request params %@", params], nil);
+    });
 }
 
 @end

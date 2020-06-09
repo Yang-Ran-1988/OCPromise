@@ -65,7 +65,7 @@
     OCThenPromise *currentPromise;
     dispatch_queue_t promiseSerialQueue;
     
-    if (self.status & OCPromiseStatusInSet) {
+    if (self.status & OCPromiseStatusInSet || !self.next) {
         currentPromise = self;
     }
     else {
@@ -82,7 +82,7 @@
     }
     
     OCPromise *newPromise = [super buildNewPromiseIntoNextWithOrigin:promise type:type];
-
+    
     newPromise.last = currentPromise;
     newPromise.status = currentPromise.status & ~OCPromiseStatusResolved & ~OCPromiseStatusPending;
     if (currentPromise.status & OCPromiseStatusCatchRejected) {
@@ -116,12 +116,14 @@
                 if (currentPromise.next) {
                     if (currentPromise.status & OCPromiseStatusNoPromise) {
                         //avoid case: function(^OCPromise *(id value){return nil;}).then(promise);
+                        if (currentPromise.next.type != OCPromiseTypeCatch && currentPromise.next.type != OCPromiseTypeFinally) {
 #if DEBUG
-                        NSString *reason = @"There is no promise for next promise";
-                        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+                            NSString *reason = @"There is no promise for next promise";
+                            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
 #else
-                        [currentPromise cancel];
+                            [currentPromise cancel];
 #endif
+                        }
                     }
                     else {
                         [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.resolvedValue];

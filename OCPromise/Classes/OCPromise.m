@@ -19,7 +19,10 @@
 
 @synthesize then = _then;
 @synthesize catch = _catch;
+@synthesize innerCatch = _innerCatch;
 @synthesize finally = _finally;
+@synthesize deliverOnMainThread = _deliverOnMainThread;
+@synthesize map = _map;
 
 OCPromise * Promise(promise promise) {
     OCPromise *ocPromise = [OCPromise promise:promise withInput:nil];
@@ -58,7 +61,24 @@ OCPromise * function(inputPromise inputPromise) {
 - (catch)catch {
     if (!_catch) {
         __weak typeof(self) weakSelf = self;
-        _catch = ^(__kindof OCPromise *_Nonnull then) {
+        _catch = ^(deliverValue deliverValue) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    !deliverValue ?: deliverValue(value);
+                });
+                return nil;
+            });
+            return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeCatch];
+        };
+    }
+    return _catch;
+}
+
+- (innerCatch)innerCatch {
+    if (!_innerCatch) {
+        __weak typeof(self) weakSelf = self;
+        _innerCatch = ^(__kindof OCPromise *_Nonnull then) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!then.inputPromise && then.promise) {
 #if DEBUG
@@ -71,26 +91,59 @@ OCPromise * function(inputPromise inputPromise) {
             return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeCatch];
         };
     }
-    return _catch;
+    return _innerCatch;
 }
 
 - (finally)finally {
     if (!_finally) {
         __weak typeof(self) weakSelf = self;
-        _finally = ^(__kindof OCPromise *_Nonnull then) {
+        _finally = ^(deliverValue deliverValue) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (!then.inputPromise && then.promise) {
-#if DEBUG
-                NSString *reason = @"finally cannot trigger any resolve/reject event, use function()";
-                @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
-#else
-                return;
-#endif
-            }
-            [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeFinally];
+            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    !deliverValue ?: deliverValue(value);
+                });
+                return nil;
+            });
+            [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
         };
     }
     return _finally;
+}
+
+- (deliverOnMainThread)deliverOnMainThread {
+    if (!_deliverOnMainThread) {
+        __weak typeof(self) weakSelf = self;
+        _deliverOnMainThread = ^(deliverValue deliverValue) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    !deliverValue ?: deliverValue(value);
+                });
+                return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+                    resolve(value);
+                });
+            });
+            return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
+        };
+    }
+    return _deliverOnMainThread;
+}
+
+- (map)map {
+    if (!_map) {
+        __weak typeof(self) weakSelf = self;
+        _map = ^(mapBlock mapBlock) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+                return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+                    resolve(mapBlock?mapBlock(value):value);
+                });
+            });
+            return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
+        };
+    }
+    return _map;
 }
 
 - (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type {
@@ -104,38 +157,36 @@ OCPromise * function(inputPromise inputPromise) {
 #endif
     }
     
+    if (!promise.last && !promise.next) {
+        promise.type = type;
+        return promise;
+    }
+    
     return [self buildNewPromiseWithPromise:promise andType:type];
 }
 
 - (OCPromise *)buildNewPromiseWithPromise:(OCPromise *)promise andType:(OCPromiseType)type {
     OCPromise *newPromise;
     if (promise.status & OCPromiseStatusInSet) {
+        promise.type = type;
         return promise;
     }
-    if (promise.status & OCPromiseStatusResolved) {
-        newPromise = [OCPromise promise:nil withInput:nil];
-    } else {
-        switch (promise.type) {
-            case OCPromiseTypeAll:
-                newPromise = [OCSetPromise initAllWithPromises:promise.promises];
-                break;
-            case OCPromiseTypeRace:
-                newPromise = [OCSetPromise initRaceWithPromises:promise.promises];
-                break;
-            default:
-                newPromise = [OCPromise promise:promise.promise withInput:promise.inputPromise];
-                break;
-        }
+    
+    switch (promise.type) {
+        case OCPromiseTypeAll:
+            newPromise = [OCSetPromise initAllWithPromises:promise.promises];
+            break;
+        case OCPromiseTypeRace:
+            newPromise = [OCSetPromise initRaceWithPromises:promise.promises];
+            break;
+        default:
+            newPromise = [OCPromise promise:promise.promise withInput:promise.inputPromise];
+            break;
     }
     
     newPromise.type = type;
     newPromise.code = promise.code*100;
-    newPromise.head = promise.head;
-    newPromise.last = promise.last;
-    newPromise.promiseSerialQueue = promise.promiseSerialQueue;
-    newPromise.status = promise.status;
-    newPromise.resolvedValue = promise.resolvedValue;
-    [promise.realPromises addObject:newPromise];
+    
     return newPromise;
 }
 

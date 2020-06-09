@@ -80,13 +80,13 @@
         state->state = 1;
         state->extra[0] = 0;
     }
-
+    
     NSUInteger totalCount = self.count;
     NSUInteger index = state->extra[0];
     NSUInteger count = 0;
     
     state->itemsPtr = buffer;
-
+    
     while (index < totalCount && count < len) {
         *buffer++ = self[index];
         count++;
@@ -94,7 +94,7 @@
     }
     
     state->extra[0] = index;
-
+    
     return count;
 }
 
