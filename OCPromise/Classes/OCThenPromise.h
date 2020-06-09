@@ -7,7 +7,7 @@
 //
 
 #import "OCPromise.h"
-#import "OCPromise+PrivateInit.h"
+#import "OCPromise+Private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

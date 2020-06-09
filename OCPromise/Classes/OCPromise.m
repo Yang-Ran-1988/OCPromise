@@ -9,7 +9,7 @@
 #import "OCPromise.h"
 #import "OCThenPromise.h"
 #import "OCSetPromise.h"
-#import "OCPromise+PrivateInit.h"
+#import "OCPromise+Private.h"
 
 @interface OCPromise ()
 

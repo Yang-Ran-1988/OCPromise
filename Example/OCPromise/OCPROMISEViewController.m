@@ -19,6 +19,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.view.backgroundColor = UIColor.whiteColor;
     
     self.page = 0;
     
@@ -81,12 +83,15 @@
     }));
     
     NSDictionary *params = @{@"page":@(self.page)};
+    //[HUD show];
     OCPromise.resolve(params).then(self.requestPageData).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@", value);
         self.page ++;
         return nil;
     })).catch(^(id  _Nonnull value) {
         NSLog(@"");
+    }).finally(^(id  _Nonnull value) {
+        //[HUD dismiss];
     });
 }
 

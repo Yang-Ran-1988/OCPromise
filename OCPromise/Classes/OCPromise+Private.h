@@ -1,5 +1,5 @@
 //
-//  OCPromise+PrivateInit.h
+//  OCPromise+Private.h
 //  test
 //
 //  Created by 新东方_杨然 on 2020/5/7.
