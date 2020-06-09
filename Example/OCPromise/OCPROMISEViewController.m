@@ -74,7 +74,7 @@
     })).catch(^(id value) {
         NSLog(@"catch %@", value);
     });
-
+    
     p.then(all).then(middle).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"333 %@", value);
         return nil;

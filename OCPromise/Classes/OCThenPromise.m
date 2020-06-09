@@ -29,13 +29,6 @@
                 strongSelf.status |= OCPromiseStatusResolved;
                 id resolveValue = resolve;
                 strongSelf.resolvedValue = resolveValue;
-                if (strongSelf.realPromises.count) {
-                    [strongSelf.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                        obj.status |= OCPromiseStatusResolved;
-                        obj.resolvedValue = resolveValue;
-                        [obj.next triggerThePromiseWithResolveValue:resolveValue];
-                    }];
-                }
                 if (strongSelf.next) {
                     [strongSelf.next triggerThePromiseWithResolveValue:resolveValue];
                 }
@@ -193,9 +186,6 @@
                 self.promise(self.resolve, self.reject);
             } else {
                 self.status |= OCPromiseStatusNoPromise;
-                [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    obj.status |= OCPromiseStatusNoPromise;
-                }];
                 [self checkPromiseFollowedNoPromise:value];
                 [self cancel];
             }
@@ -215,9 +205,6 @@
 #endif
         }
     }
-    [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [obj checkPromiseFollowedNoPromise:value];
-    }];
 }
 
 - (void)searchNextCatchWithRejectValue:(id)value {
@@ -230,11 +217,6 @@
         }
         [self.next searchNextCatchWithRejectValue:value];
     }
-    if (self.realPromises) {
-        [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj searchNextCatchWithRejectValue:value];
-        }];
-    }
 }
 
 - (void)searchFinallyWithValue:(id)value {
@@ -245,26 +227,11 @@
         }
         [self.next searchFinallyWithValue:value];
     }
-    
-    if (self.realPromises) {
-        [self.realPromises enumerateObjectsUsingBlock:^(__kindof OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj searchFinallyWithValue:value];
-        }];
-    }
 }
 
 - (void)cancel {
-    if (self.realPromises.count) {
-        [self.realPromises enumerateObjectsUsingBlock:^(OCThenPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj searchForwardAndSetCancel];
-        }];
-    }
-    [self searchForwardAndSetCancel];
-}
-
-- (void)searchForwardAndSetCancel {
     self.status |= OCPromiseStatusResolved;
-    [self.next searchForwardAndSetCancel];
+    [self.next cancel];
     self.next = nil;
 }
 

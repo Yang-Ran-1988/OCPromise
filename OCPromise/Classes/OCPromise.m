@@ -233,13 +233,6 @@ OCPromise * function(inputPromise inputPromise) {
     }
 }
 
-- (NSMutableArray <__kindof OCPromise *> *)realPromises {
-    if (!_realPromises) {
-        _realPromises = [NSMutableArray array];
-    }
-    return _realPromises;
-}
-
 - (NSMutableArray <__kindof OCPromise *> *)promises {
     if (!_promises) {
         _promises = [NSMutableArray array];

@@ -49,7 +49,6 @@ typedef OCPromise * _Nonnull (^innerCatch)(__kindof OCPromise *_Nonnull);
 @property (nonatomic, strong) dispatch_queue_t promiseSerialQueue;
 @property (nonatomic, weak) __kindof OCPromise *last;
 @property (nonatomic, strong) __kindof OCPromise * __nullable head;
-@property (nonatomic, strong) NSMutableArray <__kindof OCPromise *> *realPromises;
 @property (nonatomic, strong) id resolvedValue;
 @property (nonatomic, assign) OCPromiseStatus status;
 @property (nonatomic, copy, readonly) innerCatch innerCatch;
