@@ -47,15 +47,24 @@
     OCPromise *add = function(^OCPromise * _Nullable(id  _Nonnull value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             NSLog(@"calculating %ld + %ld ...", [value longValue], [value longValue]);
-            sleep(1);
-            dispatch_async(dispatch_get_main_queue(), ^{
+//            sleep(1);
+//            dispatch_async(dispatch_get_main_queue(), ^{
                 resolve([NSNumber numberWithLong:[value longValue] + [value longValue]]);
-            });
+//            });
         });
     });
     
     OCPromise *race = OCPromise.race(@[add, multiply]);
     OCPromise *all = OCPromise.all(@[add, multiply, race]);
+    
+    p.then(OCPromise.map(@[add, multiply, @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
+        return @([value longValue] * 10);
+    })).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"%@", value);
+        return nil;
+    })).catch(^(id  _Nonnull value) {
+        NSLog(@"err %@", value);
+    });
     
     OCPromise *middle = p.then(add).then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"all value %@", value);
@@ -63,7 +72,7 @@
             resolve(@([value[0] longValue] + [value[2] longValue]));
         });
     }));
-    
+
     middle.deliverOnMainThread(^(id  _Nonnull value) {
         NSLog(@"on main %@", value);
     }).map(^id _Nullable(id  _Nonnull value) {
@@ -76,19 +85,21 @@
     })).catch(^(id value) {
         NSLog(@"catch %@", value);
     });
-    
+
     p.then(all).then(middle).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"333 %@", value);
         return nil;
     }));
-    
+
     NSDictionary *params = @{@"page":@(self.page)};
     //[HUD show];
-    OCPromise.resolve(params).then(self.requestPageData).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+    OCPromise.resolve(params).then(self.requestPageData).deliverOnMainThread(^(id  _Nonnull value) {
+        //deal UI
+    }).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@", value);
         self.page ++;
         return nil;
-    })).catch(^(id  _Nonnull value) {
+    })).catch(^(NSError *error) {
         NSLog(@"");
     }).finally(^(id  _Nonnull value) {
         //[HUD dismiss];

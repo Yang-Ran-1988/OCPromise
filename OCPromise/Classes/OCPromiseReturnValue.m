@@ -56,16 +56,25 @@
 }
 
 - (NSArray *)array {
+    return [self getItemsIntoArray];
+}
+
+- (NSArray *)getItemsIntoArray {
     NSArray *keyArray = self.returnValueDictionary.allKeys;
     keyArray = [keyArray sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         NSNumber *tNumber1 = (NSNumber *)obj1;
         NSNumber *tNumber2 = (NSNumber *)obj2;
         return [tNumber1 integerValue] < [tNumber2 integerValue] ? NSOrderedAscending : NSOrderedDescending;
     }];
-    
     NSMutableArray *array = [NSMutableArray array];
     for (id key in keyArray) {
-        [array addObject:[self.returnValueDictionary objectForKey:key] ?: OCPromiseNil.nilValue];
+        id obj = [self.returnValueDictionary objectForKey:key];
+        if ([obj isKindOfClass:OCPromiseReturnValue.class]) {
+            [array addObject:[obj getItemsIntoArray]];
+        }
+        else {
+            [array addObject:obj ?: OCPromiseNil.nilValue];
+        }
     }
     return [array copy];
 }

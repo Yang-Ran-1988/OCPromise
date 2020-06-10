@@ -25,6 +25,7 @@ typedef id _Nullable (^mapBlock)(id value);
 typedef OCPromise * _Nonnull (^map)(mapBlock mapBlock);
 typedef __kindof OCPromise * _Nonnull (^all)(NSArray <__kindof OCPromise *> *);
 typedef __kindof OCPromise * _Nonnull (^race)(NSArray <__kindof OCPromise *> *);
+typedef __kindof OCPromise * _Nonnull (^classMap)(NSArray <__kindof OCPromise *> *, mapBlock mapBlock);
 
 @interface OCPromise : NSObject
 
@@ -37,6 +38,7 @@ typedef __kindof OCPromise * _Nonnull (^race)(NSArray <__kindof OCPromise *> *);
 @property (class, nonatomic, copy, readonly) race race;
 @property (class, nonatomic, copy, readonly) reject reject;
 @property (class, nonatomic, copy, readonly) resolve resolve;
+@property (class, nonatomic, copy, readonly) classMap map;
 @property (nonatomic, assign) NSUInteger code;
 
 OCPromise * Promise(promise promise);

@@ -32,7 +32,12 @@
                 obj.status |= OCPromiseStatusInSet;
             }
         } else {
-            newPromise = OCPromise.resolve(obj);
+            if ([obj isKindOfClass:[NSArray class]]) {
+                newPromise = [self mapArray:((NSArray *) obj)];
+            }
+            else {
+                newPromise = OCPromise.resolve(obj);
+            }
         }
         NSString *ptr = [NSString stringWithFormat:@"promise_serial_queue_%lu",(uintptr_t)newPromise];
         newPromise.promiseSerialQueue = dispatch_queue_create([ptr UTF8String], DISPATCH_QUEUE_SERIAL);
@@ -40,6 +45,10 @@
         [newPromises addObject:newPromise];
     }];
     return [newPromises copy];
+}
+
+- (OCPromise *)mapArray:(NSArray *)arr {
+    return [OCSetPromise initAllWithPromises:arr];
 }
 
 @end

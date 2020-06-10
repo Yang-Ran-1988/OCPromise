@@ -20,6 +20,7 @@
 
 @synthesize promise = _promise;
 @synthesize promises = _promises;
+@synthesize mapBlock = _mapBlock;
 
 + (instancetype)initWithPromises:(NSArray<__kindof OCPromise *> *)promises {
     OCAllPromise *allPromise = [[OCAllPromise alloc] initWithPromises:promises];
@@ -51,7 +52,12 @@
                 obj.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     if (isResolve) {
-                        returnValue[idx] = value ?: OCPromiseNil.nilValue;
+                        if ([value isKindOfClass:[OCPromiseReturnValue class]]) {
+                            returnValue[idx] = value;
+                        }
+                        else {
+                            returnValue[idx] = (strongSelf.mapBlock ? strongSelf.mapBlock(value) : value) ?: OCPromiseNil.nilValue;
+                        }
                         if (((OCPromiseReturnValue *)returnValue).count == strongSelf.promises.count) {
                             dispatch_semaphore_signal(returnLock);
                         }
@@ -86,6 +92,21 @@
         };
     }
     return self;
+}
+
+- (void)setMapBlock:(mapBlock)mapBlock {
+    _mapBlock = mapBlock;
+    [self injectMapBlock];
+}
+
+- (void)injectMapBlock {
+    dispatch_apply(self.promises.count, dispatch_get_global_queue(0, 0), ^(size_t index) {
+        id obj = self.promises[index];
+        if ([obj isKindOfClass:[OCAllPromise class]]) {
+            ((OCAllPromise *) obj).mapBlock = _mapBlock;
+            [obj injectMapBlock];
+        }
+    });
 }
 
 @end

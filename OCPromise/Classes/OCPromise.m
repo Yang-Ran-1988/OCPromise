@@ -218,6 +218,14 @@ OCPromise * function(inputPromise inputPromise) {
     };
 }
 
++ (__kindof OCPromise * _Nonnull (^)(NSArray <__kindof OCPromise *> *, mapBlock))map {
+    return ^(NSArray <__kindof OCPromise *> * all, mapBlock mapBlock) {
+        OCSetPromise *allPromise = [OCSetPromise initAllWithPromises:all];
+        allPromise.mapBlock = mapBlock;
+        return allPromise;
+    };
+}
+
 - (void)cancel {
     NSString *reason = [NSString stringWithFormat:@"%@ must be overridden by subclasses", NSStringFromSelector(_cmd)];
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
