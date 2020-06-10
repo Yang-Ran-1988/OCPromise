@@ -8,10 +8,12 @@
 
 #import "OCPROMISEViewController.h"
 #import "OCPromise.h"
+#import "TestView.h"
 
 @interface OCPROMISEViewController ()
 
 @property (nonatomic, assign) NSInteger page;
+@property (nonatomic, strong) TestView *alertView;
 
 @end
 
@@ -104,6 +106,11 @@
     }).finally(^(id  _Nonnull value) {
         //[HUD dismiss];
     });
+    
+    [self.alertView show];
+    self.alertView.promise.deliverOnMainThread(^(id  _Nonnull value) {
+        NSLog(@"click button index %@", value);
+    });
 }
 
 - (OCPromise *)requestPageData {
@@ -124,6 +131,14 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         completion([NSString stringWithFormat:@"response data with request params %@", params], nil);
     });
+}
+
+- (TestView *)alertView {
+    if (!_alertView) {
+        _alertView = [[TestView alloc] initWithFrame:self.view.bounds];
+        [self.view addSubview:_alertView];
+    }
+    return _alertView;
 }
 
 @end

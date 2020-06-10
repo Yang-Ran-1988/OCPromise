@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3BE1BE1D2490C05E00060FFE /* TestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE1BE1B2490C05E00060FFE /* TestView.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -36,10 +37,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0FD9FB013B49DE147A2A474B /* OCPromise.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = OCPromise.podspec; path = ../OCPromise.podspec; sourceTree = "<group>"; };
-		27AC14762CFE5E10AD40BF63 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		0FD9FB013B49DE147A2A474B /* OCPromise.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = OCPromise.podspec; path = ../OCPromise.podspec; sourceTree = "<group>"; };
+		27AC14762CFE5E10AD40BF63 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		3489306CC74642AE41F2E1DC /* Pods-OCPromise_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OCPromise_Example.release.xcconfig"; path = "Target Support Files/Pods-OCPromise_Example/Pods-OCPromise_Example.release.xcconfig"; sourceTree = "<group>"; };
-		39C3E80B0C3A783A76400585 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		39C3E80B0C3A783A76400585 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		3BE1BE1B2490C05E00060FFE /* TestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestView.m; sourceTree = "<group>"; };
+		3BE1BE1C2490C05E00060FFE /* TestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestView.h; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* OCPromise_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OCPromise_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -96,7 +99,6 @@
 				FC57ED0F63D77E99150E820C /* Pods-OCPromise_Example.debug.xcconfig */,
 				3489306CC74642AE41F2E1DC /* Pods-OCPromise_Example.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -141,6 +143,8 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* OCPROMISEViewController.h */,
 				6003F5A6195388D20070C39A /* OCPROMISEViewController.m */,
+				3BE1BE1C2490C05E00060FFE /* TestView.h */,
+				3BE1BE1B2490C05E00060FFE /* TestView.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -249,6 +253,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -333,6 +338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BE1BE1D2490C05E00060FFE /* TestView.m in Sources */,
 				6003F59E195388D20070C39A /* OCPROMISEAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* OCPROMISEViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
