@@ -26,6 +26,8 @@
     
     self.page = 0;
     
+    [self.view addSubview:self.alertView];
+    
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(50, 120, 130, 60)];
     [button setTitle:@"button" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
@@ -108,9 +110,6 @@
     });
     
     [self.alertView show];
-    self.alertView.promise.deliverOnMainThread(^(id  _Nonnull value) {
-        NSLog(@"click button index %@", value);
-    });
 }
 
 - (OCPromise *)requestPageData {
@@ -136,7 +135,9 @@
 - (TestView *)alertView {
     if (!_alertView) {
         _alertView = [[TestView alloc] initWithFrame:self.view.bounds];
-        [self.view addSubview:_alertView];
+        _alertView.promise.deliverOnMainThread(^(id  _Nonnull value) {
+            NSLog(@"click button index %@", value);
+        });
     }
     return _alertView;
 }
