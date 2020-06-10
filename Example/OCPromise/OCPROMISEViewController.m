@@ -60,10 +60,11 @@
     
     OCPromise *race = OCPromise.race(@[add, multiply]);
     OCPromise *all = OCPromise.all(@[add, multiply, race]);
-    
-    p.then(OCPromise.map(@[add, multiply, @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
+    OCPromise *map = OCPromise.map(@[add, multiply, @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
         return @([value longValue] * 10);
-    })).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+    });
+    
+    p.then(map).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@", value);
         return nil;
     })).catch(^(id  _Nonnull value) {

@@ -42,7 +42,7 @@
             
             dispatch_block_t block = ^{
                 strongSelf.status |= OCPromiseStatusResolved;
-                [strongSelf searchNextCatchWithRejectValue:reject];
+                [strongSelf searchCatchWithRejectValue:reject];
                 [strongSelf searchFinallyWithValue:reject];
                 [strongSelf cancel];
             };
@@ -92,7 +92,12 @@
     newPromise.promiseSerialQueue = promiseSerialQueue;
     
     dispatch_block_t block = ^{
-        if (!(currentPromise.status & OCPromiseStatusResolved || currentPromise.status & OCPromiseStatusPending)) {
+        if (currentPromise.status & OCPromiseStatusCatchRejected) {
+            [currentPromise searchCatchWithRejectValue:currentPromise.resolvedValue];
+            [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
+            [currentPromise cancel];
+        }
+        else if (!(currentPromise.status & OCPromiseStatusResolved || currentPromise.status & OCPromiseStatusPending)) {
             if (!currentPromise.last) {
                 if (currentPromise.inputPromise && !currentPromise.promise) {
 #if DEBUG
@@ -111,17 +116,7 @@
                 }
             }
             else if (currentPromise.last.status & OCPromiseStatusResolved) {
-                if (currentPromise.status & OCPromiseStatusCatchRejected) {
-                    if (currentPromise.status == OCPromiseTypeCatch || currentPromise.status == OCPromiseTypeFinally) {
-                        currentPromise.status |= OCPromiseStatusResolved;
-                        currentPromise.inputPromise(currentPromise.resolvedValue);
-                    } else {
-                        [currentPromise searchNextCatchWithRejectValue:currentPromise.resolvedValue];
-                    }
-                    [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
-                    [currentPromise cancel];
-                }
-                else if (currentPromise.last.status & OCPromiseStatusNoPromise) {
+                if (currentPromise.last.status & OCPromiseStatusNoPromise) {
 #if DEBUG
                     NSString *reason = @"There is no promise for next promise";
                     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
@@ -134,6 +129,12 @@
                 }
             }
         }
+        else {
+            if (currentPromise.next.type == OCPromiseTypeCatch || currentPromise.next.type == OCPromiseTypeFinally) {
+                [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
+                [currentPromise cancel];
+            }
+        }
     };
     
     dispatch_promise_queue_async_safe(promiseSerialQueue, block);
@@ -142,13 +143,8 @@
 }
 
 - (void)triggerThePromiseWithResolveValue:(id)value {
-    if (self.type == OCPromiseTypeCatch) {
+    if (self.type == OCPromiseTypeCatch || self.type == OCPromiseTypeFinally) {
         [self searchFinallyWithValue:value];
-        [self cancel];
-    }
-    else if (self.type == OCPromiseTypeFinally) {
-        self.status |= OCPromiseStatusResolved;
-        self.inputPromise(value);
         [self cancel];
     }
     else {
@@ -170,6 +166,7 @@
     if (self.next) {
         if (self.next.type == OCPromiseTypeCatch || self.next.type == OCPromiseTypeFinally) {
             [self searchFinallyWithValue:value];
+            [self cancel];
         }
         else {
 #if DEBUG
@@ -180,26 +177,23 @@
     }
 }
 
-- (void)searchNextCatchWithRejectValue:(id)value {
+- (void)searchCatchWithRejectValue:(id)value {
     self.resolvedValue = value;
     self.status |= OCPromiseStatusCatchRejected;
-    if (self.next) {
-        if (self.next.type == OCPromiseTypeCatch && self.next.inputPromise && !(self.next.status & OCPromiseStatusResolved || self.next.status & OCPromiseStatusPending)) {
-            self.next.status |= OCPromiseStatusResolved;
-            self.next.inputPromise(value);
-        }
-        [self.next searchNextCatchWithRejectValue:value];
+    if (self.type == OCPromiseTypeCatch && self.inputPromise && !(self.status & OCPromiseStatusResolved)) {
+        self.status |= OCPromiseStatusResolved;
+        self.inputPromise(value);
     }
+    [self.next searchCatchWithRejectValue:value];
 }
 
 - (void)searchFinallyWithValue:(id)value {
-    self.status |= OCPromiseStatusResolved;
-    if (self.next) {
-        if (self.next.type == OCPromiseTypeFinally && self.next.inputPromise && !(self.next.status & OCPromiseStatusResolved)) {
-            self.next.inputPromise(value);
-        }
-        [self.next searchFinallyWithValue:value];
+    self.resolvedValue = value;
+    if (self.type == OCPromiseTypeFinally && self.inputPromise && !(self.status & OCPromiseStatusResolved)) {
+        self.status |= OCPromiseStatusResolved;
+        self.inputPromise(value);
     }
+    [self.next searchFinallyWithValue:value];
 }
 
 - (void)cancel {
