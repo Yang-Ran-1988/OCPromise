@@ -51,10 +51,7 @@
     OCPromise *add = function(^OCPromise * _Nullable(id  _Nonnull value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             NSLog(@"calculating %ld + %ld ...", [value longValue], [value longValue]);
-//            sleep(1);
-//            dispatch_async(dispatch_get_main_queue(), ^{
-                resolve([NSNumber numberWithLong:[value longValue] + [value longValue]]);
-//            });
+            resolve([NSNumber numberWithLong:[value longValue] + [value longValue]]);
         });
     });
     
@@ -67,7 +64,7 @@
             resolve(@([value[0] longValue] + [value[2] longValue]));
         });
     }));
-
+    
     middle.deliverOnMainThread(^(id  _Nonnull value) {
         NSLog(@"on main %@", value);
     }).map(^id _Nullable(id  _Nonnull value) {
@@ -91,12 +88,12 @@
     })).catch(^(id  _Nonnull value) {
         NSLog(@"err %@", value);
     });
-
+    
     p.then(all).then(middle).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"333 %@", value);
         return nil;
     }));
-
+    
     NSDictionary *params = @{@"page":@(self.page)};
     //[HUD show];
     OCPromise.resolve(params).then(self.requestPageData).deliverOnMainThread(^(id  _Nonnull value) {
@@ -106,9 +103,16 @@
         self.page ++;
         return nil;
     })).catch(^(NSError *error) {
-        NSLog(@"");
+        NSLog(@"%@", error.description);
     }).finally(^(id  _Nonnull value) {
         //[HUD dismiss];
+    });
+    
+    retry(OCPromise.resolve(params).then(self.requestPageData), 3, 200).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"%@", value);
+        return nil;
+    })).catch(^(id  _Nonnull value) {
+        NSLog(@"%@", value);
     });
     
     [self.alertView show];
@@ -129,8 +133,10 @@
 }
 
 - (void)requestDataWithParams:(NSDictionary *)params completion:(void (^) (id data, NSError *error))completion {
+    NSLog(@"start request");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        completion([NSString stringWithFormat:@"response data with request params %@", params], nil);
+        //completion([NSString stringWithFormat:@"response data with request params %@", params], nil);
+        completion(nil, [NSError errorWithDomain:(@"com.ocpromise.response.err") code:30001 userInfo:@{@"description":@"error"}]);
     });
 }
 

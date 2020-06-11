@@ -43,6 +43,7 @@ typedef __kindof OCPromise * _Nonnull (^classMap)(NSArray <__kindof OCPromise *>
 
 OCPromise * Promise(promise promise);
 OCPromise * function(inputPromise inputPromise);
+OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/);
 - (void)cancel;
 
 @end

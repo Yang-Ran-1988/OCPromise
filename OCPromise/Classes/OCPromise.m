@@ -33,6 +33,29 @@ OCPromise * function(inputPromise inputPromise) {
     return [OCPromise promise:nil withInput:inputPromise];
 }
 
+OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
+    OCPromise *retryPromise = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+        __block uint8_t count = 0;
+        ocPromise.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+            resolve(value);
+            return nil;
+        })).innerCatch(function(^OCPromise * _Nullable(id  _Nonnull value) {
+            count ++;
+            if (count == times) {
+                reject(value);
+            } else {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_MSEC)), ocPromise.promiseSerialQueue, ^{
+                    ocPromise.status = ocPromise.status & ~OCPromiseStatusResolved & ~OCPromiseStatusPending;
+                    ocPromise.promise(ocPromise.resolve, ocPromise.reject);
+                });
+            }
+            return nil;
+        }));
+    });
+    return retryPromise;
+}
+
+
 + (instancetype)promise:(promise)ownPromise withInput:(inputPromise)input {
     OCPromise *ocPromise = [[OCThenPromise alloc] initWithPromis:ownPromise withInput:input];
     return ocPromise;

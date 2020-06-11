@@ -42,8 +42,8 @@
             
             dispatch_block_t block = ^{
                 strongSelf.status |= OCPromiseStatusResolved;
-                [strongSelf searchCatchWithRejectValue:reject];
-                [strongSelf searchFinallyWithValue:reject];
+                [strongSelf searchCatchWithRejectValue:reject ignoreStatus:YES];
+                [strongSelf searchFinallyWithValue:reject ignoreStatus:YES];
                 [strongSelf cancel];
             };
             dispatch_promise_queue_async_safe(strongSelf.promiseSerialQueue, block);
@@ -93,8 +93,8 @@
     
     dispatch_block_t block = ^{
         if (currentPromise.status & OCPromiseStatusCatchRejected) {
-            [currentPromise searchCatchWithRejectValue:currentPromise.resolvedValue];
-            [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
+            [currentPromise searchCatchWithRejectValue:currentPromise.resolvedValue ignoreStatus:NO];
+            [currentPromise searchFinallyWithValue:currentPromise.resolvedValue ignoreStatus:NO];
             [currentPromise cancel];
         }
         else if (!(currentPromise.status & OCPromiseStatusResolved || currentPromise.status & OCPromiseStatusPending)) {
@@ -131,7 +131,7 @@
         }
         else if (currentPromise.status & OCPromiseStatusResolved) {
             if (currentPromise.next.type == OCPromiseTypeCatch || currentPromise.next.type == OCPromiseTypeFinally) {
-                [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
+                [currentPromise searchFinallyWithValue:currentPromise.resolvedValue ignoreStatus:NO];
                 [currentPromise cancel];
             }
             else {
@@ -149,7 +149,7 @@
 
 - (void)triggerThePromiseWithResolveValue:(id)value {
     if (self.type == OCPromiseTypeCatch || self.type == OCPromiseTypeFinally) {
-        [self searchFinallyWithValue:value];
+        [self searchFinallyWithValue:value ignoreStatus:YES];
         [self cancel];
     }
     else {
@@ -170,7 +170,7 @@
 - (void)checkPromiseFollowedNoPromise:(id)value {
     if (self.next) {
         if (self.next.type == OCPromiseTypeCatch || self.next.type == OCPromiseTypeFinally) {
-            [self searchFinallyWithValue:value];
+            [self searchFinallyWithValue:value ignoreStatus:YES];
             [self cancel];
         }
         else {
@@ -182,29 +182,29 @@
     }
 }
 
-- (void)searchCatchWithRejectValue:(id)value {
+- (void)searchCatchWithRejectValue:(id)value ignoreStatus:(BOOL)ignore {
     self.resolvedValue = value;
     self.status |= OCPromiseStatusCatchRejected;
-    if (self.type == OCPromiseTypeCatch && self.inputPromise && !(self.status & OCPromiseStatusResolved)) {
+    if (self.type == OCPromiseTypeCatch && self.inputPromise && (!(self.status & OCPromiseStatusResolved) || ignore)) {
         self.status |= OCPromiseStatusResolved;
         self.inputPromise(value);
     }
-    [self.next searchCatchWithRejectValue:value];
+    [self.next searchCatchWithRejectValue:value ignoreStatus:ignore];
 }
 
-- (void)searchFinallyWithValue:(id)value {
+- (void)searchFinallyWithValue:(id)value ignoreStatus:(BOOL)ignore {
     self.resolvedValue = value;
-    if (self.type == OCPromiseTypeFinally && self.inputPromise && !(self.status & OCPromiseStatusResolved)) {
+    if (self.type == OCPromiseTypeFinally && self.inputPromise && (!(self.status & OCPromiseStatusResolved) || ignore)) {
         self.status |= OCPromiseStatusResolved;
         self.inputPromise(value);
     }
-    [self.next searchFinallyWithValue:value];
+    [self.next searchFinallyWithValue:value ignoreStatus:ignore];
 }
 
 - (void)cancel {
     self.status |= OCPromiseStatusResolved;
     [self.next cancel];
-    self.next = nil;
+//    self.next = nil;
 }
 
 @end
