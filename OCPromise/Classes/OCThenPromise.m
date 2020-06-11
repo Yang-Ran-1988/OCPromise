@@ -26,11 +26,13 @@
             __strong typeof(weakSelf) strongSelf = weakSelf;
             
             dispatch_block_t block = ^{
+                if (strongSelf.status & OCPromiseStatusResolved && strongSelf.status & OCPromiseStatusCatchRejected) {
+                    return;
+                }
                 strongSelf.status |= OCPromiseStatusResolved;
-                id resolveValue = resolve;
-                strongSelf.resolvedValue = resolveValue;
+                strongSelf.resolvedValue = resolve;
                 if (strongSelf.next) {
-                    [strongSelf.next triggerThePromiseWithResolveValue:resolveValue];
+                    [strongSelf.next triggerThePromiseWithResolveValue:resolve];
                 }
             };
             dispatch_promise_queue_async_safe(strongSelf.promiseSerialQueue, block);
@@ -41,6 +43,9 @@
             __strong typeof(weakSelf) strongSelf = weakSelf;
             
             dispatch_block_t block = ^{
+                if (strongSelf.status & OCPromiseStatusResolved && !(strongSelf.status & OCPromiseStatusCatchRejected)) {
+                    return;
+                }
                 strongSelf.status |= OCPromiseStatusResolved;
                 [strongSelf searchCatchWithRejectValue:reject ignoreStatus:YES];
                 [strongSelf searchFinallyWithValue:reject ignoreStatus:YES];
