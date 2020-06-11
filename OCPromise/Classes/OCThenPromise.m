@@ -129,7 +129,7 @@
                 }
             }
         }
-        else {
+        else if (currentPromise.status & OCPromiseStatusResolved) {
             if (currentPromise.next.type == OCPromiseTypeCatch || currentPromise.next.type == OCPromiseTypeFinally) {
                 [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
                 [currentPromise cancel];
