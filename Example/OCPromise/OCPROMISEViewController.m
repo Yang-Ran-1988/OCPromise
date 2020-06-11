@@ -60,16 +60,6 @@
     
     OCPromise *race = OCPromise.race(@[add, multiply]);
     OCPromise *all = OCPromise.all(@[add, multiply, race]);
-    OCPromise *map = OCPromise.map(@[add, multiply, @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
-        return @([value longValue] * 10);
-    });
-    
-    p.then(map).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-        NSLog(@"%@", value);
-        return nil;
-    })).catch(^(id  _Nonnull value) {
-        NSLog(@"err %@", value);
-    });
     
     OCPromise *middle = p.then(add).then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"all value %@", value);
@@ -89,6 +79,17 @@
         return nil;
     })).catch(^(id value) {
         NSLog(@"catch %@", value);
+    });
+    
+    OCPromise *map = OCPromise.map(@[add, multiply, @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
+        return @([value longValue] * 10);
+    });
+    
+    p.then(map).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        NSLog(@"%@", value);
+        return nil;
+    })).catch(^(id  _Nonnull value) {
+        NSLog(@"err %@", value);
     });
 
     p.then(all).then(middle).then(function(^OCPromise * _Nullable(id  _Nonnull value) {

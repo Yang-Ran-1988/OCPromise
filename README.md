@@ -22,7 +22,7 @@ pod 'OCPromise'
 
 ## Author
 
-杨然, yangran3@xdf.cn
+杨然, yangran_1988@hotmail.com
 
 ## License
 

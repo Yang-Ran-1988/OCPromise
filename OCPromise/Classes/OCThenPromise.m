@@ -134,6 +134,11 @@
                 [currentPromise searchFinallyWithValue:currentPromise.resolvedValue];
                 [currentPromise cancel];
             }
+            else {
+                if (currentPromise.next && !(currentPromise.next.status & OCPromiseStatusResolved || currentPromise.next.status & OCPromiseStatusPending)) {
+                    [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.resolvedValue];
+                }
+            }
         }
     };
     
