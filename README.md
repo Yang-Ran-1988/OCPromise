@@ -1,5 +1,7 @@
 # OCPromise
 
+[![badge-languages](https://img.shields.io/badge/languages-ObjC-orange.svg)]
+
 ## Installation
 
 OCPromise is available through [CocoaPods](https://cocoapods.org). To install
@@ -42,7 +44,7 @@ promise1
 });
 ```
 
-### Promise.all
+### OCPromise.all
 
 ```objc
 OCPromise *tast1 = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
@@ -59,7 +61,7 @@ OCPromise.all(@[tast1, task2]).then(function(^OCPromise * _Nullable(NSArray * va
 }));
 ```
 
-### Promise.race
+### OCPromise.race
 
 ```objc
 OCPromise.race(@[tast1, task2]).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
@@ -97,7 +99,3 @@ tast1.deliverOnMainThread(^(id  _Nonnull value) {
 ## Author
 
 杨然, yangran_1988@hotmail.com
-
-## License
-
-OCPromise is available under the MIT license. See the LICENSE file for more info.
