@@ -1,6 +1,6 @@
 # OCPromise
 
-[![badge-languages](https://img.shields.io/badge/languages-ObjC-orange.svg)]
+![badge-languages](https://img.shields.io/badge/languages-ObjC-orange.svg)
 
 ## Installation
 
