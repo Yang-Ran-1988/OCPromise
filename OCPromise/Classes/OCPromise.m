@@ -101,7 +101,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 - (innerCatch)innerCatch {
     if (!_innerCatch) {
         __weak typeof(self) weakSelf = self;
-        _innerCatch = ^(__kindof OCPromise *_Nonnull then) {
+        _innerCatch = ^OCPromise *(__kindof OCPromise *_Nonnull then) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!then.inputPromise && then.promise) {
 #if DEBUG
