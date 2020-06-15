@@ -35,7 +35,7 @@ typedef NS_OPTIONS(NSInteger, OCPromiseStatus) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef OCPromise * _Nonnull (^innerCatch)(__kindof OCPromise *_Nonnull);
+typedef OCPromise * _Nullable (^innerCatch)(__kindof OCPromise *_Nonnull);
 
 @interface OCPromise ()
 

@@ -19,13 +19,13 @@
 @synthesize promise = _promise;
 @synthesize promises = _promises;
 
-+ (instancetype)initWithPromises:(NSArray<__kindof OCPromise *> *)promises {
++ (instancetype)initWithPromises:(NSArray *)promises {
     OCRacePromise *racePromise = [[OCRacePromise alloc] initWithPromises:promises];
     racePromise.type = OCPromiseTypeRace;
     return racePromise;
 }
 
-- (instancetype)initWithPromises:(NSArray<__kindof OCPromise *> *)promises {
+- (instancetype)initWithPromises:(NSArray *)promises {
     self = [super initWithPromis:nil withInput:nil];
     if (self) {
         _promises = [super buildPromisesCopy:promises];

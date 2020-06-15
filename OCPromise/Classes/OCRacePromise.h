@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OCRacePromise : OCSetPromise
 
-+ (instancetype)initWithPromises:(NSArray <__kindof OCPromise *>*)promises;
++ (instancetype)initWithPromises:(NSArray *)promises;
 
 @end
 

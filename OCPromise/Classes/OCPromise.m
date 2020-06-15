@@ -101,7 +101,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 - (innerCatch)innerCatch {
     if (!_innerCatch) {
         __weak typeof(self) weakSelf = self;
-        _innerCatch = ^OCPromise *(__kindof OCPromise *_Nonnull then) {
+        _innerCatch = ^OCPromise * _Nullable (__kindof OCPromise *_Nonnull then) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             if (!then.inputPromise && then.promise) {
 #if DEBUG
@@ -213,13 +213,13 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
     return newPromise;
 }
 
-+ (__kindof OCPromise * _Nonnull (^)(NSArray <__kindof OCPromise *> *))all {
++ (__kindof OCPromise * _Nonnull (^)(NSArray *))all {
     return ^(NSArray <__kindof OCPromise *> * all) {
         return [OCSetPromise initAllWithPromises:all];
     };
 }
 
-+ (__kindof OCPromise * _Nonnull (^)(NSArray <__kindof OCPromise *> *))race {
++ (__kindof OCPromise * _Nonnull (^)(NSArray *))race {
     return ^(NSArray <__kindof OCPromise *> * race) {
         return [OCSetPromise initRaceWithPromises:race];
     };
@@ -241,7 +241,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
     };
 }
 
-+ (__kindof OCPromise * _Nonnull (^)(NSArray <__kindof OCPromise *> *, mapBlock))map {
++ (__kindof OCPromise * _Nonnull (^)(NSArray *, mapBlock))map {
     return ^(NSArray <__kindof OCPromise *> * all, mapBlock mapBlock) {
         OCSetPromise *allPromise = [OCSetPromise initAllWithPromises:all];
         allPromise.mapBlock = mapBlock;

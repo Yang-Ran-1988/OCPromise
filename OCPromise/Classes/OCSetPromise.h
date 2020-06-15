@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readwrite) mapBlock mapBlock;
 
-- (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray <__kindof OCPromise *> *)promises;
-+ (instancetype)initAllWithPromises:(NSArray <__kindof OCPromise *>*)promises;
-+ (instancetype)initRaceWithPromises:(NSArray <__kindof OCPromise *>*)promises;
+- (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray *)promises;
++ (instancetype)initAllWithPromises:(NSArray *)promises;
++ (instancetype)initRaceWithPromises:(NSArray *)promises;
 
 @end
 

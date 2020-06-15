@@ -20,7 +20,7 @@
     return racePromise;
 }
 
-- (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray <__kindof OCPromise *> *)promises {
+- (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray *)promises {
     NSMutableArray *newPromises = [NSMutableArray array];
     [promises enumerateObjectsUsingBlock:^(__kindof OCPromise * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         OCPromise *newPromise;

@@ -22,13 +22,13 @@
 @synthesize promises = _promises;
 @synthesize mapBlock = _mapBlock;
 
-+ (instancetype)initWithPromises:(NSArray<__kindof OCPromise *> *)promises {
++ (instancetype)initWithPromises:(NSArray *)promises {
     OCAllPromise *allPromise = [[OCAllPromise alloc] initWithPromises:promises];
     allPromise.type = OCPromiseTypeAll;
     return allPromise;
 }
 
-- (instancetype)initWithPromises:(NSArray<__kindof OCPromise *> *)promises {
+- (instancetype)initWithPromises:(NSArray *)promises {
     self = [super initWithPromis:nil withInput:nil];
     if (self) {
         _promises = [super buildPromisesCopy:promises];

@@ -23,9 +23,9 @@ typedef void (^finally)(deliverValue deliverValue);
 typedef OCPromise * _Nonnull (^deliverOnMainThread)(deliverValue deliverValue);
 typedef id _Nullable (^mapBlock)(id value);
 typedef OCPromise * _Nonnull (^map)(mapBlock mapBlock);
-typedef __kindof OCPromise * _Nonnull (^all)(NSArray <__kindof OCPromise *> *);
-typedef __kindof OCPromise * _Nonnull (^race)(NSArray <__kindof OCPromise *> *);
-typedef __kindof OCPromise * _Nonnull (^classMap)(NSArray <__kindof OCPromise *> *, mapBlock mapBlock);
+typedef __kindof OCPromise * _Nonnull (^all)(NSArray *);
+typedef __kindof OCPromise * _Nonnull (^race)(NSArray *);
+typedef __kindof OCPromise * _Nonnull (^classMap)(NSArray *, mapBlock mapBlock);
 
 @interface OCPromise : NSObject
 
