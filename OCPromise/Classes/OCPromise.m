@@ -108,7 +108,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
                 NSString *reason = @"catch cannot trigger any resolve/reject event, use function()";
                 @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
 #else
-                return;
+                return nil;
 #endif
             }
             return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeCatch];
