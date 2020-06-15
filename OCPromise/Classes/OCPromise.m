@@ -11,6 +11,10 @@
 #import "OCSetPromise.h"
 #import "OCPromise+Private.h"
 
+NSErrorDomain const OCPromiseAggregateErrorDomain = @"OCPromiseAggregateErrorDomain";
+NSString * const OCPromiseAllSettledFulfilled = @"fulfilled";
+NSString * const OCPromiseAllSettledRejected = @"rejected";
+
 @interface OCPromise ()
 
 @end
@@ -202,6 +206,12 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
         case OCPromiseTypeRace:
             newPromise = [OCSetPromise initRaceWithPromises:promise.promises];
             break;
+        case OCPromiseTypeAny:
+            newPromise = [OCSetPromise initAnyWithPromises:promise.promises];
+            break;
+        case OCPromiseTypeAllSettled:
+            newPromise = [OCSetPromise initAllSettledWithPromises:promise.promises];
+            break;
         default:
             newPromise = [OCPromise promise:promise.promise withInput:promise.inputPromise];
             break;
@@ -222,6 +232,18 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 + (__kindof OCPromise * _Nonnull (^)(NSArray *))race {
     return ^(NSArray <__kindof OCPromise *> * race) {
         return [OCSetPromise initRaceWithPromises:race];
+    };
+}
+
++ (__kindof OCPromise * _Nonnull (^)(NSArray *))any {
+    return ^(NSArray <__kindof OCPromise *> * any) {
+        return [OCSetPromise initAnyWithPromises:any];
+    };
+}
+
++ (__kindof OCPromise * _Nonnull (^)(NSArray *))allSettled {
+    return ^(NSArray <__kindof OCPromise *> * any) {
+        return [OCSetPromise initAllSettledWithPromises:any];
     };
 }
 
@@ -262,13 +284,6 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
     if (_status & OCPromiseStatusResolved) {
         _head = nil;
     }
-}
-
-- (NSMutableArray <__kindof OCPromise *> *)promises {
-    if (!_promises) {
-        _promises = [NSMutableArray array];
-    }
-    return _promises;
 }
 
 @end

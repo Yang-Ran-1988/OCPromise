@@ -10,6 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+FOUNDATION_EXPORT NSErrorDomain const OCPromiseAggregateErrorDomain;
+FOUNDATION_EXPORT NSString * const OCPromiseAllSettledFulfilled;
+FOUNDATION_EXPORT NSString * const OCPromiseAllSettledRejected;
+
+typedef NS_ENUM(NSInteger) {
+    OCPromiseErrorAggregateError     =       -1500
+} OCPromiseErrorCode;
+
 @class OCPromise;
 
 typedef OCPromise * _Nullable (^resolve)(id _Nullable resolve);
@@ -17,14 +25,13 @@ typedef OCPromise * _Nullable (^reject)(id _Nullable reject);
 typedef void(^promise)(resolve resolve, reject reject);
 typedef OCPromise * _Nullable (^inputPromise)(id value);
 typedef OCPromise * _Nonnull (^then)(__kindof OCPromise *);
+typedef __kindof OCPromise * _Nonnull (^setPromise)(NSArray *);
 typedef void (^deliverValue)(id value);
 typedef OCPromise * _Nonnull (^catch)(deliverValue deliverValue);
 typedef void (^finally)(deliverValue deliverValue);
 typedef OCPromise * _Nonnull (^deliverOnMainThread)(deliverValue deliverValue);
 typedef id _Nullable (^mapBlock)(id value);
 typedef OCPromise * _Nonnull (^map)(mapBlock mapBlock);
-typedef __kindof OCPromise * _Nonnull (^all)(NSArray *);
-typedef __kindof OCPromise * _Nonnull (^race)(NSArray *);
 typedef __kindof OCPromise * _Nonnull (^classMap)(NSArray *, mapBlock mapBlock);
 
 @interface OCPromise : NSObject
@@ -34,8 +41,10 @@ typedef __kindof OCPromise * _Nonnull (^classMap)(NSArray *, mapBlock mapBlock);
 @property (nonatomic, copy, readonly) finally finally;
 @property (nonatomic, copy, readonly) deliverOnMainThread deliverOnMainThread;
 @property (nonatomic, copy, readonly) map map;
-@property (class, nonatomic, copy, readonly) all all;
-@property (class, nonatomic, copy, readonly) race race;
+@property (class, nonatomic, copy, readonly) setPromise all;
+@property (class, nonatomic, copy, readonly) setPromise race;
+@property (class, nonatomic, copy, readonly) setPromise any;
+@property (class, nonatomic, copy, readonly) setPromise allSettled;
 @property (class, nonatomic, copy, readonly) reject reject;
 @property (class, nonatomic, copy, readonly) resolve resolve;
 @property (class, nonatomic, copy, readonly) classMap map;

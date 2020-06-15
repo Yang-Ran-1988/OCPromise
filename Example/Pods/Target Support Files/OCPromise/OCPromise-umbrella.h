@@ -11,6 +11,8 @@
 #endif
 
 #import "OCAllPromise.h"
+#import "OCAllSettledPromise.h"
+#import "OCAnyPromise.h"
 #import "OCPromise+Private.h"
 #import "OCPromise.h"
 #import "OCPromiseNil.h"

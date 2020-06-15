@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray *)promises;
 + (instancetype)initAllWithPromises:(NSArray *)promises;
 + (instancetype)initRaceWithPromises:(NSArray *)promises;
++ (instancetype)initAnyWithPromises:(NSArray *)promises;
++ (instancetype)initAllSettledWithPromises:(NSArray *)promises;
 
 @end
 

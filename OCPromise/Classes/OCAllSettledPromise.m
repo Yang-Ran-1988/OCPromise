@@ -1,25 +1,24 @@
 //
-//  OCAllPromise.m
-//  test
+//  OCAllSettledPromise.m
+//  OCPromise
 //
-//  Created by 新东方_杨然 on 2020/4/30.
-//  Copyright © 2020 新东方_杨然. All rights reserved.
+//  Created by 新东方_杨然 on 2020/6/15.
 //
 
-#import "OCAllPromise.h"
+#import "OCAllSettledPromise.h"
 #import "OCPromiseNil.h"
 #import "OCPromiseReturnValue.h"
 
-@implementation OCAllPromise
+@implementation OCAllSettledPromise
 
 @synthesize promise = _promise;
 @synthesize promises = _promises;
 @synthesize mapBlock = _mapBlock;
 
 + (instancetype)initWithPromises:(NSArray *)promises {
-    OCAllPromise *allPromise = [[OCAllPromise alloc] initWithPromises:promises];
-    allPromise.type = OCPromiseTypeAll;
-    return allPromise;
+    OCAllSettledPromise *allSettledPromise = [[OCAllSettledPromise alloc] initWithPromises:promises];
+    allSettledPromise.type = OCPromiseTypeAllSettled;
+    return allSettledPromise;
 }
 
 - (instancetype)initWithPromises:(NSArray *)promises {
@@ -37,24 +36,24 @@
             
             dispatch_semaphore_t returnLock = dispatch_semaphore_create(0);
             dispatch_semaphore_t innerLock = dispatch_semaphore_create(1);
-            __block BOOL isResolve = YES;
             __block id returnValue = [[OCPromiseReturnValue alloc] init];
             
-            for (NSUInteger idx = 0; idx < strongSelf.promises.count && isResolve; idx++) {
+            for (NSUInteger idx = 0; idx < strongSelf.promises.count; idx++) {
                 __kindof OCPromise *obj = strongSelf.promises[idx];
                 obj.last = strongSelf.last;
                 obj.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
-                    if (isResolve) {
-                        if ([value isKindOfClass:[OCPromiseReturnValue class]]) {
-                            returnValue[idx] = value;
-                        }
-                        else {
-                            returnValue[idx] = (strongSelf.mapBlock ? strongSelf.mapBlock(value) : value) ?: OCPromiseNil.nilValue;
-                        }
-                        if (((OCPromiseReturnValue *)returnValue).count == strongSelf.promises.count) {
-                            dispatch_semaphore_signal(returnLock);
-                        }
+                    
+                    if ([value isKindOfClass:[OCPromiseReturnValue class]]) {
+                        returnValue[idx] = @{@"value":value,
+                                             @"status":OCPromiseAllSettledFulfilled};
+                    }
+                    else {
+                        returnValue[idx] = [NSDictionary dictionaryWithObjectsAndKeys:OCPromiseAllSettledFulfilled, @"status",
+                                            strongSelf.mapBlock ? strongSelf.mapBlock(value) : value, @"value",nil];
+                    }
+                    if (((OCPromiseReturnValue *)returnValue).count == strongSelf.promises.count) {
+                        dispatch_semaphore_signal(returnLock);
                     }
                     
                     dispatch_semaphore_signal(innerLock);
@@ -63,13 +62,12 @@
                 })).innerCatch(function(^OCPromise * _Nullable(id  _Nonnull value) {
                     
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
-                    if (!isResolve) {
-                        dispatch_semaphore_signal(innerLock);
-                        return nil;
+                    
+                    returnValue[idx] = @{@"value":value,
+                                         @"status":OCPromiseAllSettledRejected};
+                    if (((OCPromiseReturnValue *)returnValue).count == strongSelf.promises.count) {
+                        dispatch_semaphore_signal(returnLock);
                     }
-                    isResolve = NO;
-                    returnValue = value;
-                    dispatch_semaphore_signal(returnLock);
                     dispatch_semaphore_signal(innerLock);
                     return nil;
                     
@@ -78,11 +76,7 @@
             
             dispatch_semaphore_wait(returnLock, DISPATCH_TIME_FOREVER);
             
-            if (isResolve) {
-                resolve(returnValue);
-            } else {
-                reject(returnValue);
-            }
+            resolve(returnValue);
         };
     }
     return self;

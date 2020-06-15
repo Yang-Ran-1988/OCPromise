@@ -1,33 +1,28 @@
 //
-//  OCRacePromise.m
-//  test
+//  OCAnyPromise.m
+//  OCPromise
 //
-//  Created by 新东方_杨然 on 2020/4/30.
-//  Copyright © 2020 新东方_杨然. All rights reserved.
+//  Created by 新东方_杨然 on 2020/6/15.
 //
 
-#import "OCRacePromise.h"
+#import "OCAnyPromise.h"
+#import "OCPromiseReturnValue.h"
 
-@implementation OCRacePromise
+@implementation OCAnyPromise
 
 @synthesize promise = _promise;
 @synthesize promises = _promises;
 
 + (instancetype)initWithPromises:(NSArray *)promises {
-    OCRacePromise *racePromise = [[OCRacePromise alloc] initWithPromises:promises];
-    racePromise.type = OCPromiseTypeRace;
-    return racePromise;
+    OCAnyPromise *allPromise = [[OCAnyPromise alloc] initWithPromises:promises];
+    allPromise.type = OCPromiseTypeAny;
+    return allPromise;
 }
 
 - (instancetype)initWithPromises:(NSArray *)promises {
     self = [super initWithPromis:nil withInput:nil];
     if (self) {
         _promises = [super buildPromisesCopy:promises];
-        if (!_promises.count) {
-            [self cancel];
-            return nil;
-        }
-        
         __weak typeof(self) weakSelf = self;
         
         _promise = ^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
@@ -42,6 +37,7 @@
             __block id returnValue = nil;
             __block BOOL isResolve = NO;
             __block BOOL isReject = NO;
+            __block NSUInteger rejectCount = 0;
             
             for (NSUInteger idx = 0; idx < strongSelf.promises.count && !isResolve && !isReject; idx++) {
                 __kindof OCPromise *obj = strongSelf.promises[idx];
@@ -67,10 +63,13 @@
                         dispatch_semaphore_signal(innerLock);
                         return nil;
                     }
-                    
-                    returnValue = value;
-                    isReject = YES;
-                    dispatch_semaphore_signal(returnLock);
+                    rejectCount ++;
+                    if (rejectCount == strongSelf.promises.count) {
+                        NSError *error = [NSError errorWithDomain:OCPromiseAggregateErrorDomain code:OCPromiseErrorAggregateError userInfo:@{NSLocalizedDescriptionKey:@"All Promises rejected"}];
+                        returnValue = error;
+                        isReject = YES;
+                        dispatch_semaphore_signal(returnLock);
+                    }
                     dispatch_semaphore_signal(innerLock);
                     return nil;
                     

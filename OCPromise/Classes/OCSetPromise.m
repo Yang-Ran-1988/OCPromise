@@ -8,6 +8,8 @@
 #import "OCSetPromise.h"
 #import "OCAllPromise.h"
 #import "OCRacePromise.h"
+#import "OCAnyPromise.h"
+#import "OCAllSettledPromise.h"
 
 @implementation OCSetPromise
 
@@ -18,6 +20,16 @@
 + (instancetype)initRaceWithPromises:(NSArray <__kindof OCPromise *>*)promises {
     OCRacePromise *racePromise = [OCRacePromise initWithPromises:promises];
     return racePromise;
+}
+
++ (instancetype)initAnyWithPromises:(NSArray *)promises {
+    OCAnyPromise *anyPromise = [OCAnyPromise initWithPromises:promises];
+    return anyPromise;
+}
+
++ (instancetype)initAllSettledWithPromises:(NSArray *)promises {
+    OCAllSettledPromise *allSettledPromise = [OCAllSettledPromise initWithPromises:promises];
+    return allSettledPromise;
 }
 
 - (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray *)promises {

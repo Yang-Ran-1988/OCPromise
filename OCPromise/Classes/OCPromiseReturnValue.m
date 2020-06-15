@@ -73,14 +73,28 @@
             [array addObject:[obj getItemsIntoArray]];
         }
         else {
-            [array addObject:obj ?: OCPromiseNil.nilValue];
+            if ([obj isKindOfClass:NSDictionary.class]) {
+                [array addObject:[self searchOCPromiseReturnValueFromDic:obj]];
+            }
+            else {
+                [array addObject:obj ?: OCPromiseNil.nilValue];
+            }
         }
     }
     return [array copy];
 }
 
+- (NSDictionary *)searchOCPromiseReturnValueFromDic:(NSDictionary *)dic {
+    if ([dic[@"status"] isEqualToString:@"fulfilled"] && [dic[@"value"] isKindOfClass:OCPromiseReturnValue.class]) {
+        NSMutableDictionary *replaceDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+        replaceDic[@"value"] = [dic[@"value"] getItemsIntoArray];
+        return [replaceDic copy];
+    }
+    return dic;
+}
+
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@",self.array];
+    return self.array.description;
 }
 
 - (NSUInteger)countByEnumeratingWithState:(nonnull NSFastEnumerationState *)state objects:(__unsafe_unretained id  _Nullable * _Nonnull)buffer count:(NSUInteger)len {

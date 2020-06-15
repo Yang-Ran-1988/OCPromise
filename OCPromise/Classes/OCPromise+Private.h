@@ -12,6 +12,8 @@ typedef NS_ENUM(NSInteger) {
     OCPromiseTypeThen,
     OCPromiseTypeAll,
     OCPromiseTypeRace,
+    OCPromiseTypeAny,
+    OCPromiseTypeAllSettled,
     OCPromiseTypeCatch,
     OCPromiseTypeFinally
 } OCPromiseType;
@@ -44,7 +46,7 @@ typedef OCPromise * _Nullable (^innerCatch)(__kindof OCPromise *_Nonnull);
 @property (nonatomic, copy) resolve resolve;
 @property (nonatomic, copy) reject reject;
 @property (nonatomic, copy) inputPromise inputPromise;
-@property (nonatomic, copy) NSMutableArray <__kindof OCPromise *> *promises;
+@property (nonatomic, copy) NSArray <__kindof OCPromise *> *promises;
 @property (nonatomic, strong) __kindof OCPromise * __nullable next;
 @property (nonatomic, strong) dispatch_queue_t promiseSerialQueue;
 @property (nonatomic, weak) __kindof OCPromise *last;
