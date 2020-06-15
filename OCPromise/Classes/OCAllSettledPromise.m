@@ -63,8 +63,7 @@
                     
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     
-                    returnValue[idx] = @{@"value":value,
-                                         @"status":OCPromiseAllSettledRejected};
+                    returnValue[idx] = [NSDictionary dictionaryWithObjectsAndKeys:OCPromiseAllSettledRejected, @"status", value, @"value", nil];
                     if (((OCPromiseReturnValue *)returnValue).count == strongSelf.promises.count) {
                         dispatch_semaphore_signal(returnLock);
                     }
