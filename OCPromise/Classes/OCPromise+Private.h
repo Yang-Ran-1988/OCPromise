@@ -21,9 +21,8 @@ typedef NS_ENUM(NSInteger) {
 typedef NS_OPTIONS(NSInteger, OCPromiseStatus) {
     OCPromiseStatusInSet            = 1 << 0,
     OCPromiseStatusPending          = 1 << 1,
-    OCPromiseStatusResolved         = 1 << 2,
-    OCPromiseStatusCatchRejected    = 1 << 3,
-    OCPromiseStatusNoPromise        = 1 << 4
+    OCPromiseStatusFulfilled         = 1 << 2,
+    OCPromiseStatusRejected    = 1 << 3,
 };
 
 #ifndef dispatch_promise_queue_async_safe
@@ -37,8 +36,6 @@ typedef NS_OPTIONS(NSInteger, OCPromiseStatus) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef OCPromise * _Nullable (^innerCatch)(__kindof OCPromise *_Nonnull);
-
 @interface OCPromise ()
 
 @property (nonatomic, assign) OCPromiseType type;
@@ -48,12 +45,10 @@ typedef OCPromise * _Nullable (^innerCatch)(__kindof OCPromise *_Nonnull);
 @property (nonatomic, copy) inputPromise inputPromise;
 @property (nonatomic, copy) NSArray <__kindof OCPromise *> *promises;
 @property (nonatomic, strong) __kindof OCPromise * __nullable next;
-@property (nonatomic, strong) dispatch_queue_t promiseSerialQueue;
 @property (nonatomic, weak) __kindof OCPromise *last;
 @property (nonatomic, strong) __kindof OCPromise * __nullable head;
 @property (nonatomic, strong) id resolvedValue;
 @property (nonatomic, assign) OCPromiseStatus status;
-@property (nonatomic, copy, readonly) innerCatch innerCatch;
 
 - (instancetype)initWithPromis:(__nullable promise)ownPromise withInput:(__nullable inputPromise)input;
 - (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type;

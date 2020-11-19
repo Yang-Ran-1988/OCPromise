@@ -21,13 +21,6 @@ NSString * const OCPromiseAllSettledRejected = @"rejected";
 
 @implementation OCPromise
 
-@synthesize then = _then;
-@synthesize catch = _catch;
-@synthesize innerCatch = _innerCatch;
-@synthesize finally = _finally;
-@synthesize deliverOnMainThread = _deliverOnMainThread;
-@synthesize map = _map;
-
 OCPromise * Promise(promise promise) {
     OCPromise *ocPromise = [OCPromise promise:promise withInput:nil];
     return ocPromise;
@@ -43,13 +36,13 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
         ocPromise.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
             resolve(value);
             return nil;
-        })).innerCatch(function(^OCPromise * _Nullable(id  _Nonnull value) {
+        })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
             count ++;
             if (count == times) {
                 reject(value);
             } else {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_MSEC)), ocPromise.promiseSerialQueue, ^{
-                    ocPromise.status = ocPromise.status & ~OCPromiseStatusResolved & ~OCPromiseStatusPending;
+                    ocPromise.status = ocPromise.status & ~OCPromiseStatusFulfilled & ~OCPromiseStatusPending;
                     ocPromise.promise(ocPromise.resolve, ocPromise.reject);
                 });
             }
@@ -75,115 +68,93 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 }
 
 - (then)then {
-    if (!_then) {
-        __weak typeof(self) weakSelf = self;
-        _then = ^(__kindof OCPromise *_Nonnull then) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:then.type];
-        };
-    }
-    return _then;
+    __weak typeof(self) weakSelf = self;
+    return ^(__kindof OCPromise *_Nonnull then) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:then.type];
+    };
 }
 
 - (catch)catch {
-    if (!_catch) {
-        __weak typeof(self) weakSelf = self;
-        _catch = ^(deliverValue deliverValue) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    !deliverValue ?: deliverValue(value);
-                });
-                return nil;
-            });
-            return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeCatch];
-        };
-    }
-    return _catch;
+    __weak typeof(self) weakSelf = self;
+    return ^OCPromise * _Nullable (__kindof OCPromise *_Nonnull then) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeCatch];
+    };
 }
 
-- (innerCatch)innerCatch {
-    if (!_innerCatch) {
-        __weak typeof(self) weakSelf = self;
-        _innerCatch = ^OCPromise * _Nullable (__kindof OCPromise *_Nonnull then) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (!then.inputPromise && then.promise) {
-#if DEBUG
-                NSString *reason = @"catch cannot trigger any resolve/reject event, use function()";
-                @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
-#else
-                return nil;
-#endif
-            }
-            return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeCatch];
-        };
-    }
-    return _innerCatch;
+- (catchOnMain)catchOnMain {
+    __weak typeof(self) weakSelf = self;
+    return ^(deliverValue deliverValue) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                !deliverValue ?: deliverValue(value);
+            });
+            return nil;
+        });
+        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeCatch];
+    };
 }
 
 - (finally)finally {
-    if (!_finally) {
-        __weak typeof(self) weakSelf = self;
-        _finally = ^(deliverValue deliverValue) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    !deliverValue ?: deliverValue(value);
-                });
-                return nil;
+    __weak typeof(self) weakSelf = self;
+    return ^OCPromise * _Nullable (deliverFinal deliver) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+            !deliver ?: deliver();
+            return nil;
+        });
+        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
+    };
+}
+
+- (finallyOnMain)finallyOnMain {
+    __weak typeof(self) weakSelf = self;
+    return ^OCPromise * _Nullable (deliverFinal deliver) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                !deliver ?: deliver();
             });
-            [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
-        };
-    }
-    return _finally;
+            return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+                resolve(value);
+            });
+        });
+        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
+    };
 }
 
 - (deliverOnMainThread)deliverOnMainThread {
-    if (!_deliverOnMainThread) {
-        __weak typeof(self) weakSelf = self;
-        _deliverOnMainThread = ^(deliverValue deliverValue) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    !deliverValue ?: deliverValue(value);
-                });
-                return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-                    resolve(value);
-                });
+    __weak typeof(self) weakSelf = self;
+    return ^(deliverValue deliverValue) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                !deliverValue ?: deliverValue(value);
             });
-            return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
-        };
-    }
-    return _deliverOnMainThread;
+            return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+                resolve(value);
+            });
+        });
+        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
+    };
 }
 
 - (map)map {
-    if (!_map) {
-        __weak typeof(self) weakSelf = self;
-        _map = ^(mapBlock mapBlock) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
-                return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-                    resolve(mapBlock?mapBlock(value):value);
-                });
+    __weak typeof(self) weakSelf = self;
+    return ^(mapBlock mapBlock) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
+            return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
+                resolve(mapBlock?mapBlock(value):value);
             });
-            return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
-        };
-    }
-    return _map;
+        });
+        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
+    };
 }
 
 - (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type {
-    
-    if (self.type == OCPromiseTypeCatch && type != OCPromiseTypeFinally) {
-#if DEBUG
-        NSString *reason = @"only finally can join catch";
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
-#else
-        return nil;
-#endif
-    }
-    
     if (!promise.last && !promise.next) {
         promise.type = type;
         return promise;
@@ -278,10 +249,10 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 
 - (void)setStatus:(OCPromiseStatus)status {
     _status = status;
-    if (_status & OCPromiseStatusCatchRejected && _type != OCPromiseTypeCatch && _type != OCPromiseTypeFinally) {
-        _status |= OCPromiseStatusResolved;
+    if (_status & OCPromiseStatusRejected) {
+        _status |= OCPromiseStatusFulfilled;
     }
-    if (_status & OCPromiseStatusResolved) {
+    if (_status & OCPromiseStatusFulfilled) {
         _head = nil;
     }
 }

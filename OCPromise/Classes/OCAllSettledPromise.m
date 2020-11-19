@@ -59,7 +59,7 @@
                     dispatch_semaphore_signal(innerLock);
                     return nil;
                     
-                })).innerCatch(function(^OCPromise * _Nullable(id  _Nonnull value) {
+                })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
                     
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     
