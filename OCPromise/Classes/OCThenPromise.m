@@ -83,7 +83,7 @@
     OCPromise *newPromise = [super buildNewPromiseIntoNextWithOrigin:promise type:type];
     
     newPromise.last = currentPromise;
-    newPromise.status = currentPromise.status & ~OCPromiseStatusFulfilled & ~OCPromiseStatusPending;
+    newPromise.status = currentPromise.status & OCPromiseStatusInSet;
     if (currentPromise.status & OCPromiseStatusRejected) {
         newPromise.resolvedValue = currentPromise.resolvedValue;
     }
@@ -99,7 +99,7 @@
     
     dispatch_block_t block = ^{
         
-        if (!(currentPromise.status & OCPromiseStatusFulfilled || currentPromise.status & OCPromiseStatusPending)) {
+        if ((currentPromise.status & OCPromiseStatusPending) != OCPromiseStatusPending) {
             if (!currentPromise.last) {
                 if (currentPromise.inputPromise && !currentPromise.promise) {
 #if DEBUG
@@ -122,7 +122,7 @@
             }
         }
         else if (currentPromise.status & OCPromiseStatusFulfilled) {
-            if (currentPromise.next && !(currentPromise.next.status & OCPromiseStatusFulfilled || currentPromise.next.status & OCPromiseStatusPending)) {
+            if (currentPromise.next && (currentPromise.next.status & OCPromiseStatusPending) != OCPromiseStatusPending) {
                 if (currentPromise.status & OCPromiseStatusRejected) {
                     [currentPromise.next searchCatchWithRejectValue:currentPromise.resolvedValue];
                 }

@@ -69,7 +69,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 
 - (then)then {
     __weak typeof(self) weakSelf = self;
-    return ^(__kindof OCPromise *_Nonnull then) {
+    return ^OCPromise * _Nullable (__kindof OCPromise *_Nonnull then) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:then.type];
     };
@@ -85,13 +85,13 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 
 - (catchOnMain)catchOnMain {
     __weak typeof(self) weakSelf = self;
-    return ^(deliverValue deliverValue) {
+    return ^OCPromise * _Nullable (deliverValue deliverValue) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 !deliverValue ?: deliverValue(value);
             });
-            return nil;
+            return value;
         });
         return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeCatch];
     };
@@ -103,7 +103,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             !deliver ?: deliver();
-            return nil;
+            return value;
         });
         return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
     };
@@ -133,9 +133,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 !deliverValue ?: deliverValue(value);
             });
-            return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-                resolve(value);
-            });
+            return value;
         });
         return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
     };
@@ -253,6 +251,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
         _status |= OCPromiseStatusFulfilled;
     }
     if (_status & OCPromiseStatusFulfilled) {
+        _status |= OCPromiseStatusPending;
         _head = nil;
     }
 }

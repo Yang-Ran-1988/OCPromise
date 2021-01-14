@@ -30,7 +30,7 @@ typedef void (^deliverFinal)(void);
 
 typedef OCPromise * _Nonnull (^then)(__kindof OCPromise *);
 typedef OCPromise * _Nullable (^catch)(__kindof OCPromise *_Nonnull);
-typedef OCPromise * _Nonnull (^catchOnMain)(deliverValue deliverValue);
+typedef OCPromise * _Nullable (^catchOnMain)(deliverValue deliverValue);
 typedef OCPromise * _Nullable (^finally)(deliverFinal deliver);
 typedef OCPromise * _Nullable (^finallyOnMain)(deliverFinal deliver);
 
