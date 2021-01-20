@@ -74,9 +74,10 @@
     }).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"111 %@", value);
         return nil;
-    })).catch(^(id value) {
+    })).catch(function(^id _Nullable(id  _Nullable value) {
         NSLog(@"catch %@", value);
-    });
+        return nil;
+    }));
     
     OCPromise *map = OCPromise.map(@[add, multiply, @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
         return @([value longValue] * 10);
@@ -85,9 +86,10 @@
     p.then(map).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@", value);
         return nil;
-    })).catch(^(id  _Nonnull value) {
+    })).catch(function(^id _Nullable(id  _Nullable value) {
         NSLog(@"err %@", value);
-    });
+        return nil;
+    }));;
     
     p.then(all).then(middle).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"333 %@", value);
@@ -102,18 +104,21 @@
         NSLog(@"%@", value);
         self.page ++;
         return nil;
-    })).catch(^(NSError *error) {
+    })).catch(function(^id _Nullable(NSError *error) {
         NSLog(@"%@", error.description);
-    }).finally(^(id  _Nonnull value) {
+        return error;
+    })).finallyOnMain(^{
         //[HUD dismiss];
     });
+    
     
     retry(OCPromise.resolve(params).then(self.requestPageData), 3, 200).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@", value);
         return nil;
-    })).catch(^(id  _Nonnull value) {
+    })).catch(function(^id _Nullable(id  _Nullable value) {
         NSLog(@"%@", value);
-    });
+        return nil;
+    }));
     
     [self.alertView show];
 }
