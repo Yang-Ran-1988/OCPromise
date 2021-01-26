@@ -68,51 +68,51 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
 }
 
 - (then)then {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     return ^OCPromise * _Nullable (__kindof OCPromise *_Nonnull then) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:then.type];
+        @strongify(self)
+        return [self buildNewPromiseIntoNextWithOrigin:then type:then.type];
     };
 }
 
 - (catch)catch {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     return ^OCPromise * _Nullable (__kindof OCPromise *_Nonnull then) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        return [strongSelf buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeCatch];
+        @strongify(self)
+        return [self buildNewPromiseIntoNextWithOrigin:then type:OCPromiseTypeCatch];
     };
 }
 
 - (catchOnMain)catchOnMain {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     return ^OCPromise * _Nullable (deliverValue deliverValue) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        @strongify(self)
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 !deliverValue ?: deliverValue(value);
             });
             return value;
         });
-        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeCatch];
+        return [self buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeCatch];
     };
 }
 
 - (finally)finally {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     return ^OCPromise * _Nullable (deliverFinal deliver) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        @strongify(self)
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             !deliver ?: deliver();
             return value;
         });
-        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
+        return [self buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
     };
 }
 
 - (finallyOnMain)finallyOnMain {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     return ^OCPromise * _Nullable (deliverFinal deliver) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        @strongify(self)
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 !deliver ?: deliver();
@@ -121,34 +121,34 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
                 resolve(value);
             });
         });
-        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
+        return [self buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeFinally];
     };
 }
 
 - (deliverOnMainThread)deliverOnMainThread {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     return ^(deliverValue deliverValue) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        @strongify(self)
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 !deliverValue ?: deliverValue(value);
             });
             return value;
         });
-        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
+        return [self buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
     };
 }
 
 - (map)map {
-    __weak typeof(self) weakSelf = self;
+    @weakify(self)
     return ^(mapBlock mapBlock) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        @strongify(self)
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
                 resolve(mapBlock?mapBlock(value):value);
             });
         });
-        return [strongSelf buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
+        return [self buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
     };
 }
 

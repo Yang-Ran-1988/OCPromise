@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface OCSetPromise : OCThenPromise
 
-@property (nonatomic, copy, readwrite) mapBlock mapBlock;
+@property (nonatomic, copy) mapBlock mapBlock;
 
 - (NSArray <__kindof OCPromise *> *)buildPromisesCopy:(NSArray *)promises;
 + (instancetype)initAllWithPromises:(NSArray *)promises;

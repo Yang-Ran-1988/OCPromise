@@ -13,7 +13,6 @@
 
 @synthesize promise = _promise;
 @synthesize promises = _promises;
-@synthesize mapBlock = _mapBlock;
 
 + (instancetype)initWithPromises:(NSArray *)promises {
     OCAllSettledPromise *allSettledPromise = [[OCAllSettledPromise alloc] initWithPromises:promises];
@@ -79,21 +78,6 @@
         };
     }
     return self;
-}
-
-- (void)setMapBlock:(mapBlock)mapBlock {
-    _mapBlock = mapBlock;
-    [self injectMapBlock];
-}
-
-- (void)injectMapBlock {
-    dispatch_apply(self.promises.count, dispatch_get_global_queue(0, 0), ^(size_t index) {
-        id obj = self.promises[index];
-        if ([obj isKindOfClass:[OCSetPromise class]]) {
-            ((OCSetPromise *) obj).mapBlock = _mapBlock;
-            [obj injectMapBlock];
-        }
-    });
 }
 
 @end

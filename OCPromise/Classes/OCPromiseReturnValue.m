@@ -8,6 +8,7 @@
 
 #import "OCPromiseReturnValue.h"
 #import "OCPromiseNil.h"
+#import "OCPromiseMacro.h"
 
 @interface OCPromiseReturnValue ()
 
@@ -121,16 +122,57 @@
     return count;
 }
 
-- (void)enumerateObjectsUsingBlock:(void (NS_NOESCAPE ^)(id obj, NSUInteger idx, BOOL *stop))block {
-    if (block) {
-        BOOL stop = NO;
-        for (NSUInteger i = 0; i < self.count; i ++) {
+- (void)enumerateObjectsWithOptions:(NSEnumerationOptions)opts usingBlock:(void (NS_NOESCAPE ^)(id obj, NSUInteger idx, BOOL *stop))block {
+    if (!block) {
+        return;
+    }
+    __block BOOL stop = NO;
+    __block NSInteger i = 0;
+    NSInteger len = self.count;
+    
+    void (^forBlockFirst)(void) = ^{
+        if ((opts & NSEnumerationReverse) == NSEnumerationReverse) {
+            i = len - 1;
+        }
+        else {
+            i = 0;
+        }
+    };
+    BOOL (^forBlockSecond)(void) = ^ BOOL {
+        if ((opts & NSEnumerationReverse) == NSEnumerationReverse) {
+            return i >= 0;
+        }
+        else {
+            return i < len;
+        }
+    };
+    void (^forBlockThird)(void) = ^{
+        if ((opts & NSEnumerationReverse) == NSEnumerationReverse) {
+            i --;
+        }
+        else {
+            i ++;
+        }
+    };
+    
+    for (forBlockFirst(); forBlockSecond(); forBlockThird()) {
+        if ((opts & NSEnumerationConcurrent) == NSEnumerationConcurrent) {
+            NSInteger index = i;
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                block(self[index], index, &stop);
+            });
+        }
+        else {
             block(self[i], i, &stop);
             if (stop) {
                 break;
             }
         }
     }
+}
+
+- (void)enumerateObjectsUsingBlock:(void (NS_NOESCAPE ^)(id obj, NSUInteger idx, BOOL *stop))block {
+    [self enumerateObjectsWithOptions:0 usingBlock:block];
 }
 
 @end

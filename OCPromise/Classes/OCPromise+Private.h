@@ -7,6 +7,7 @@
 //
 
 #import "OCPromise.h"
+#import "OCPromiseMacro.h"
 
 typedef NS_ENUM(NSInteger) {
     OCPromiseTypeThen,
