@@ -51,14 +51,14 @@ typedef __kindof OCPromise * _Nonnull (^classMap)(NSArray *, mapBlock mapBlock);
 @property (nonatomic, copy, readonly) finallyOnMain finallyOnMain;
 @property (nonatomic, copy, readonly) deliverOnMainThread deliverOnMainThread;
 @property (nonatomic, copy, readonly) map map;
-@property (class, nonatomic, copy, readonly) setPromise all;
-@property (class, nonatomic, copy, readonly) setPromise race;
-@property (class, nonatomic, copy, readonly) setPromise any;
-@property (class, nonatomic, copy, readonly) setPromise allSettled;
-@property (class, nonatomic, copy, readonly) reject reject;
-@property (class, nonatomic, copy, readonly) resolve resolve;
+@property (class, nonatomic, readonly) setPromise all;
+@property (class, nonatomic, readonly) setPromise race;
+@property (class, nonatomic, readonly) setPromise any;
+@property (class, nonatomic, readonly) setPromise allSettled;
+@property (class, nonatomic, readonly) reject reject;
+@property (class, nonatomic, readonly) resolve resolve;
 /// all+map
-@property (class, nonatomic, copy, readonly) classMap map;
+@property (class, nonatomic, readonly) classMap map;
 @property (nonatomic, assign) NSUInteger code;
 @property (nonatomic, strong) dispatch_queue_t promiseSerialQueue;
 

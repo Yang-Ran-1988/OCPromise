@@ -1,5 +1,5 @@
 PODS:
-  - OCPromise (0.1.1)
+  - OCPromise (0.1.4)
 
 DEPENDENCIES:
   - OCPromise (from `../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  OCPromise: 7b1a99b76a37518e381d3a8a67704dffbf1096b9
+  OCPromise: 57bccc7693d333572430f819008d619e12818195
 
 PODFILE CHECKSUM: ce1486e4212e16dbf40ae9abf42d9d4f8df0cee7
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4

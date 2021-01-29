@@ -8,12 +8,12 @@
 
 #import "OCPROMISEViewController.h"
 #import "OCPromise.h"
-#import "TestView.h"
+
+#import "OCPromiseNil.h"
 
 @interface OCPROMISEViewController ()
 
 @property (nonatomic, assign) NSInteger page;
-@property (nonatomic, strong) TestView *alertView;
 
 @end
 
@@ -25,9 +25,7 @@
     self.view.backgroundColor = UIColor.whiteColor;
     
     self.page = 0;
-    
-    [self.view addSubview:self.alertView];
-    
+        
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(50, 120, 130, 60)];
     [button setTitle:@"button" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
@@ -36,35 +34,45 @@
 }
 
 - (void)buttonAction {
+
     OCPromise *p = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
         NSLog(@"start new Promise...");
         resolve(@123);
     });
-    
-    OCPromise *multiply = function(^OCPromise * _Nullable(id  _Nonnull value) {
+
+    OCPromise *multiply = function(^id _Nullable(id  _Nullable value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             NSLog(@"calculating %ld x %ld ...", [value longValue], [value longValue]);
             resolve([NSNumber numberWithLong:[value longValue] * [value longValue]]);
         });
     });
-    
-    OCPromise *add = function(^OCPromise * _Nullable(id  _Nonnull value) {
+
+    OCPromise *add = function(^id _Nullable(id  _Nullable value) {
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             NSLog(@"calculating %ld + %ld ...", [value longValue], [value longValue]);
             resolve([NSNumber numberWithLong:[value longValue] + [value longValue]]);
         });
     });
+
+    p.then(multiply).then(add).then(function(^id _Nullable(id  _Nullable value) {
+        NSLog(@"result is %ld", [value longValue]);
+        return nil;
+    }));
     
     OCPromise *race = OCPromise.race(@[add, multiply]);
-    OCPromise *all = OCPromise.all(@[add, multiply, race]);
-    
+    OCPromise *all = OCPromise.all(@[add, multiply]);
+    p.then(all).then(function(^id _Nullable(id  _Nullable value) {
+        NSLog(@"%@", value);
+        return nil;
+    }));
+
     OCPromise *middle = p.then(add).then(all).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"all value %@", value);
         return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
             resolve(@([value[0] longValue] + [value[2] longValue]));
         });
     }));
-    
+
     middle.deliverOnMainThread(^(id  _Nonnull value) {
         NSLog(@"on main %@", value);
     }).map(^id _Nullable(id  _Nonnull value) {
@@ -78,24 +86,27 @@
         NSLog(@"catch %@", value);
         return nil;
     }));
-    
-    OCPromise *map = OCPromise.map(@[add, multiply, @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
+
+    OCPromise *map = OCPromise.map(@[add, multiply, OCPromise.resolve(nil), @[@6, race, @1, @[@15, multiply]]], ^id _Nullable(id  _Nonnull value) {
+        if (!value) {
+            return nil;
+        }
         return @([value longValue] * 10);
     });
-    
+
     p.then(map).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@", value);
         return nil;
     })).catch(function(^id _Nullable(id  _Nullable value) {
         NSLog(@"err %@", value);
         return nil;
-    }));;
-    
+    }));
+
     p.then(all).then(middle).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"333 %@", value);
         return nil;
     }));
-    
+
     NSDictionary *params = @{@"page":@(self.page)};
     //[HUD show];
     OCPromise.resolve(params).then(self.requestPageData).deliverOnMainThread(^(id  _Nonnull value) {
@@ -110,8 +121,8 @@
     })).finallyOnMain(^{
         //[HUD dismiss];
     });
-    
-    
+
+
     retry(OCPromise.resolve(params).then(self.requestPageData), 3, 200).then(function(^OCPromise * _Nullable(id  _Nonnull value) {
         NSLog(@"%@", value);
         return nil;
@@ -119,8 +130,6 @@
         NSLog(@"%@", value);
         return nil;
     }));
-    
-    [self.alertView show];
 }
 
 - (OCPromise *)requestPageData {
@@ -143,16 +152,6 @@
         //completion([NSString stringWithFormat:@"response data with request params %@", params], nil);
         completion(nil, [NSError errorWithDomain:(@"com.ocpromise.response.err") code:30001 userInfo:@{@"description":@"error"}]);
     });
-}
-
-- (TestView *)alertView {
-    if (!_alertView) {
-        _alertView = [[TestView alloc] initWithFrame:self.view.bounds];
-        _alertView.promise.deliverOnMainThread(^(id  _Nonnull value) {
-            NSLog(@"click button index %@", value);
-        });
-    }
-    return _alertView;
 }
 
 @end

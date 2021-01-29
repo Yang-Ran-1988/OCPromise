@@ -6,7 +6,6 @@
 //
 
 #import "OCAnyPromise.h"
-#import "OCPromiseReturnValue.h"
 
 @implementation OCAnyPromise
 
@@ -23,11 +22,10 @@
     self = [super initWithPromis:nil withInput:nil];
     if (self) {
         _promises = [super buildPromisesCopy:promises];
-        __weak typeof(self) weakSelf = self;
-        
+        @weakify(self)
         _promise = ^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (!strongSelf.promises.count) {
+            @strongify(self)
+            if (!self.promises.count) {
                 resolve(nil);
                 return;
             }
@@ -39,11 +37,10 @@
             __block BOOL isReject = NO;
             __block NSUInteger rejectCount = 0;
             
-            for (NSUInteger idx = 0; idx < strongSelf.promises.count && !isResolve && !isReject; idx++) {
-                __kindof OCPromise *obj = strongSelf.promises[idx];
-                obj.last = strongSelf.last;
+            for (NSUInteger idx = 0; idx < self.promises.count && !isResolve && !isReject; idx++) {
+                __kindof OCPromise *obj = self.promises[idx];
+                obj.last = self.last;
                 obj.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-                    
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     if (isResolve || isReject) {
                         dispatch_semaphore_signal(innerLock);
@@ -57,14 +54,14 @@
                     return nil;
                     
                 })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-                    
+                    @strongify(self)
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     if (isResolve || isReject) {
                         dispatch_semaphore_signal(innerLock);
                         return nil;
                     }
                     rejectCount ++;
-                    if (rejectCount == strongSelf.promises.count) {
+                    if (rejectCount == self.promises.count) {
                         NSError *error = [NSError errorWithDomain:OCPromiseAggregateErrorDomain code:OCPromiseErrorAggregateError userInfo:@{NSLocalizedDescriptionKey:@"All Promises rejected"}];
                         returnValue = error;
                         isReject = YES;
@@ -72,7 +69,6 @@
                     }
                     dispatch_semaphore_signal(innerLock);
                     return nil;
-                    
                 }));
             }
             

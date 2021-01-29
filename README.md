@@ -15,7 +15,7 @@ pod 'OCPromise'
 
 ### OCPromise initialize
 
-There's two ways to get a promise object:
+There's two ways to initialize a promise object:
 ```objc
 OCPromise *promise1 = Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
     resolve(@"great");
@@ -37,9 +37,10 @@ promise1
 .then(function(^OCPromise * _Nullable(id  _Nonnull value) {
     NSLog(@"got value %@", value);
     return nil;
-})).catch(^(id  _Nonnull value) {
+})).catch(function(^id _Nullable(id  _Nullable value) {
     NSLog(@"catch error");
-}).finally(^(id  _Nonnull value) {
+    return nil;
+})).finally(^{
     NSLog(@"finally");
 });
 ```

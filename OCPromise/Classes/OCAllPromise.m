@@ -25,11 +25,10 @@
     self = [super initWithPromis:nil withInput:nil];
     if (self) {
         _promises = [super buildPromisesCopy:promises];
-        __weak typeof(self) weakSelf = self;
-        
+        @weakify(self)
         _promise = ^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (!strongSelf.promises.count) {
+            @strongify(self)
+            if (!self.promises.count) {
                 resolve([[OCPromiseReturnValue alloc] init]);
                 return;
             }
@@ -39,19 +38,20 @@
             __block BOOL isResolve = YES;
             __block id returnValue = [[OCPromiseReturnValue alloc] init];
             
-            for (NSUInteger idx = 0; idx < strongSelf.promises.count && isResolve; idx++) {
-                __kindof OCPromise *obj = strongSelf.promises[idx];
-                obj.last = strongSelf.last;
+            for (NSUInteger idx = 0; idx < self.promises.count && isResolve; idx++) {
+                __kindof OCPromise *obj = self.promises[idx];
+                obj.last = self.last;
                 obj.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
+                    @strongify(self)
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     if (isResolve) {
                         if ([value isKindOfClass:[OCPromiseReturnValue class]]) {
                             returnValue[idx] = value;
                         }
                         else {
-                            returnValue[idx] = (strongSelf.mapBlock ? strongSelf.mapBlock(value) : value) ?: OCPromiseNil.nilValue;
+                            returnValue[idx] = (self.mapBlock ? self.mapBlock(value) : value) ?: OCPromiseNil.nilValue;
                         }
-                        if (((OCPromiseReturnValue *)returnValue).count == strongSelf.promises.count) {
+                        if (((OCPromiseReturnValue *)returnValue).count == self.promises.count) {
                             dispatch_semaphore_signal(returnLock);
                         }
                     }
@@ -60,7 +60,6 @@
                     return nil;
                     
                 })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-                    
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     if (!isResolve) {
                         dispatch_semaphore_signal(innerLock);
@@ -71,7 +70,6 @@
                     dispatch_semaphore_signal(returnLock);
                     dispatch_semaphore_signal(innerLock);
                     return nil;
-                    
                 }));
             }
             

@@ -27,12 +27,10 @@
             [self cancel];
             return nil;
         }
-        
-        __weak typeof(self) weakSelf = self;
-        
+        @weakify(self)
         _promise = ^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            if (!strongSelf.promises.count) {
+            @strongify(self)
+            if (!self.promises.count) {
                 resolve(nil);
                 return;
             }
@@ -43,11 +41,10 @@
             __block BOOL isResolve = NO;
             __block BOOL isReject = NO;
             
-            for (NSUInteger idx = 0; idx < strongSelf.promises.count && !isResolve && !isReject; idx++) {
-                __kindof OCPromise *obj = strongSelf.promises[idx];
-                obj.last = strongSelf.last;
+            for (NSUInteger idx = 0; idx < self.promises.count && !isResolve && !isReject; idx++) {
+                __kindof OCPromise *obj = self.promises[idx];
+                obj.last = self.last;
                 obj.then(function(^OCPromise * _Nullable(id  _Nonnull value) {
-                    
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     if (isResolve || isReject) {
                         dispatch_semaphore_signal(innerLock);
@@ -61,7 +58,6 @@
                     return nil;
                     
                 })).catch(function(^OCPromise * _Nullable(id  _Nonnull value) {
-                    
                     dispatch_semaphore_wait(innerLock, DISPATCH_TIME_FOREVER);
                     if (isResolve || isReject) {
                         dispatch_semaphore_signal(innerLock);
@@ -73,7 +69,6 @@
                     dispatch_semaphore_signal(returnLock);
                     dispatch_semaphore_signal(innerLock);
                     return nil;
-                    
                 }));
             }
             

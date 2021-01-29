@@ -31,4 +31,8 @@ id OCPromiseNilMethod(id self,SEL cmd) {
     return [super resolveInstanceMethod:sel];
 }
 
+- (NSString *)description {
+    return nil;
+}
+
 @end

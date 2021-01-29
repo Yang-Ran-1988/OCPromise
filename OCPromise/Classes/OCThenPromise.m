@@ -20,40 +20,38 @@
 - (instancetype)initWithPromis:(promise)ownPromise withInput:(inputPromise)input {
     self = [super initWithPromis:ownPromise withInput:input];
     if (self) {
-        __weak typeof(self) weakSelf = self;
+        @weakify(self)
         _resolve = ^(id  _Nonnull resolve) {
-            
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            
+            @strongify(self)
             dispatch_block_t block = ^{
-                if (strongSelf.status & OCPromiseStatusFulfilled && strongSelf.status & OCPromiseStatusRejected) {
+                @strongify(self)
+                if (self.status & OCPromiseStatusFulfilled || self.status & OCPromiseStatusRejected) {
                     return;
                 }
-                strongSelf.status |= OCPromiseStatusFulfilled;
-                strongSelf.resolvedValue = resolve;
-                if (strongSelf.next) {
-                    [strongSelf.next triggerThePromiseWithResolveValue:resolve];
+                self.status |= OCPromiseStatusFulfilled;
+                self.resolvedValue = resolve;
+                if (self.next) {
+                    [self.next triggerThePromiseWithResolveValue:resolve];
                 }
             };
-            dispatch_promise_queue_async_safe(strongSelf.promiseSerialQueue, block);
-            return strongSelf;
+            dispatch_promise_queue_async_safe(self.promiseSerialQueue, block);
+            return self;
         };
         _reject = ^(id  _Nonnull reject) {
-            
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            
+            @strongify(self)
             dispatch_block_t block = ^{
-                if (strongSelf.status & OCPromiseStatusFulfilled && !(strongSelf.status & OCPromiseStatusRejected)) {
+                @strongify(self)
+                if (self.status & OCPromiseStatusFulfilled || self.status & OCPromiseStatusRejected) {
                     return;
                 }
-                strongSelf.status |= OCPromiseStatusRejected;
-                strongSelf.resolvedValue = reject;
-                if (strongSelf.next) {
-                    [strongSelf.next searchCatchWithRejectValue:reject];
+                self.status |= OCPromiseStatusRejected;
+                self.resolvedValue = reject;
+                if (self.next) {
+                    [self.next searchCatchWithRejectValue:reject];
                 }
             };
-            dispatch_promise_queue_async_safe(strongSelf.promiseSerialQueue, block);
-            return strongSelf;
+            dispatch_promise_queue_async_safe(self.promiseSerialQueue, block);
+            return self;
         };
     }
     return self;

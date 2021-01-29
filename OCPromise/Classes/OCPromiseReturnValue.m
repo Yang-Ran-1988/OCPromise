@@ -100,7 +100,7 @@
 
 - (NSUInteger)countByEnumeratingWithState:(nonnull NSFastEnumerationState *)state objects:(__unsafe_unretained id  _Nullable * _Nonnull)buffer count:(NSUInteger)len {
     if (state->state == 0) {
-        state->mutationsPtr = (__bridge void *)[self lastObject];
+        state->mutationsPtr = (__bridge void *)self;
         state->state = 1;
         state->extra[0] = 0;
     }

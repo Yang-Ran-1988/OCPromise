@@ -15,6 +15,7 @@
 #import "OCAnyPromise.h"
 #import "OCPromise+Private.h"
 #import "OCPromise.h"
+#import "OCPromiseMacro.h"
 #import "OCPromiseNil.h"
 #import "OCPromiseReturnValue.h"
 #import "OCRacePromise.h"

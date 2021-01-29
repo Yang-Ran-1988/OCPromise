@@ -91,7 +91,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 !deliverValue ?: deliverValue(value);
             });
-            return value;
+            return OCPromise.reject(value);
         });
         return [self buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeCatch];
     };
@@ -145,11 +145,21 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
         @strongify(self)
         OCPromise *promise = function(^OCPromise * _Nullable(id  _Nonnull value) {
             return Promise(^(resolve  _Nonnull resolve, reject  _Nonnull reject) {
-                resolve(mapBlock?mapBlock(value):value);
+                resolve([OCPromise mapSetValueWithValue:value mapBlock:mapBlock]);
             });
         });
         return [self buildNewPromiseIntoNextWithOrigin:promise type:OCPromiseTypeThen];
     };
+}
+
++ (id)mapSetValueWithValue:(id)value mapBlock:(mapBlock)mapBlock {
+    if ([value isKindOfClass:NSClassFromString(@"OCPromiseReturnValue")]) {
+        [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            value[idx] = [OCPromise mapSetValueWithValue:obj mapBlock:mapBlock];
+        }];
+        return value;
+    }
+    return mapBlock?mapBlock(value):value;
 }
 
 - (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type {

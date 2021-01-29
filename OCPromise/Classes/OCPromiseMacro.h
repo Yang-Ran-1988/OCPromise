@@ -42,3 +42,12 @@
         #endif
     #endif
 #endif
+
+#ifndef dispatch_promise_queue_async_safe
+#define dispatch_promise_queue_async_safe(queue, block)\
+    if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(queue)) == 0) {\
+        block();\
+    } else {\
+        dispatch_async(queue, block);\
+    }
+#endif
