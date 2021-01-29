@@ -1,6 +1,6 @@
 {
   "name": "OCPromise",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "summary": "A short description of OCPromise.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/Yang-Ran-1988/OCPromise",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/Yang-Ran-1988/OCPromise.git",
-    "tag": "0.1.4"
+    "tag": "0.1.5"
   },
   "platforms": {
     "ios": "8.0"
