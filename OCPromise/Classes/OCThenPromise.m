@@ -96,38 +96,44 @@
     newPromise.promiseSerialQueue = promiseSerialQueue;
     
     dispatch_block_t block = ^{
-        
-        if ((currentPromise.status & OCPromiseStatusPending) != OCPromiseStatusPending) {
-            if (!currentPromise.last) {
-                if (currentPromise.inputPromise && !currentPromise.promise) {
-#if DEBUG
-                    NSString *reason = @"Head promise neez a input";
-                    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
-#else
-                    currentPromise.promise = currentPromise.inputPromise(nil);
-#endif
-                }
-                if (currentPromise.promise) {
-                    currentPromise.status |= OCPromiseStatusPending;
-                    currentPromise.promise(currentPromise.resolve, currentPromise.reject);
-                }
-                else {
-                    [currentPromise cancel];
-                }
+        if ((currentPromise.status & OCPromiseStatusFulfilled) == OCPromiseStatusFulfilled) {
+            if (!currentPromise.next) {
+                return;
             }
-            else if (currentPromise.last.status & OCPromiseStatusFulfilled) {
+            if ((currentPromise.next.status & OCPromiseStatusPending) == OCPromiseStatusPending) {
+                return;
+            }
+            if (currentPromise.status & OCPromiseStatusRejected) {
+                [currentPromise.next searchCatchWithRejectValue:currentPromise.resolvedValue];
+            }
+            else {
+                [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.resolvedValue];
+            }
+            return;
+        }
+        if ((currentPromise.status & OCPromiseStatusPending) == OCPromiseStatusPending) {
+            return;
+        }
+        if (currentPromise.last) {
+            if ((currentPromise.last.status & OCPromiseStatusFulfilled) == OCPromiseStatusFulfilled) {
                 [currentPromise triggerThePromiseWithResolveValue:currentPromise.last.resolvedValue];
             }
+            return;
         }
-        else if (currentPromise.status & OCPromiseStatusFulfilled) {
-            if (currentPromise.next && (currentPromise.next.status & OCPromiseStatusPending) != OCPromiseStatusPending) {
-                if (currentPromise.status & OCPromiseStatusRejected) {
-                    [currentPromise.next searchCatchWithRejectValue:currentPromise.resolvedValue];
-                }
-                else {
-                    [currentPromise.next triggerThePromiseWithResolveValue:currentPromise.resolvedValue];
-                }
-            }
+        if (currentPromise.inputPromise && !currentPromise.promise) {
+#if DEBUG
+            NSString *reason = @"Head promise neez a input";
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+#else
+            currentPromise.promise = currentPromise.inputPromise(nil);
+#endif
+        }
+        if (currentPromise.promise) {
+            currentPromise.status |= OCPromiseStatusPending;
+            currentPromise.promise(currentPromise.resolve, currentPromise.reject);
+        }
+        else {
+            [currentPromise cancel];
         }
     };
     
@@ -150,7 +156,7 @@
     }
     else {
         if (self.inputPromise) {
-            self.promise = [self getPromiseFromInputPromise:self.inputPromise resolveValue:value].promise;
+            self.promise = [self getPromiseFromInputPromise:self.inputPromise deliverValue:value].promise;
         }
         self.status |= OCPromiseStatusPending;
         self.promise(self.resolve, self.reject);
@@ -160,7 +166,7 @@
 - (void)searchCatchWithRejectValue:(id)value {
     if (self.type == OCPromiseTypeCatch) {
         if (self.inputPromise) {
-            self.promise = [self getPromiseFromInputPromise:self.inputPromise resolveValue:value].promise;
+            self.promise = [self getPromiseFromInputPromise:self.inputPromise deliverValue:value].promise;
         }
         self.status |= OCPromiseStatusPending;
         self.promise(self.resolve, self.reject);
@@ -177,14 +183,14 @@
     }
 }
 
-- (OCPromise *)getPromiseFromInputPromise:(inputPromise)inputPromise resolveValue:(id)value {
+- (OCPromise *)getPromiseFromInputPromise:(inputPromise)inputPromise deliverValue:(id)value {
     id returnValue = inputPromise(value);
     if ([returnValue isKindOfClass:[OCThenPromise class]]) {
         OCThenPromise *promise = (OCThenPromise *)returnValue;
         promise = (OCThenPromise *)[super buildNewPromiseIntoNextWithOrigin:promise type:promise.type];
         promise.last = self.last;
         if (promise.inputPromise) {
-            promise.promise = [promise getPromiseFromInputPromise:promise.inputPromise resolveValue:value].promise;
+            promise.promise = [promise getPromiseFromInputPromise:promise.inputPromise deliverValue:value].promise;
         }
         return promise;
     }

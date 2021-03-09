@@ -159,7 +159,7 @@ OCPromise * retry(OCPromise *ocPromise, uint8_t times, int64_t delay/*ms*/) {
         }];
         return value;
     }
-    return mapBlock?mapBlock(value):value;
+    return mapBlock ? mapBlock(value) : value;
 }
 
 - (OCPromise *)buildNewPromiseIntoNextWithOrigin:(OCPromise *)promise type:(OCPromiseType)type {
